@@ -1,0 +1,1 @@
+void deinitialize_shared_memory();
