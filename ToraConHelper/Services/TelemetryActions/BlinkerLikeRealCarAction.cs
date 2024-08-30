@@ -1,5 +1,6 @@
 ﻿using SCSSdkClient.Input;
 using SCSSdkClient.Object;
+using System.Diagnostics;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
@@ -13,48 +14,43 @@ public class BlinkerLikeRealCarAction : ITelemetryAction
         var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
         var right = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerRightActive;
 
-        // 今までウィンカー出てなかったけど出た ＝ 新しくウィンカーつけた
-        if (!_blinkerLeft && !_blinkerRight)
+        Debug.WriteLine($"Left={left},Right={right}");
+
+        if(!left && !right)
         {
-            if (left || right)
+            // 両方出てない
+            _blinkerLeft = left;
+            _blinkerRight = right;
+        }
+        else
+        {
+            // どちらか出てる
+
+            // 右出てた、左になった
+            if (_blinkerRight && left)
+            {
+                // 左消す入力
+                using var input = new SCSSdkTelemetryInput();
+                input.Connect();
+                input.SetLeftBlinkerHide();
+                _blinkerLeft = false;
+                _blinkerRight = false;
+            }
+            // 左出てた、右になった
+            else if (_blinkerLeft && right)
+            {
+                // 右消す入力
+                using var input = new SCSSdkTelemetryInput();
+                input.Connect();
+                input.SetRightBlinkerHide();
+                _blinkerLeft = false;
+                _blinkerRight = false;
+            }
+            else
             {
                 _blinkerLeft = left;
                 _blinkerRight = right;
             }
         }
-        // すでにウィンカー出てた
-        else
-        {
-            // 左が出てた状態から
-            if (_blinkerLeft)
-            {
-                // 右押された
-                if (right)
-                {
-                    // 右消す入力
-                    using var input = new SCSSdkTelemetryInput();
-                    input.Connect();
-                    input.SetRightBlinker();
-                    _blinkerLeft = false;
-                    _blinkerRight = false;
-                }
-
-            }
-            // 右が出てた状態から
-            else if (_blinkerRight)
-            {
-                // 左押された
-                if (left)
-                {
-                    // 左消す入力
-                    using var input = new SCSSdkTelemetryInput();
-                    input.Connect();
-                    input.SetLeftBlinker();
-                    _blinkerLeft = false;
-                    _blinkerRight = false;
-                }
-            }
-        }
     }
-
 }
