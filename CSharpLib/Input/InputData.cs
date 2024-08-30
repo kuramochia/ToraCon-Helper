@@ -25,14 +25,24 @@ namespace SCSSdkClient.Input {
         //public bool Hblight;
 
         /// <summary>
-        /// 左ウィンカーレバー
+        /// 左ウィンカーOn
         /// </summary>
         public bool Lblinker;
 
         /// <summary>
-        /// 右ウィンカーレバー
+        /// 左ウィンカーOff
+        /// </summary>
+        public bool Lblinkerh;
+        /// <summary>
+        /// 右ウィンカーOn
         /// </summary>
         public bool Rblinker;
+
+        /// <summary>
+        /// 右ウィンカーOff
+        /// </summary>
+        public bool Rblinkerh;
+
         //public bool Quickpark;
         //public bool Drive;
         //public bool Reverse;
@@ -79,6 +89,7 @@ namespace SCSSdkClient.Input {
         /// リターダー0
         /// </summary>
         public bool Retarder0;
+
         ///// <summary>
         ///// リターダー1
         ///// </summary>
