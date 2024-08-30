@@ -180,13 +180,26 @@ namespace SCSSdkClient.Demo {
             inputTestStarted = !inputTestStarted;
         }
 
-        private async void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
+
             using (var i = new SCSSdkTelemetryInput())
             {
+                var sm = new SharedMemory();
+                sm.Connect("Local\\ToraCon-SCSTelemetry");
+                var telemetry = sm.Update<SCSTelemetry>();
+                sm.Disconnect();
+
                 i.Connect();
-                await i.SetLeftBlinkerAsync();
-                inputTestlabel.Text = $"set Right Blinker {DateTime.Now.ToLongTimeString()}";
+                if (telemetry.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel > 0)
+                {
+                    i.SetRetarderDown();
+                }
+                else
+                {
+                    i.SetRetarderUp();
+                }
+                inputTestlabel.Text = $"set Reterder {DateTime.Now.ToLongTimeString()}";
             }
         }
     }
