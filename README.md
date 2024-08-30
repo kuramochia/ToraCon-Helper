@@ -21,22 +21,26 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
     * テレメトリーから情報を取っているので、どうしてもウィンカーが表示されてからになってしまいます。
     * この制限事項が微妙・・・という方は、私の gist に [Key2Key を使って、この動作を実現する](https://gist.github.com/kuramochia/dd79fa29ecfd5af0a207b0b11116ff64) をご利用ください。
 * 指定速度以下の場合にリターダーを全段戻す
+  * 信号で止まった後、出発するときに「リターダーが！！」って怒られません？
+  * 指定された速度以下になったときにリターダーを戻す入力をすると、全段戻ります。
 
 ## 動作要件
-* Windows 10 / 11 x64 
+* Microsoft Windows 10 / 11 x64 
 * .NET Framework 4.8
-    * 今サポートされている OS プイインストールされています
+    * 今サポートされている OS ならプリインストールされています。
 * ETS2 / ATS
     * Telemetry DLL が x64 版のみ提供しているので、x86 でゲームされている方は動かないです。
 
 ## セットアップ方法
-1. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の ToraCon-Helper_vX.X.X.X.zip という名前の zip ファイルをダウンロードし、解凍します。
-2. 解凍したフォルダの中に「plugins」と「ToraCon-Helper」フォルダがあります。
-3. 「plugins\win_x64」フォルダにある「ToraCon-scs-telemetry.dll」を、ETS2/ATS の plugin フォルダにコピーします。（通常は "C:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2\bin\win_x64\plugins"、"C:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator\bin\win_x64\plugins" です。）
-4. 「ToraCon-Helper」フォルダにある「ToraConHelper.exe」 を起動します。
+1. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の `ToraCon-Helper_vX.X.X.X.zip` という名前の zip ファイルをダウンロードし、解凍します。
+2. 解凍したフォルダの中に `plugins` と `ToraCon-Helper` フォルダがあります。
+3. `plugins\win_x64` フォルダにある `ToraCon-scs-telemetry.dll` を、ETS2/ATS の plugin フォルダにコピーします。（通常、プラグインフォルダは ETS2 = `C:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2\bin\win_x64\plugins`、ATS = `C:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator\bin\win_x64\plugins` です。）
+4. `ToraCon-Helper` フォルダを好きな場所に配置し、`ToraConHelper.exe` を起動します。
 ![](images/appimage.png)
 
 ## アプリの設定
+設定を変更すると、`ToraConHelper.exe` と同じフォルダに `ToraCon-Helper_Settings.json` を出力します。
+
 ### 全体設定
 #### 1. テレメトリー動作
 [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engine/SDK/Telemetry) を利用して、ETS2/ATS からテレメトリー情報を取得します。これを On にしないと、下記の各アクションが動作しません。
