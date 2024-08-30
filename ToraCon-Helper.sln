@@ -4,15 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{06F1E368-D6E3-4610-AA3A-BBAF1F5FC51E}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSSdkClient", "CSharpLib\SCSSdkClient.csproj", "{B62F8E57-9D8C-4EA2-90E4-1F6B09DCE468}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToraCon-scs-telemetry", "scs-telemetry\scs-telemetry.vcxproj", "{0B739935-E779-415A-B76C-0073EAE72A81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSSdkClient.Demo", "Demo\SCSSdkClient.Demo.csproj", "{8C5B8E63-E30D-4A5A-9729-05B593B12448}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToraConHelper", "ToraConHelper\ToraConHelper.csproj", "{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +53,18 @@ Global
 		{8C5B8E63-E30D-4A5A-9729-05B593B12448}.Release|x64.Build.0 = Release|Any CPU
 		{8C5B8E63-E30D-4A5A-9729-05B593B12448}.Release|x86.ActiveCfg = Release|Any CPU
 		{8C5B8E63-E30D-4A5A-9729-05B593B12448}.Release|x86.Build.0 = Release|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Debug|x64.Build.0 = Debug|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Debug|x86.Build.0 = Debug|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Release|x64.ActiveCfg = Release|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Release|x64.Build.0 = Release|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9AEA672-9AB7-4B11-BC8E-AE6A0CCAA573}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
