@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO.MemoryMappedFiles;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace SCSSdkClient.Input {
+    /// <summary>
+    /// SCS Telemetry の入力機能を提供します
+    /// </summary>
     public class SCSSdkTelemetryInput: IDisposable {
         private const string DefaultSharedMemoryMap = "Local\\ToraCon-SCSTelemetry-Input";
 
@@ -24,7 +24,16 @@ namespace SCSSdkClient.Input {
 
         private InputData _inputData;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public SCSSdkTelemetryInput() : this(DefaultSharedMemoryMap) { }
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="map">Memory Mapped File name</param>
+        /// <exception cref="ArgumentNullException">map name is null</exception>
         public SCSSdkTelemetryInput(string map) {
             if (string.IsNullOrEmpty(map))
                 throw new ArgumentNullException(nameof(map));
@@ -32,6 +41,9 @@ namespace SCSSdkClient.Input {
 
         }
 
+        /// <summary>
+        /// MMF に接続
+        /// </summary>
         public void Connect() {
             if (Hooked)
                 Disconnect();
@@ -40,7 +52,7 @@ namespace SCSSdkClient.Input {
             try {
                 _memoryMappedHandle = MemoryMappedFile.CreateOrOpen(Map, MapSize, MemoryMappedFileAccess.ReadWrite);
                 _memoryMappedView = _memoryMappedHandle.CreateViewAccessor(0, MapSize);
-                _memoryMappedView.Read(0,out _inputData);
+                _memoryMappedView.Read(0, out _inputData);
                 Hooked = true;
             } catch {
                 Hooked = false;
@@ -48,6 +60,9 @@ namespace SCSSdkClient.Input {
 
         }
 
+        /// <summary>
+        /// MMF から接続解除
+        /// </summary>
         public void Disconnect() {
             if (Hooked) {
                 Hooked = false;
@@ -57,15 +72,32 @@ namespace SCSSdkClient.Input {
             }
         }
 
+        /// <summary>
+        /// MMF に接続中かどうか
+        /// </summary>
         public bool Hooked { get; private set; }
 
+        /// <summary>
+        /// MMF ファイル名
+        /// </summary>
         public string Map { get; private set; }
 
+        /// <summary>
+        /// アンマネージメモリを解放します
+        /// </summary>
         public void Dispose() {
             Disconnect();
         }
 
-        public async Task SetParkingBrakeAsync(int waitMilliseconds = 100) {
+        #region Input functions
+
+        /// <summary>
+        /// パーキングブレーキ入力を実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetParkingBrake(int waitMilliseconds = 100) {
             if (!Hooked)
                 throw new InvalidOperationException("not Connected");
 
@@ -75,7 +107,7 @@ namespace SCSSdkClient.Input {
             _memoryMappedView.Flush();
 
             // 待つ
-            await Task.Delay(waitMilliseconds);
+            Thread.Sleep(waitMilliseconds);
 
             // false に戻す
             _inputData.ParkingBrake = false;
@@ -83,7 +115,13 @@ namespace SCSSdkClient.Input {
             _memoryMappedView.Flush();
         }
 
-        public async Task SetLeftBlinkerAsync(int waitMilliseconds = 100) {
+        /// <summary>
+        /// 左ウィンカーレバー入力を実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetLeftBlinker(int waitMilliseconds = 100) {
             if (!Hooked)
                 throw new InvalidOperationException("not Connected");
 
@@ -93,7 +131,7 @@ namespace SCSSdkClient.Input {
             _memoryMappedView.Flush();
 
             // 待つ
-            await Task.Delay(waitMilliseconds);
+            Thread.Sleep(waitMilliseconds);
 
             // false に戻す
             _inputData.Lblinker = false;
@@ -101,7 +139,37 @@ namespace SCSSdkClient.Input {
             _memoryMappedView.Flush();
         }
 
-        public async Task SetRightBlinkerAsync(int waitMilliseconds = 100) {
+        /// <summary>
+        /// 左ウィンカーレバー入力Offを実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetLeftBlinkerHide(int waitMilliseconds = 100) {
+            if (!Hooked)
+                throw new InvalidOperationException("not Connected");
+
+            _inputData.Lblinkerh = true;
+
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+
+            // 待つ
+            Thread.Sleep(waitMilliseconds);
+
+            // false に戻す
+            _inputData.Lblinkerh = false;
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+        }
+
+        /// <summary>
+        /// 右ウィンカーレバー入力を実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetRightBlinker(int waitMilliseconds = 100) {
             if (!Hooked)
                 throw new InvalidOperationException("not Connected");
 
@@ -111,7 +179,7 @@ namespace SCSSdkClient.Input {
             _memoryMappedView.Flush();
 
             // 待つ
-            await Task.Delay(waitMilliseconds);
+            Thread.Sleep(waitMilliseconds);
 
             // false に戻す
             _inputData.Rblinker = false;
@@ -119,5 +187,101 @@ namespace SCSSdkClient.Input {
             _memoryMappedView.Flush();
         }
 
+        /// <summary>
+        /// 右ウィンカーレバー入力Offを実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetRightBlinkerHide(int waitMilliseconds = 100) {
+            if (!Hooked)
+                throw new InvalidOperationException("not Connected");
+
+            _inputData.Rblinkerh = true;
+
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+
+            // 待つ
+            Thread.Sleep(waitMilliseconds);
+
+            // false に戻す
+            _inputData.Rblinkerh = false;
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+        }
+
+        /// <summary>
+        /// リターダーUp入力を実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetRetarderUp(int waitMilliseconds = 100) {
+            if (!Hooked)
+                throw new InvalidOperationException("not Connected");
+
+            _inputData.RetarderUp = true;
+
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+
+            // 待つ
+            Thread.Sleep(waitMilliseconds);
+
+            // false に戻す
+            _inputData.RetarderUp = false;
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+        }
+
+        /// <summary>
+        /// リターダーDown入力を実施
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetRetarderDown(int waitMilliseconds = 100) {
+            if (!Hooked)
+                throw new InvalidOperationException("not Connected");
+
+            _inputData.RetarderDown = true;
+
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+
+            // 待つ
+            Thread.Sleep(waitMilliseconds);
+
+            // false に戻す
+            _inputData.RetarderDown = false;
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+        }
+
+        /// <summary>
+        /// リターダー段数を0にする
+        /// </summary>
+        /// <param name="waitMilliseconds">入力している時間</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetRetarder0(int waitMilliseconds = 100) {
+            if (!Hooked)
+                throw new InvalidOperationException("not Connected");
+
+            _inputData.Retarder0 = true;
+
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+
+            // 待つ
+            Thread.Sleep(waitMilliseconds);
+
+            // false に戻す
+            _inputData.Retarder0 = false;
+            _memoryMappedView.Write(0, ref _inputData);
+            _memoryMappedView.Flush();
+        }
+        #endregion
     }
 }
