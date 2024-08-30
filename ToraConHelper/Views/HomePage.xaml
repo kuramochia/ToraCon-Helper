@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="ToraConHelper.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ToraConHelper.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:viewmodels="clr-namespace:ToraConHelper.ViewModels"
+    Title="HomePage"
+    d:DataContext="{d:DesignInstance viewmodels:ViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="ui:ToggleSwitch">
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+        <Style
+            x:Key="ThemeRadioStyle"
+            BasedOn="{StaticResource DefaultRadioButtonStyle}"
+            TargetType="RadioButton">
+            <Setter Property="GroupName" Value="Theme" />
+        </Style>
+    </Page.Resources>
+    <ui:SimpleStackPanel>
+        <ui:SimpleStackPanel>
+            <TextBlock
+                Margin="0,20,0,0"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="全体設定" />
+            <ui:ToggleSwitch Header="テレメトリー動作" IsOn="{Binding Path=IsActive}" />
+            <ui:ToggleSwitch Header="アプリ終了時にタスクトレイに格納" IsOn="{Binding Path=GoToTasktrayOnAppClose}" />
+            <ui:ToggleSwitch Header="起動時にタスクトレイに格納" IsOn="{Binding Path=TaskTrayOnStart}" />
+        </ui:SimpleStackPanel>
+
+        <ui:SimpleStackPanel IsEnabled="{Binding Path=IsActive}">
+            <TextBlock
+                Margin="0,20,0,0"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="アクション設定" />
+
+            <ui:ToggleSwitch Header="ウィンカー戻す動作を実車に近づける" IsOn="{Binding Path=BlinkerLikeRealCarActionEnabled}" />
+
+            <ui:ToggleSwitch Header="指定速度以下でリターダーを全部戻す" IsOn="{Binding Path=ReterderAllReduceActionEnabled}" />
+            <ui:SimpleStackPanel Margin="30,5" IsEnabled="{Binding Path=ReterderAllReduceActionEnabled}">
+                <TextBlock Text="リターダーを全部戻す速度(km/h)" />
+                <ui:SimpleStackPanel Orientation="Horizontal">
+                    <Slider
+                        Width="300"
+                        HorizontalAlignment="Left"
+                        LargeChange="10"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        Value="{Binding Path=ReterderAllReduceActionLimitSpeedKph}" />
+                    <TextBlock
+                        Padding="20,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding Path=ReterderAllReduceActionLimitSpeedKph}" />
+                </ui:SimpleStackPanel>
+            </ui:SimpleStackPanel>
+        </ui:SimpleStackPanel>
+    </ui:SimpleStackPanel>
+</Page>
