@@ -41,8 +41,8 @@ public class SettingFileManager : ISettingFileMamager
 public class Settings
 {
     public bool IsActive { get; set; } = true;
-    public bool GoToTasktrayOnAppClose { get; set; } = true;
-    public bool TaskTrayOnStart { get; set; }
+    public bool GoToTasktrayOnAppClose { get; set; } = false;
+    public bool TaskTrayOnStart { get; set; } = false;
 
     public bool BlinkerLikeRealCarActionEnabled { get; set; } = true;
     public bool RetarderAllReduceActionEnabled { get; set; } = true;

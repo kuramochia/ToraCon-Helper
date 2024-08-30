@@ -31,11 +31,14 @@ public class TelemetryActionsManager : IDisposable
         Debug.WriteLine($"SCSSdkTelemetry Start. UpdateInterval={_telemetry.UpdateInterval}ms");
     }
 
+    private bool _running = false;
+
     private void Telemetry_Data(SCSTelemetry data, bool updated)
     {
-        if (!updated) return;
+        if (!updated || _running) return;
         try
         {
+            _running = true;
             foreach (var act in _actions)
             {
                 act?.OnTelemetryUpdated(data);
@@ -44,6 +47,10 @@ public class TelemetryActionsManager : IDisposable
         catch (Exception ex)
         {
             Debug.WriteLine($"Telemetry was closed: {ex}");
+        }
+        finally
+        {
+            _running = false;
         }
     }
 
