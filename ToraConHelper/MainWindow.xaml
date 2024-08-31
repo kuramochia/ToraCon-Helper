@@ -8,10 +8,10 @@
     xmlns:ui="http://schemas.modernwpf.com/2019"
     Title="トラコン ヘルパーアプリ(仮称)"
     Width="500"
-    Height="600"
+    Height="770"
     ui:WindowHelper.UseModernWindowStyle="True"
     mc:Ignorable="d">
-    <!-- NavigationView が不要な1ページアプリなんだけど、作っておく -->
+    <!--  NavigationView が不要な1ページアプリなんだけど、作っておく  -->
     <ui:NavigationView
         x:Name="navigationView"
         IsBackButtonVisible="Collapsed"
