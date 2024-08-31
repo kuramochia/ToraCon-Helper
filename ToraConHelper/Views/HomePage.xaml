@@ -79,9 +79,9 @@
             </ui:SimpleStackPanel>
 
             <ui:ToggleSwitch
-                Header="ウィンカーのオートキャンセルが動作するハンドル角度を調整"
+                Header="ウィンカー オートキャンセルが動作するハンドル回転角度を調整"
                 IsOn="{Binding Path=BlinkerHideOnSteeringActionEnabled}"
-                ToolTip="ウィンカーのオートキャンセルが動作するハンドル角度を調整します。" />
+                ToolTip="ウィンカー オートキャンセルが動作するハンドル角度を調整します。" />
             <ui:SimpleStackPanel Margin="30,5" IsEnabled="{Binding Path=BlinkerHideOnSteeringActionEnabled}">
                 <TextBlock
                     Margin="0,0,0,5"
