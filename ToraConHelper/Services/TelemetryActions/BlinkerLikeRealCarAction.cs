@@ -14,8 +14,6 @@ public class BlinkerLikeRealCarAction : ITelemetryAction
         var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
         var right = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerRightActive;
 
-        Debug.WriteLine($"Left={left},Right={right}");
-
         if(!left && !right)
         {
             // 両方出てない
