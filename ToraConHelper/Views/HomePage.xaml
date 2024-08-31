@@ -8,8 +8,9 @@
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:viewmodels="clr-namespace:ToraConHelper.ViewModels"
     Title="HomePage"
+    d:Background="White"
     d:DataContext="{d:DesignInstance viewmodels:ViewModel}"
-    d:DesignHeight="450"
+    d:DesignHeight="800"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
@@ -74,6 +75,40 @@
                         Padding="20,0"
                         VerticalAlignment="Center"
                         Text="{Binding Path=ReterderAllReduceActionLimitSpeedKph}" />
+                </ui:SimpleStackPanel>
+            </ui:SimpleStackPanel>
+
+            <ui:ToggleSwitch
+                Header="ウィンカー オートキャンセルが動作するハンドル回転角度を調整"
+                IsOn="{Binding Path=BlinkerHideOnSteeringActionEnabled}"
+                ToolTip="ウィンカー オートキャンセルが動作するハンドル角度を調整します。" />
+            <ui:SimpleStackPanel Margin="30,5" IsEnabled="{Binding Path=BlinkerHideOnSteeringActionEnabled}">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="ゲームで設定しているハンドルの回転角度"
+                    ToolTip="" />
+                <ComboBox
+                    Width="100"
+                    ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:HomePage}, Path=SteeringRotationAngles}"
+                    SelectedItem="{Binding Path=SteeringRotationAngle}" />
+                <TextBlock
+                    Margin="0,10,0,5"
+                    Text="オートキャンセルが動作するまでのハンドル角度"
+                    ToolTip="" />
+                <ui:SimpleStackPanel Orientation="Horizontal">
+                    <Slider
+                        x:Name="blinkerHideAngleSlider"
+                        Width="300"
+                        HorizontalAlignment="Left"
+                        LargeChange="10"
+                        Maximum="{Binding Path=SteeringRotationAngle}"
+                        Minimum="0"
+                        SmallChange="1"
+                        Value="{Binding Path=BlinkerHideBySteeringAngle}" />
+                    <TextBlock
+                        Padding="20,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding Path=BlinkerHideBySteeringAngle}" />
                 </ui:SimpleStackPanel>
             </ui:SimpleStackPanel>
         </ui:SimpleStackPanel>

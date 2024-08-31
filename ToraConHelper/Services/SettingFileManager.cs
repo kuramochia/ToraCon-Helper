@@ -47,4 +47,10 @@ public class Settings
     public bool BlinkerLikeRealCarActionEnabled { get; set; } = true;
     public bool RetarderAllReduceActionEnabled { get; set; } = true;
     public int RetarderAllReduceActionLimitSpeedKph { get; set; } = 30;
+
+    public bool BlinkerHideOnSteeringActionEnabled { get; set; } = false;
+
+    public int SteeringRotationAngle { get; set; } = 1800;
+
+    public int BlinkerHideBySteeringAngle { get; set; } = 90;
 }
