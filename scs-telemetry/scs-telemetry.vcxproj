@@ -26,6 +26,15 @@
     <ClCompile Include=".\src\sharedmemory.cpp" />
     <ClCompile Include=".\src\scs_inputs_telemetry.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\inputs.h" />
+    <ClInclude Include="inc\log.hpp" />
+    <ClInclude Include="inc\scs-telemetry-common.hpp" />
+    <ClInclude Include="inc\scs_config_handlers.hpp" />
+    <ClInclude Include="inc\scs_gameplay_event_handlers.hpp" />
+    <ClInclude Include="inc\scs_inputs_telemetry.h" />
+    <ClInclude Include="inc\sharedmemory.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0B739935-E779-415A-B76C-0073EAE72A81}</ProjectGuid>
     <RootNamespace>scs-telemetry</RootNamespace>
