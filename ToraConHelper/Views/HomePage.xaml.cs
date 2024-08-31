@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using ToraConHelper.ViewModels;
 
 namespace ToraConHelper.Views;
@@ -13,4 +14,17 @@ public partial class HomePage : Page
         InitializeComponent();
         DataContext = viewModel;
     }
+
+    public ObservableCollection<int> SteeringRotationAngles { get; private set; } = 
+        new (){ 
+            360,
+            540,
+            720,
+            900,
+            1080,
+            1260,
+            1440,
+            1620,
+            1800,
+        };
 }

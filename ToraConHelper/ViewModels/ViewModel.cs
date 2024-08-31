@@ -43,7 +43,9 @@ public partial class ViewModel : ObservableObject
         s.BlinkerLikeRealCarActionEnabled = BlinkerLikeRealCarActionEnabled;
         s.RetarderAllReduceActionEnabled = ReterderAllReduceActionEnabled;
         s.RetarderAllReduceActionLimitSpeedKph = ReterderAllReduceActionLimitSpeedKph;
-
+        s.BlinkerHideOnSteeringActionEnabled = BlinkerHideOnSteeringActionEnabled;
+        s.SteeringRotationAngle = SteeringRotationAngle;
+        s.BlinkerHideBySteeringAngle = BlinkerHideBySteeringAngle;
         return s;
     }
 
@@ -56,10 +58,13 @@ public partial class ViewModel : ObservableObject
         BlinkerLikeRealCarActionEnabled = s.BlinkerLikeRealCarActionEnabled;
         ReterderAllReduceActionEnabled = s.RetarderAllReduceActionEnabled;
         ReterderAllReduceActionLimitSpeedKph = s.RetarderAllReduceActionLimitSpeedKph;
+        BlinkerHideOnSteeringActionEnabled = s.BlinkerHideOnSteeringActionEnabled;
+        SteeringRotationAngle = s.SteeringRotationAngle;
+        BlinkerHideBySteeringAngle = s.BlinkerHideBySteeringAngle;
     }
 
     [ObservableProperty]
-    public bool isActive;
+    private bool isActive;
 
     partial void OnIsActiveChanged(bool oldValue, bool newValue)
     {
@@ -74,13 +79,13 @@ public partial class ViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    public bool goToTasktrayOnAppClose;
+    private bool goToTasktrayOnAppClose;
 
     [ObservableProperty]
-    public bool taskTrayOnStart;
+    private bool taskTrayOnStart;
 
     [ObservableProperty]
-    public bool blinkerLikeRealCarActionEnabled;
+    private bool blinkerLikeRealCarActionEnabled;
 
     partial void OnBlinkerLikeRealCarActionEnabledChanged(bool oldValue, bool newValue)
     {
@@ -88,7 +93,7 @@ public partial class ViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    public bool reterderAllReduceActionEnabled;
+    private bool reterderAllReduceActionEnabled;
 
     partial void OnReterderAllReduceActionEnabledChanged(bool oldValue, bool newValue)
     {
@@ -96,12 +101,38 @@ public partial class ViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    public int reterderAllReduceActionLimitSpeedKph;
+    private int reterderAllReduceActionLimitSpeedKph;
 
-    partial void OnReterderAllReduceActionLimitSpeedKphChanged(int oldValue, int newValue)
+    partial void OnReterderAllReduceActionLimitSpeedKphChanged(int newValue)
     {
         var action = App.Current.Services.GetService<ReterderAllReduceAction>();
         action!.LimitSpeedKph = newValue;
+    }
+
+    [ObservableProperty]
+    private bool blinkerHideOnSteeringActionEnabled;
+
+    partial void OnBlinkerHideOnSteeringActionEnabledChanged(bool oldValue, bool newValue)
+    {
+        OnActionEnabledChanged(typeof(BlinkerHideOnSteeringAction), oldValue, newValue);
+    }
+
+    // ハンドル回転角
+    [ObservableProperty]
+    private int steeringRotationAngle;
+
+    partial void OnSteeringRotationAngleChanged(int value) => SteeringAngleChanged();
+    // ウィンカー消す角度
+    [ObservableProperty]
+    private int blinkerHideBySteeringAngle;
+
+    partial void OnBlinkerHideBySteeringAngleChanged(int newValue) => SteeringAngleChanged();
+
+    private void SteeringAngleChanged()
+    {
+        var action = App.Current.Services.GetService<BlinkerHideOnSteeringAction>();
+        // 角度から相対値に変換
+        action!.BlinkerHidePosition = (float)BlinkerHideBySteeringAngle / (SteeringRotationAngle / 2);
     }
 
     #region Private methods
@@ -119,4 +150,6 @@ public partial class ViewModel : ObservableObject
         }
     }
     #endregion
+
+
 }
