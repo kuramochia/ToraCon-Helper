@@ -78,12 +78,13 @@ public partial class App : Application
 
         // Services
         services.AddSingleton<ISettingFileMamager, SettingFileManager>();
-        services.AddSingleton<GameProcessDetector>();
+        //services.AddSingleton<GameProcessDetector>();
         services.AddSingleton<TelemetryActionsManager>();
 
         // Services.TelemetryActions
         services.AddSingleton<BlinkerLikeRealCarAction>();
         services.AddSingleton<ReterderAllReduceAction>();
+        services.AddSingleton<BlinkerHideOnSteeringAction>();
 
         return services.BuildServiceProvider();
     }
