@@ -10,7 +10,7 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 今までの便利操作系ツールは Key2Key などを利用して実現はできましたが、ETS/ATS のキーコンフィグを変更する必要がありました。そしてプログラミングがわからないとちょっとハードルが高い。。
 
-このアプリは、[Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engine/SDK/Telemetry) の出力（外部アプリからテレメトリー情報を読み取る）と入力（外部アプリケーションからコントローラーと同様に入力を送信）機能を両方を使って、ETS/ATS のキーコンフィグ設定を一切変更せず、ちょっと便利な操作の自動化を実現しています。
+このアプリは、[Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engine/SDK/Telemetry) の出力（外部アプリからテレメトリー情報を読み取る）と入力（外部アプリからコントローラーと同様に入力を送信）機能を両方を使って、ETS2/ATS のキーコンフィグ設定を一切変更せず、ちょっと便利な操作の自動化を実現しています。
 
 
 ## できること（アプリの設定で有効・無効の切り替え可能）
@@ -23,6 +23,9 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 * 指定速度以下の場合にリターダーを全段戻す
   * 信号で止まった後、出発するときに「リターダーが！！」って怒られません？
   * 指定された速度以下になったときにリターダーを戻す入力をすると、全段戻ります。
+* __ウィンカー オートキャンセルのハンドル回転角度変更__ <sup>new! v1.1</sup>
+  * ウィンカー オートキャンセル機能は ETS2/ATS に搭載されていますが、ハンドルをほぼ中央まで戻さないと動作しません。
+  * ウィンカー オートキャンセルが動作するハンドル回転角度を指定できるようにしました。
 
 ## 動作要件
 * Microsoft Windows 10 / 11 x64 
@@ -64,6 +67,14 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 指定された速度以下でリターダーを戻す入力を行うと、リターダーを一気に全段戻します。
 
 その下のスライダーで、リターダーを全部戻す速度を指定します。0~100 km/h が指定できます。
+
+#### ウィンカー オートキャンセルのハンドル回転角度変更 <sup>new! v1.1</sup>
+
+ウィンカー オートキャンセルが動作するハンドル回転角度を指定できます。
+
+まず、ゲームで設定しているハンドルの回転角度を指定します。
+
+そのあと、オートキャンセルが動作するまでのハンドル角度を指定します。
 
 ## バグを発見した
 [Issues](https://github.com/kuramochia/ToraCon-Helper/issues) をお願いします。
