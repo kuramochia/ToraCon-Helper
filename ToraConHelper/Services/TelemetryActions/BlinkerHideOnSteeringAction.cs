@@ -1,6 +1,7 @@
 ﻿using SCSSdkClient.Input;
 using SCSSdkClient.Object;
 using System;
+using System.Diagnostics;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
@@ -12,75 +13,69 @@ public class BlinkerHideOnSteeringAction : ITelemetryAction
     /// </summary>
     public float BlinkerHidePosition { get; set; } = 1f;
 
-    private float _maxSteering = 0f;
+    private float? _maxSteering = null;
 
     public void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         var currentSteering = telemetry.ControlValues.GameValues.Steering;
 
         // 前回のステアリング値よりも大きくなった＝もっとハンドル切ってる
+        var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
+        var right = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerRightActive;
 
-        // ステアリング右方向
-        if (currentSteering < 0)
+        // ウィンカー出てないので、監視解除
+        if(!left && !right)
         {
-            // さらにステアリングを右に回した
-            if (_maxSteering > currentSteering)
-            {
-                // 最大値更新
-                _maxSteering = currentSteering;
-            }
-            // ステアリング左に戻した
-            else
-            {
-                // 今回のステアリング値が、閾値よりも戻った
-                if (Math.Abs(_maxSteering) - BlinkerHidePosition >= Math.Abs(currentSteering) &&
-                    telemetry.TruckValues.CurrentValues.LightsValues.BlinkerRightActive)
-                {
-                    // 右ウィンカー戻す
-                    using var input = new SCSSdkTelemetryInput();
-                    input.Connect();
-                    input.SetRightBlinkerHide();
-                    _maxSteering = currentSteering;
-                }
-                // そこまで戻ってない
-                else
-                {
-                    // nop
-                }
-            }
+            _maxSteering = null;
+            return;
         }
-        else if (currentSteering > 0)
+
+        if ((left || right) && _maxSteering == null)
         {
-            // ステアリング左方向
-            // さらにステアリングを左に回した
-            if (_maxSteering < currentSteering)
+            // 監視開始
+            //Debug.WriteLine($"監視開始 current={currentSteering}");
+            _maxSteering = currentSteering;
+            return;
+        }
+
+        // オートキャンセル監視中に
+        if (_maxSteering != null)
+        {
+            //Debug.WriteLine($"監視中 current={currentSteering},_maxSteering={_maxSteering}, BlinkerHidePosition={BlinkerHidePosition} ");
+            if (left)
             {
-                // 最大値更新
-                _maxSteering = currentSteering;
-            }
-            // ステアリング左に戻した
-            else
-            {
-                // 今回のステアリング値が、閾値よりも戻った
-                if (_maxSteering - BlinkerHidePosition >= currentSteering &&
-                    telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive)
+                // 左・閾値を下回った
+                if (_maxSteering.Value - BlinkerHidePosition >= currentSteering)
                 {
+                    //Debug.WriteLine($"閾値以下 左 current={currentSteering}");
                     // 左ウィンカー戻す
                     using var input = new SCSSdkTelemetryInput();
                     input.Connect();
                     input.SetLeftBlinkerHide();
+                    _maxSteering = null;
+                }
+                else if(_maxSteering.Value <= currentSteering)
+                {
                     _maxSteering = currentSteering;
                 }
-                // そこまで戻ってない
-                else
+            }
+            else if (right)
+            {
+                // 右・閾値を下回った
+                if (_maxSteering.Value + BlinkerHidePosition <= currentSteering)
                 {
-                    // nop
+                    //Debug.WriteLine($"閾値以下 右 current={currentSteering}");
+                    // 右ウィンカー戻す
+                    using var input = new SCSSdkTelemetryInput();
+                    input.Connect();
+                    input.SetRightBlinkerHide();
+                    _maxSteering = null;
+                }
+                else if (_maxSteering.Value >= currentSteering)
+                {
+                    _maxSteering = currentSteering;
                 }
             }
-        }
-        else
-        {
-            _maxSteering = currentSteering;
         }
     }
 }
