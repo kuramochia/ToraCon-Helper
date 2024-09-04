@@ -7,7 +7,7 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "main", "github_actions-1" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -47,7 +47,7 @@ jobs:
     - name: "Telemetry Upload to Artifacts"
       uses: actions/upload-artifact@v4
       with:
-        name: Telemetry
+        name: plugins
         path: "scs-telemetry/Release/plugins"
         
     - name: "Build .NET App"
