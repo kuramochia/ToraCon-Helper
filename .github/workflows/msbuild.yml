@@ -38,12 +38,12 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.HELPER_PROJECT_FILE_PATH}}
 
-    - name: Build Telemetry
+    - name: "Build Telemetry"
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.TELEMETRY_PROJECT_FILE_PATH}}
 
-    -name: Build .NET App
+    - name: "Build .NET App"
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.HELPER_PROJECT_FILE_PATH}}
