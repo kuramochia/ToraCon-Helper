@@ -43,7 +43,20 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x64 ${{env.TELEMETRY_PROJECT_FILE_PATH}}
-
+    
+    - name: "Telemetry Upload to Artifacts"
+      uses: actions/upload-artifact@v4
+      with:
+        name: Telemetry
+        path: "scs-telemetry/Release"
+        
     - name: "Build .NET App"
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.HELPER_PROJECT_FILE_PATH}}
+
+    - name: "ToraCon-Helper Upload to Artifacts"
+      uses: actions/upload-artifact@v4
+      with:
+        name: ToraCon-Helper
+        path: "ToraCon-Helper/ToraConHelper/bin/Release/net4.8"
+    
