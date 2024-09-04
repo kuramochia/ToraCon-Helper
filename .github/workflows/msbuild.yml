@@ -58,5 +58,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ToraCon-Helper
-        path: "ToraCon-Helper/ToraConHelper/bin/Release/net4.8"
+        path: "ToraConHelper/bin/Release/net4.8"
     
