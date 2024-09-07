@@ -15,7 +15,7 @@ namespace ToraConHelper;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private ViewModel viewModel;
+    private readonly ViewModel viewModel;
 
     public MainWindow(ViewModel viewModel)
     {
@@ -49,8 +49,7 @@ public partial class MainWindow : Window
 
     private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        var selectedItem = args.SelectedItem as NavigationViewItem;
-        if (selectedItem == null) return;
+        if (args.SelectedItem is not NavigationViewItem selectedItem) return;
 
         var enumName = selectedItem?.Tag.ToString();
         NavigationPageId pageId = (NavigationPageId)Enum.Parse(typeof(NavigationPageId), enumName);
@@ -64,7 +63,6 @@ internal enum NavigationPageId
     Home,
     About
 }
-
 
 internal static class NaviPages
 {
