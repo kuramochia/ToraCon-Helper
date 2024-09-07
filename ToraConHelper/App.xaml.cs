@@ -30,7 +30,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        // ちょっと雑だけど、MainWindowを DI から取る -> ViewModel が DI から取る → 初期化と動作開始、という流れ
+        // ちょっと雑だけど、MainWindowを DI から取る -> ViewModel を DI から取る → 初期化と動作開始、という流れ
         MainWindow = Services.GetRequiredService<MainWindow>();
         //MainWindow.Show();
 
@@ -85,6 +85,8 @@ public partial class App : Application
         services.AddSingleton<BlinkerLikeRealCarAction>();
         services.AddSingleton<ReterderAllReduceAction>();
         services.AddSingleton<BlinkerHideOnSteeringAction>();
+        services.AddSingleton<RetarderFullOnAction>();
+        services.AddSingleton<RetarderFullOffAction>();
 
         return services.BuildServiceProvider();
     }
