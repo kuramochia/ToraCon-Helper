@@ -53,4 +53,7 @@ public class Settings
     public int SteeringRotationAngle { get; set; } = 1800;
 
     public int BlinkerHideBySteeringAngle { get; set; } = 90;
+
+    public bool RetarderFullOnActionEnabled { get; set; } = false;
+    public bool RetarderFullOffActionEnabled { get; set; } = false;
 }

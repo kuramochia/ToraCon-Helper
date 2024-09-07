@@ -31,7 +31,7 @@ public class ReterderAllReduceAction : ITelemetryAction
                 // リターダー段数0を入力する
                 using var input = new SCSSdkTelemetryInput();
                 input.Connect();
-                input.SetRetarder0();
+                input.SetRetarder(0);
                 _reterderLevel = 0;
             }
         }

@@ -57,6 +57,38 @@
                 ToolTip="ウィンカーが出ているときに、逆側のウィンカー入力をすると、ウィンカーを消すことができます。（ただし一瞬だけ逆側のウィンカーが表示されます）" />
 
             <ui:ToggleSwitch
+                Header="ウィンカー オートキャンセルが動作するハンドル回転角度を調整"
+                IsOn="{Binding Path=BlinkerHideOnSteeringActionEnabled}"
+                ToolTip="ウィンカー オートキャンセルが動作するハンドル角度を調整します。" />
+            <ui:SimpleStackPanel Margin="30,5" IsEnabled="{Binding Path=BlinkerHideOnSteeringActionEnabled}">
+                <TextBlock Margin="0,0,0,5" Text="ゲームで設定しているハンドルの回転角度" />
+                <ComboBox
+                    Width="100"
+                    ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:HomePage}, Path=SteeringRotationAngles}"
+                    SelectedItem="{Binding Path=SteeringRotationAngle}"
+                    ToolTip="ゲームで設定しているハンドルの回転角度を指定します。" />
+                <TextBlock
+                    Margin="0,10,0,5"
+                    Text="オートキャンセルが動作するまでのハンドル角度"
+                    ToolTip="この角度までハンドルを戻すと、ウィンカーがキャンセルされます。" />
+                <ui:SimpleStackPanel Orientation="Horizontal">
+                    <Slider
+                        x:Name="blinkerHideAngleSlider"
+                        Width="300"
+                        HorizontalAlignment="Left"
+                        LargeChange="10"
+                        Maximum="{Binding Path=SteeringRotationAngle}"
+                        Minimum="0"
+                        SmallChange="1"
+                        Value="{Binding Path=BlinkerHideBySteeringAngle}" />
+                    <TextBlock
+                        Padding="20,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding Path=BlinkerHideBySteeringAngle}" />
+                </ui:SimpleStackPanel>
+            </ui:SimpleStackPanel>
+
+            <ui:ToggleSwitch
                 Header="指定速度以下でリターダーを全部戻す"
                 IsOn="{Binding Path=ReterderAllReduceActionEnabled}"
                 ToolTip="指定された速度以下でリターダーを戻す入力を行うと、リターダーを一気に全段戻します。" />
@@ -79,38 +111,15 @@
             </ui:SimpleStackPanel>
 
             <ui:ToggleSwitch
-                Header="ウィンカー オートキャンセルが動作するハンドル回転角度を調整"
-                IsOn="{Binding Path=BlinkerHideOnSteeringActionEnabled}"
-                ToolTip="ウィンカー オートキャンセルが動作するハンドル角度を調整します。" />
-            <ui:SimpleStackPanel Margin="30,5" IsEnabled="{Binding Path=BlinkerHideOnSteeringActionEnabled}">
-                <TextBlock
-                    Margin="0,0,0,5"
-                    Text="ゲームで設定しているハンドルの回転角度"
-                    ToolTip="" />
-                <ComboBox
-                    Width="100"
-                    ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:HomePage}, Path=SteeringRotationAngles}"
-                    SelectedItem="{Binding Path=SteeringRotationAngle}" />
-                <TextBlock
-                    Margin="0,10,0,5"
-                    Text="オートキャンセルが動作するまでのハンドル角度"
-                    ToolTip="" />
-                <ui:SimpleStackPanel Orientation="Horizontal">
-                    <Slider
-                        x:Name="blinkerHideAngleSlider"
-                        Width="300"
-                        HorizontalAlignment="Left"
-                        LargeChange="10"
-                        Maximum="{Binding Path=SteeringRotationAngle}"
-                        Minimum="0"
-                        SmallChange="1"
-                        Value="{Binding Path=BlinkerHideBySteeringAngle}" />
-                    <TextBlock
-                        Padding="20,0"
-                        VerticalAlignment="Center"
-                        Text="{Binding Path=BlinkerHideBySteeringAngle}" />
-                </ui:SimpleStackPanel>
-            </ui:SimpleStackPanel>
+                Header="リターダーを一段入れたら最大段数まで上げる"
+                IsOn="{Binding Path=RetarderFullOnActionEnabled}"
+                ToolTip="リターダーを 0 段から一段上げると、一気にトラックの持つ最大段数まで上げます。" />
+
+            <ui:ToggleSwitch
+                Header="リターダーを最大段数から一段下げたら全段下げる"
+                IsOn="{Binding Path=RetarderFullOffActionEnabled}"
+                ToolTip="リターダーを最大段数から一段下げると、一気に全段戻します。" />
+
         </ui:SimpleStackPanel>
     </ui:SimpleStackPanel>
 </Page>
