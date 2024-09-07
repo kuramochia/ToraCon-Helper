@@ -9,9 +9,9 @@ namespace ToraConHelper.ViewModels;
 
 public partial class ViewModel : ObservableObject
 {
-    private bool _isInitialization;
-    private ISettingFileMamager settingFile;
-    private TelemetryActionsManager telemetryActionsManager;
+    private readonly bool _isInitialization;
+    private readonly ISettingFileMamager settingFile;
+    private readonly TelemetryActionsManager telemetryActionsManager;
 
     public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager) : base()
     {
@@ -35,17 +35,21 @@ public partial class ViewModel : ObservableObject
 
     private Settings ToSettings()
     {
-        var s = new Settings();
-        s.IsActive = IsActive;
-        s.GoToTasktrayOnAppClose = GoToTasktrayOnAppClose;
-        s.TaskTrayOnStart = TaskTrayOnStart;
+        var s = new Settings
+        {
+            IsActive = IsActive,
+            GoToTasktrayOnAppClose = GoToTasktrayOnAppClose,
+            TaskTrayOnStart = TaskTrayOnStart,
 
-        s.BlinkerLikeRealCarActionEnabled = BlinkerLikeRealCarActionEnabled;
-        s.RetarderAllReduceActionEnabled = ReterderAllReduceActionEnabled;
-        s.RetarderAllReduceActionLimitSpeedKph = ReterderAllReduceActionLimitSpeedKph;
-        s.BlinkerHideOnSteeringActionEnabled = BlinkerHideOnSteeringActionEnabled;
-        s.SteeringRotationAngle = SteeringRotationAngle;
-        s.BlinkerHideBySteeringAngle = BlinkerHideBySteeringAngle;
+            BlinkerLikeRealCarActionEnabled = BlinkerLikeRealCarActionEnabled,
+            RetarderAllReduceActionEnabled = ReterderAllReduceActionEnabled,
+            RetarderAllReduceActionLimitSpeedKph = ReterderAllReduceActionLimitSpeedKph,
+            BlinkerHideOnSteeringActionEnabled = BlinkerHideOnSteeringActionEnabled,
+            SteeringRotationAngle = SteeringRotationAngle,
+            BlinkerHideBySteeringAngle = BlinkerHideBySteeringAngle,
+            RetarderFullOnActionEnabled = RetarderFullOnActionEnabled,
+            RetarderFullOffActionEnabled = RetarderFullOffActionEnabled
+        };
         return s;
     }
 
@@ -61,6 +65,8 @@ public partial class ViewModel : ObservableObject
         BlinkerHideOnSteeringActionEnabled = s.BlinkerHideOnSteeringActionEnabled;
         SteeringRotationAngle = s.SteeringRotationAngle;
         BlinkerHideBySteeringAngle = s.BlinkerHideBySteeringAngle;
+        RetarderFullOnActionEnabled = s.RetarderFullOnActionEnabled;
+        RetarderFullOffActionEnabled = s.RetarderFullOffActionEnabled;
     }
 
     [ObservableProperty]
@@ -87,18 +93,12 @@ public partial class ViewModel : ObservableObject
     [ObservableProperty]
     private bool blinkerLikeRealCarActionEnabled;
 
-    partial void OnBlinkerLikeRealCarActionEnabledChanged(bool oldValue, bool newValue)
-    {
-        OnActionEnabledChanged(typeof(BlinkerLikeRealCarAction), oldValue, newValue);
-    }
+    partial void OnBlinkerLikeRealCarActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<BlinkerLikeRealCarAction>(oldValue, newValue);
 
     [ObservableProperty]
     private bool reterderAllReduceActionEnabled;
 
-    partial void OnReterderAllReduceActionEnabledChanged(bool oldValue, bool newValue)
-    {
-        OnActionEnabledChanged(typeof(ReterderAllReduceAction), oldValue, newValue);
-    }
+    partial void OnReterderAllReduceActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderAllReduceAction>(oldValue, newValue);
 
     [ObservableProperty]
     private int reterderAllReduceActionLimitSpeedKph;
@@ -112,10 +112,7 @@ public partial class ViewModel : ObservableObject
     [ObservableProperty]
     private bool blinkerHideOnSteeringActionEnabled;
 
-    partial void OnBlinkerHideOnSteeringActionEnabledChanged(bool oldValue, bool newValue)
-    {
-        OnActionEnabledChanged(typeof(BlinkerHideOnSteeringAction), oldValue, newValue);
-    }
+    partial void OnBlinkerHideOnSteeringActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<BlinkerHideOnSteeringAction>(oldValue, newValue);
 
     // ハンドル回転角
     [ObservableProperty]
@@ -135,11 +132,24 @@ public partial class ViewModel : ObservableObject
         action!.BlinkerHidePosition = (float)BlinkerHideBySteeringAngle / (SteeringRotationAngle / 2);
     }
 
+    // リターダーを一段入れたら最大段数まで上げる
+    [ObservableProperty]
+    private bool retarderFullOnActionEnabled;
+
+    partial void OnRetarderFullOnActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderFullOnAction>(oldValue, newValue);
+
+
+    // リターダーをフルから一段下げたら 0 段にする
+    [ObservableProperty]
+    private bool retarderFullOffActionEnabled;
+
+    partial void OnRetarderFullOffActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderFullOffAction>(oldValue, newValue);
+
     #region Private methods
 
-    private void OnActionEnabledChanged(Type actionType, bool oldValue, bool newValue)
+    private void OnActionEnabledChanged<T>(bool oldValue, bool newValue) where T : ITelemetryAction
     {
-        var action = App.Current.Services.GetService(actionType) as ITelemetryAction;
+        var action = App.Current.Services.GetService<T>();
         if (oldValue)
         {
             telemetryActionsManager?.RemoveAction(action!);
@@ -150,6 +160,5 @@ public partial class ViewModel : ObservableObject
         }
     }
     #endregion
-
 
 }
