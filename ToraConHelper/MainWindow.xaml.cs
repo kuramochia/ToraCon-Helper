@@ -1,36 +1,40 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ModernWpf.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
-using ToraConHelper.Services;
+﻿using System.ComponentModel;
 using ToraConHelper.ViewModels;
-using ToraConHelper.Views;
+using Wpf.Ui;
 
 namespace ToraConHelper;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     private readonly ViewModel viewModel;
 
-    public MainWindow(ViewModel viewModel)
+    public MainWindow(ViewModel viewModel, MainWindowViewModel mainWindowViewModel, IPageService pageService)
     {
         InitializeComponent();
         this.viewModel = viewModel;
-        // 最初は HomePage
-        navigationView.SelectedItem = navigationView.MenuItems[0];
+        DataContext = mainWindowViewModel;
+
+        navigationView.SetPageService(pageService);
+
+        Loaded += (sender, args) =>
+        {
+            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
+                this,                                    // Window class
+                Wpf.Ui.Controls.WindowBackdropType.Mica, // Background type
+                true                                     // Whether to change accents automatically
+            );
+
+            // 最初は HomePage
+            navigationView.Navigate("HomePage");
+        };
 
         if (!viewModel.TaskTrayOnStart)
         {
             this.Show();
         }
-
-        var g = App.Current.Services.GetService<GameProcessDetector>();
-        g?.StartWatchers();
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -46,30 +50,4 @@ public partial class MainWindow : Window
             base.OnClosing(e);
         }
     }
-
-    private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-    {
-        if (args.SelectedItem is not NavigationViewItem selectedItem) return;
-
-        var enumName = selectedItem?.Tag.ToString();
-        NavigationPageId pageId = (NavigationPageId)Enum.Parse(typeof(NavigationPageId), enumName);
-        sender.Header = enumName;
-        contentFrame.Navigate(App.Current.Services.GetService(NaviPages.PageIndex[pageId]));
-    }
-}
-
-internal enum NavigationPageId
-{
-    Home,
-    About
-}
-
-internal static class NaviPages
-{
-    public static readonly IReadOnlyDictionary<NavigationPageId, Type> PageIndex =
-        new Dictionary<NavigationPageId, Type>()
-        {
-            { NavigationPageId.Home, typeof(HomePage) },
-            { NavigationPageId.About, typeof(AboutPage) }
-        };
 }
