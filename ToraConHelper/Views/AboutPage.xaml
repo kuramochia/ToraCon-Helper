@@ -5,37 +5,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ToraConHelper.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="AboutPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ui:SimpleStackPanel>
-        <Expander>
-            <Expander.Header>
-                <Grid Margin="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Width="40" Height="40" x:Name="appIcon" Margin="10" />
-                    <ui:SimpleStackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="トラコン ヘルパーアプリ(仮称)" Style="{StaticResource TitleTextBlockStyle}"/>
-                        <TextBlock >
-                            <Run Text="Version: "/>
-                            <Run Text="{Binding RelativeSource={RelativeSource AncestorType=local:AboutPage}, Path=FileVersion, Mode=OneTime}"/>
-                        </TextBlock>
-                    </ui:SimpleStackPanel>
-                </Grid>
-            </Expander.Header>
-            <ui:SimpleStackPanel>
-                <ui:HyperlinkButton NavigateUri="https://x.com/kuramochia">
-                    <TextBlock Text="X(Twitter) : @kuramochia"/>
-                </ui:HyperlinkButton>
-                <ui:HyperlinkButton NavigateUri="https://github.com/kuramochia/toraCon-Helper/">
-                    <TextBlock Text="Repository : https://github.com/kuramochia/toraCon-Helper/" />
-                </ui:HyperlinkButton>
-            </ui:SimpleStackPanel>
-        </Expander>
-    </ui:SimpleStackPanel>
+    <ui:CardExpander VerticalAlignment="Top">
+        <ui:CardExpander.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    x:Name="appIcon"
+                    Width="40"
+                    Height="40"
+                    Margin="10" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="トラコン ヘルパーアプリ(仮称)" />
+                    <TextBlock>
+                        <Run Text="Version: " />
+                        <Run Text="{Binding RelativeSource={RelativeSource AncestorType=local:AboutPage}, Path=FileVersion, Mode=OneTime}" />
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </ui:CardExpander.Header>
+        <StackPanel>
+            <ui:HyperlinkButton NavigateUri="https://x.com/kuramochia">
+                <TextBlock Text="X(Twitter) : @kuramochia" />
+            </ui:HyperlinkButton>
+            <ui:HyperlinkButton NavigateUri="https://github.com/kuramochia/toraCon-Helper/">
+                <TextBlock Text="Repository : https://github.com/kuramochia/toraCon-Helper/" />
+            </ui:HyperlinkButton>
+        </StackPanel>
+    </ui:CardExpander>
 </Page>
