@@ -310,5 +310,32 @@ public class SCSSdkTelemetryInput: IDisposable {
                 break;
         }
     }
+
+    /// <summary>
+    /// 右ウィンカーレバー入力Offを実施
+    /// </summary>
+    /// <param name="waitMilliseconds">入力している時間</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void SetEngineBrakeToggle(int waitMilliseconds = 100)
+    {
+        if (!Hooked)
+            throw new InvalidOperationException("not Connected");
+
+        _inputData.EngineBrakeToggle = true;
+
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+
+        // 待つ
+        Thread.Sleep(waitMilliseconds);
+
+        // false に戻す
+        _inputData.EngineBrakeToggle = false;
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+    }
+
     #endregion
+
 }
