@@ -12,11 +12,8 @@ public interface ISettingFileMamager
 
 public class SettingFileManager : ISettingFileMamager
 {
-    private string FilePath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\ToraCon-Helper_Settings.json";
-
-    public SettingFileManager()
-    {
-    }
+    private const string SettingFileName = "ToraCon-Helper_Settings.json";
+    private string FilePath => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), SettingFileName);
 
     public Settings Load()
     {
@@ -35,25 +32,4 @@ public class SettingFileManager : ISettingFileMamager
         var json = JsonSerializer.Serialize(settings, jsonSerializeOptions);
         File.WriteAllText(FilePath, json);
     }
-}
-
-
-public class Settings
-{
-    public bool IsActive { get; set; } = true;
-    public bool GoToTasktrayOnAppClose { get; set; } = false;
-    public bool TaskTrayOnStart { get; set; } = false;
-
-    public bool BlinkerLikeRealCarActionEnabled { get; set; } = true;
-    public bool RetarderAllReduceActionEnabled { get; set; } = true;
-    public int RetarderAllReduceActionLimitSpeedKph { get; set; } = 30;
-
-    public bool BlinkerHideOnSteeringActionEnabled { get; set; } = false;
-
-    public int SteeringRotationAngle { get; set; } = 1800;
-
-    public int BlinkerHideBySteeringAngle { get; set; } = 90;
-
-    public bool RetarderFullOnActionEnabled { get; set; } = false;
-    public bool RetarderFullOffActionEnabled { get; set; } = false;
 }
