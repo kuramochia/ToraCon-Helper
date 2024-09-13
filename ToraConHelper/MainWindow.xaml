@@ -9,8 +9,8 @@
     xmlns:viewModels="clr-namespace:ToraConHelper.ViewModels"
     xmlns:views="clr-namespace:ToraConHelper.Views"
     Title="トラコン ヘルパーアプリ(仮称)"
-    Width="500"
-    Height="770"
+    Width="800"
+    Height="800"
     d:DataContext="{d:DesignInstance viewmodels:MainWindowViewModel}"
     ExtendsContentIntoTitleBar="True"
     mc:Ignorable="d">
@@ -24,9 +24,13 @@
         <ui:NavigationView
             x:Name="navigationView"
             Grid.Row="1"
-            IsBackButtonVisible="Collapsed"
+            IsBackButtonVisible="Collapsed" 
+            
             MenuItemsSource="{Binding Path=MainNavigationViewItems}"
             FooterMenuItemsSource="{Binding Path=FooterNavigationViewItems}"
-            PaneDisplayMode="LeftFluent" />
+            PaneDisplayMode="Left"
+            IsPaneToggleVisible="True"
+            OpenPaneLength="200"
+            IsPaneOpen="False"/>
     </Grid>
 </ui:FluentWindow>
