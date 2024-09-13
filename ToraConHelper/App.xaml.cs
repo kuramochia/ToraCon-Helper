@@ -5,6 +5,7 @@ using ToraConHelper.Services;
 using ToraConHelper.Services.TelemetryActions;
 using ToraConHelper.ViewModels;
 using ToraConHelper.Views;
+using Wpf.Ui;
 
 namespace ToraConHelper;
 
@@ -72,13 +73,14 @@ public partial class App : Application
         services.AddSingleton<MainWindow>();
         services.AddSingleton<HomePage>();
         services.AddSingleton<AboutPage>();
+        services.AddSingleton<IPageService,PageService>();
 
         // ViewModels
         services.AddSingleton<ViewModel>();
+        services.AddSingleton<MainWindowViewModel>();
 
         // Services
         services.AddSingleton<ISettingFileMamager, SettingFileManager>();
-        //services.AddSingleton<GameProcessDetector>();
         services.AddSingleton<TelemetryActionsManager>();
 
         // Services.TelemetryActions
