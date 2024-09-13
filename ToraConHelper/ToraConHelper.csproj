@@ -8,7 +8,7 @@
 		<LangVersion>Latest</LangVersion>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 		<StartupObject>ToraConHelper.Program</StartupObject>
-		<FileVersion>1.2.0.0</FileVersion>
+		<FileVersion>1.3.0.0</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 	<ItemGroup>
@@ -33,5 +33,12 @@
 	<ItemGroup>
 		<Resource Include="icon.ico" />
 	</ItemGroup>
+
+  <!-- Partial の .cs ファイルを纏めて表示 -->
+  <ItemGroup>
+    <Compile Update="ViewModels\ViewModel.*.cs">
+      <DependentUpon>ViewModels\ViewModel.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
 </Project>
