@@ -18,4 +18,8 @@ public class Settings
 
     public bool RetarderFullOnActionEnabled { get; set; } = false;
     public bool RetarderFullOffActionEnabled { get; set; } = false;
+
+    public bool EngineBrakeAutoOffActionEnabled { get; set; } = false;
+
+    public int EngineBrakeAutoOffActionLimitSpeedKph { get; set; } = 16;
 }
