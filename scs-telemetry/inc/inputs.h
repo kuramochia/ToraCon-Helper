@@ -57,4 +57,7 @@ const scs_input_device_input_t inputs[] = {
 	{"retarder3", "ToraCon Helper Retarder 3", SCS_VALUE_TYPE_bool},
 	{"retarder4", "ToraCon Helper Retarder 4", SCS_VALUE_TYPE_bool},
 	{"retarder5", "ToraCon Helper Retarder 5", SCS_VALUE_TYPE_bool},
+	{"engbraketog", "ToraCon Helper EngineBrake Toggle", SCS_VALUE_TYPE_bool},
+	{"engbrakeup", "ToraCon Helper EngineBrake Up", SCS_VALUE_TYPE_bool},
+	{"engbrakedwn", "ToraCon Helper EngineBrake Down", SCS_VALUE_TYPE_bool},
 };
