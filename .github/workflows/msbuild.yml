@@ -48,7 +48,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: plugins
-        path: "scs-telemetry/Release/plugins/*.dll"
+        path: "scs-telemetry/Release/plugins/**/*.dll"
         
     - name: "Build .NET App"
       working-directory: ${{env.GITHUB_WORKSPACE}}
