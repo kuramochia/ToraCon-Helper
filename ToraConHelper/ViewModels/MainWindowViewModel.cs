@@ -28,7 +28,7 @@ public partial class MainWindowViewModel : ObservableObject
             [
                 new NavigationViewItem{
                     Content = "About",
-                    Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
+                    Icon = new SymbolIcon { Symbol = SymbolRegular.PersonQuestionMark24 },
                     TargetPageType= typeof(AboutPage),
                     TargetPageTag= nameof(AboutPage),
                 },
