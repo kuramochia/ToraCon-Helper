@@ -27,7 +27,7 @@ public partial class MainWindowViewModel : ObservableObject
         FooterNavigationViewItems =
             [
                 new NavigationViewItem{
-                    Content = "Abount",
+                    Content = "About",
                     Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                     TargetPageType= typeof(AboutPage),
                     TargetPageTag= nameof(AboutPage),
