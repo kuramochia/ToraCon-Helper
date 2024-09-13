@@ -32,7 +32,7 @@
     <StackPanel>
         <ui:CardExpander Margin="10" IsExpanded="True">
             <ui:CardExpander.Header>
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="全体設定" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="全体設定" />
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
@@ -79,7 +79,7 @@
 
         <ui:CardExpander Margin="10" IsExpanded="True">
             <ui:CardExpander.Header>
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="ウィンカー関連 アクション設定" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ウィンカー関連 アクション設定" />
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
@@ -140,7 +140,7 @@
 
         <ui:CardExpander Margin="10" IsExpanded="True">
             <ui:CardExpander.Header>
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="リターダー関連 アクション設定" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="リターダー関連 アクション設定" />
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
