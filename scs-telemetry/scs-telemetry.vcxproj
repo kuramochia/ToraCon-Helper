@@ -34,6 +34,13 @@
     <ClInclude Include="inc\scs_gameplay_event_handlers.hpp" />
     <ClInclude Include="inc\scs_inputs_telemetry.h" />
     <ClInclude Include="inc\sharedmemory.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="scs-telemetry.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0B739935-E779-415A-B76C-0073EAE72A81}</ProjectGuid>

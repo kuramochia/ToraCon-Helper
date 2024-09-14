@@ -20,7 +20,9 @@ public partial class ViewModel
             SteeringRotationAngle = SteeringRotationAngle,
             BlinkerHideBySteeringAngle = BlinkerHideBySteeringAngle,
             RetarderFullOnActionEnabled = RetarderFullOnActionEnabled,
-            RetarderFullOffActionEnabled = RetarderFullOffActionEnabled
+            RetarderFullOffActionEnabled = RetarderFullOffActionEnabled,
+            EngineBrakeAutoOffActionEnabled = EngineBrakeAutoOffActionEnabled,
+            EngineBrakeAutoOffActionLimitSpeedKph = EngineBrakeAutoOffActionLimitSpeedKph,
         };
         return s;
     }
@@ -40,5 +42,7 @@ public partial class ViewModel
         BlinkerHideBySteeringAngle = s.BlinkerHideBySteeringAngle;
         RetarderFullOnActionEnabled = s.RetarderFullOnActionEnabled;
         RetarderFullOffActionEnabled = s.RetarderFullOffActionEnabled;
+        EngineBrakeAutoOffActionEnabled = s.EngineBrakeAutoOffActionEnabled;
+        EngineBrakeAutoOffActionLimitSpeedKph = s.EngineBrakeAutoOffActionLimitSpeedKph;
     }
 }
