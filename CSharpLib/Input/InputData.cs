@@ -111,4 +111,19 @@ public struct InputData {
     /// リターダー5
     /// </summary>
     public bool Retarder5;
+
+    /// <summary>
+    /// エンジンブレーキトグル
+    /// </summary>
+    public bool EngineBrakeToggle;
+
+    /// <summary>
+    /// エンジンブレーキUp
+    /// </summary>
+    public bool EngineBrakeUp;
+
+    /// <summary>
+    /// エンジンブレーキDown
+    /// </summary>
+    public bool EngineBrakeDown;
 }
