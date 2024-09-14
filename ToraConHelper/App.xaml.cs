@@ -89,6 +89,7 @@ public partial class App : Application
         services.AddSingleton<BlinkerHideOnSteeringAction>();
         services.AddSingleton<RetarderFullOnAction>();
         services.AddSingleton<RetarderFullOffAction>();
+        services.AddSingleton<EngineBrakeAutoOffAction>();
 
         return services.BuildServiceProvider();
     }
