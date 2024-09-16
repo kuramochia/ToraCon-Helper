@@ -32,4 +32,21 @@ public partial class ViewModel
     private bool retarderFullOffActionEnabled;
 
     partial void OnRetarderFullOffActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderFullOffAction>(oldValue, newValue);
+
+
+    // リターダーを自動的に戻す
+    [ObservableProperty]
+    private bool reterderAutoOffActionEnabled;
+
+    partial void OnReterderAutoOffActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderAutoOffAction>(oldValue, newValue);
+
+    // リターダーを自動的に戻す速度
+    [ObservableProperty]
+    private int reterderAutoOffActionLimitSpeedKph;
+
+    partial void OnReterderAutoOffActionLimitSpeedKphChanged(int newValue)
+    {
+        var action = App.Current.Services.GetService<ReterderAutoOffAction>();
+        action!.LimitSpeedKph = newValue;
+    }
 }

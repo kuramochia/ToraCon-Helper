@@ -23,6 +23,8 @@ public partial class ViewModel
             RetarderFullOffActionEnabled = RetarderFullOffActionEnabled,
             EngineBrakeAutoOffActionEnabled = EngineBrakeAutoOffActionEnabled,
             EngineBrakeAutoOffActionLimitSpeedKph = EngineBrakeAutoOffActionLimitSpeedKph,
+            ReterderAutoOffActionEnabled = ReterderAllReduceActionEnabled,
+            ReterderAutoOffActionLimitSpeedKph = ReterderAutoOffActionLimitSpeedKph,
         };
         return s;
     }
@@ -44,5 +46,7 @@ public partial class ViewModel
         RetarderFullOffActionEnabled = s.RetarderFullOffActionEnabled;
         EngineBrakeAutoOffActionEnabled = s.EngineBrakeAutoOffActionEnabled;
         EngineBrakeAutoOffActionLimitSpeedKph = s.EngineBrakeAutoOffActionLimitSpeedKph;
+        ReterderAutoOffActionEnabled = s.ReterderAutoOffActionEnabled;
+        ReterderAutoOffActionLimitSpeedKph = s.ReterderAutoOffActionLimitSpeedKph;
     }
 }
