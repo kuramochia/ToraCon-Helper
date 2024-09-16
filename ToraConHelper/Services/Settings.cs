@@ -21,5 +21,9 @@ public class Settings
 
     public bool EngineBrakeAutoOffActionEnabled { get; set; } = false;
 
-    public int EngineBrakeAutoOffActionLimitSpeedKph { get; set; } = 16;
+    public int EngineBrakeAutoOffActionLimitSpeedKph { get; set; } = 10;
+
+    public bool ReterderAutoOffActionEnabled { get; set; } = false;
+
+    public int ReterderAutoOffActionLimitSpeedKph { get; set; } = 10;
 }
