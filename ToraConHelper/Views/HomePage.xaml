@@ -203,6 +203,39 @@
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderFullOffActionEnabled}" />
                     </Grid>
                 </ui:Card>
+                <ui:Card>
+                    <ui:Card.Footer>
+                        <StackPanel>
+                            <TextBlock Margin="0,0,0,10" Text="指定された速度以下になると、操作不要でリターダーを自動的にオフにします。" />
+                            <StackPanel Margin="10,0,10,20" Orientation="Horizontal">
+                                <Slider
+                                    Width="300"
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Left"
+                                    LargeChange="10"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding Path=ReterderAutoOffActionLimitSpeedKph}" />
+                                <TextBlock Padding="20,0" VerticalAlignment="Top">
+                                    <Run Text="{Binding Path=ReterderAutoOffActionLimitSpeedKph}" />
+                                    <Run Text="km/h" />
+                                    <Run Text=" = " />
+                                    <Run Text="{Binding Path=ReterderAutoOffActionLimitSpeedKph, Converter={StaticResource mphConv}}" />
+                                    <Run Text=" Mph" />
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </ui:Card.Footer>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを自動的にオフ" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAutoOffActionEnabled}" />
+                    </Grid>
+                </ui:Card>
 
             </StackPanel>
         </ui:CardExpander>
