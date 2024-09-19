@@ -1,4 +1,5 @@
-# ToraCon-Helper
+# ToraCon-Helper [![Downloads](https://img.shields.io/github/downloads/kuramochia/ToraCon-Helper/total)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Current Release](https://img.shields.io/github/release/kuramochia/ToraCon-Helper)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Licensed under the MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kuramochia/ToraCon-Helper/blob/master/LICENSE)
+
 
 ## なにこれ？
 [HORI Force Feedback Truck Control System for Windows® PC（通称「トラコン」）](https://hori.jp/products/hpc/hpc-044/) を ETS2/ATS でちょっと便利にするためのヘルパーアプリです。
