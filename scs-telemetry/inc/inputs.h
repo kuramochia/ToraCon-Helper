@@ -43,7 +43,7 @@ const scs_input_device_input_t inputs[] = {
 	//{"accmode", "ToraCon Helper ACC Mode", SCS_VALUE_TYPE_bool},
 	//{"showmirrors", "ToraCon Helper Show Mirrors", SCS_VALUE_TYPE_bool},
 	//{"flasher4way", "ToraCon Helper Hazard Lights", SCS_VALUE_TYPE_bool},
-	//{"activate", "ToraCon Helper Activate", SCS_VALUE_TYPE_bool},
+	{"activate", "ToraCon Helper Activate", SCS_VALUE_TYPE_bool},
 	//{"assistact1", "ToraCon Helper Assist Act 1", SCS_VALUE_TYPE_bool},
 	//{"assistact2", "ToraCon Helper Assist Act 2", SCS_VALUE_TYPE_bool},
 	//{"assistact3", "ToraCon Helper Assist Act 3", SCS_VALUE_TYPE_bool},
