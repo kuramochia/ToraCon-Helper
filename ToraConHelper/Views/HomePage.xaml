@@ -282,5 +282,22 @@
             </StackPanel>
         </ui:CardExpander>
 
+        <ui:CardExpander Margin="10" IsExpanded="True">
+            <ui:CardExpander.Header>
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="その他 アクション設定" />
+            </ui:CardExpander.Header>
+            <StackPanel>
+                <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="給油を開始すると、ボタンを離しても満タンまで給油し続ける" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=AutoFullFuelEnabled}" />
+                    </Grid>
+                </ui:Card>
+            </StackPanel>
+        </ui:CardExpander>
     </StackPanel>
 </Page>

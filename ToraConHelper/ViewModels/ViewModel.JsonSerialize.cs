@@ -25,6 +25,7 @@ public partial class ViewModel
             EngineBrakeAutoOffActionLimitSpeedKph = EngineBrakeAutoOffActionLimitSpeedKph,
             ReterderAutoOffActionEnabled = ReterderAllReduceActionEnabled,
             ReterderAutoOffActionLimitSpeedKph = ReterderAutoOffActionLimitSpeedKph,
+            AutoFullFuelEnabled = AutoFullFuelEnabled,
         };
         return s;
     }
@@ -48,5 +49,6 @@ public partial class ViewModel
         EngineBrakeAutoOffActionLimitSpeedKph = s.EngineBrakeAutoOffActionLimitSpeedKph;
         ReterderAutoOffActionEnabled = s.ReterderAutoOffActionEnabled;
         ReterderAutoOffActionLimitSpeedKph = s.ReterderAutoOffActionLimitSpeedKph;
+        AutoFullFuelEnabled = s.AutoFullFuelEnabled;
     }
 }
