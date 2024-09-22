@@ -211,6 +211,17 @@ public class SCSSdkTelemetryInput: IDisposable {
         _memoryMappedView.Flush();
     }
 
+    public void SetActivate(bool value)
+    {
+        if (!Hooked)
+            throw new InvalidOperationException("not Connected");
+
+        _inputData.Activate = value;
+
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+    }
+
     /// <summary>
     /// リターダーUp入力を実施
     /// </summary>
