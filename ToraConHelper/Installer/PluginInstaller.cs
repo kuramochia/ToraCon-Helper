@@ -32,7 +32,7 @@ internal class PluginInstaller
         {
             try
             {
-                AddMessage($"Steam からゲームが見つかりました : {p}");
+                AddMessage($"ゲームが見つかりました : {p}");
 
                 // プラグインフォルダを探す、無ければ作る
                 var exePath = Path.Combine(p, BinaryPath);
@@ -57,7 +57,7 @@ internal class PluginInstaller
                     if (!File.Exists(pluginFilePath))
                     {
                         // file not found
-                        AddMessage($"Telemetry DLL が見つかりませんでした");
+                        AddMessage($"{PluginFile} が見つかりませんでした");
                         needCopy = true;
                     }
                     else
@@ -68,12 +68,12 @@ internal class PluginInstaller
                         var telemetryVersion = new Version(FileVersionInfo.GetVersionInfo(pluginFilePath).FileVersion);
                         if (telemetryVersion >= currentVersion)
                         {
-                            AddMessage($"Telemetry DLL は既に最新バージョンがインストールされています : {telemetryVersion}");
+                            AddMessage($"{PluginFile} は既に最新バージョンがインストールされています : {telemetryVersion}");
                         }
                         else
                         {
                             // need update
-                            AddMessage($"Telemetry DLL の更新が必要です : {telemetryVersion} → {currentVersion}");
+                            AddMessage($"{PluginFile} の更新が必要です : {telemetryVersion} → {currentVersion}");
                             needCopy = true;
                         }
                     }
@@ -81,16 +81,15 @@ internal class PluginInstaller
                     if (onlyCheck && needCopy) return needCopy;
                     if (needCopy)
                     {
-                        AddMessage($"Telemetry DLL をコピーします");
                         File.Copy(CopySourcePath, pluginFilePath, true);
-                        AddMessage($"Telemetry DLL のコピーが完了しました");
+                        AddMessage($"{PluginFile} のコピーが完了しました");
                     }
                 }
             }
             catch (Exception ex)
             {
                 AddMessage($"エラーが発生しました");
-                AddMessage($"お手数ですが、手動で Telemetry DLL のコピーをお願いいたします");
+                AddMessage($"お手数ですが、手動で {PluginFile} のコピーをお願いいたします");
                 AddMessage(ex.ToString());
                 AddMessage($"");
                 if(onlyCheck) return true;
@@ -100,7 +99,7 @@ internal class PluginInstaller
                 AddMessage("");
             }
         }
-        AddMessage("Telemetry DLL インストールプロセス終了");
+        AddMessage($"Telemetry DLL インストールプロセス終了");
         AddMessage("このウィンドウを閉じてください");
         return false;
     }
