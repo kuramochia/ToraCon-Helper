@@ -26,4 +26,6 @@ public class Settings
     public bool ReterderAutoOffActionEnabled { get; set; } = false;
 
     public int ReterderAutoOffActionLimitSpeedKph { get; set; } = 10;
+
+    public bool AutoFullFuelEnabled { get; set; } = false;
 }
