@@ -10,7 +10,7 @@ namespace ToraConHelper.Installer;
 
 internal class PluginInstaller
 {
-    readonly Dictionary<string, string> GameIds = new () {
+    readonly Dictionary<string, string> GameIds = new() {
         { /*ETS2*/"227300", "steamapps\\common\\Euro Truck Simulator 2" },
         { /*ATS*/"270880", "steamapps\\common\\American Truck Simulator" }
     };
@@ -21,8 +21,8 @@ internal class PluginInstaller
 
     internal event EventHandler<AddMessageEventArgs>? AddMessageFromInstaller;
 
-    public bool NeedInstall() => InstallProcess(true);
-    public bool InstallProcess(bool onlyCheck = false)
+    internal bool NeedInstall() => InstallProcess(true);
+    internal bool InstallProcess(bool onlyCheck = false)
     {
         AddMessage("Telemetry DLL インストールプロセス開始");
         AddMessage("");
@@ -64,17 +64,22 @@ internal class PluginInstaller
                     {
                         // file found
                         // check version
-                        var currentVersion = new Version(FileVersionInfo.GetVersionInfo(CopySourcePath).FileVersion);
-                        var telemetryVersion = new Version(FileVersionInfo.GetVersionInfo(pluginFilePath).FileVersion);
-                        if (telemetryVersion >= currentVersion)
+                        Version currentVersion = new(FileVersionInfo.GetVersionInfo(CopySourcePath).FileVersion);
+                        if (!Version.TryParse(FileVersionInfo.GetVersionInfo(pluginFilePath).FileVersion, out Version telemetryVersion))
                         {
-                            AddMessage($"{PluginFile} は既に最新バージョンがインストールされています : {telemetryVersion}");
+                            // バージョン番号がない時の DLL なので更新
+                            AddMessage($"{PluginFile} の更新が必要です : 0.0.0.0 → {currentVersion}");
+                            needCopy = true;
+                        }
+                        else if (telemetryVersion < currentVersion)
+                        {
+                            // 更新が必要
+                            AddMessage($"{PluginFile} の更新が必要です : {telemetryVersion} → {currentVersion}");
+                            needCopy = true;
                         }
                         else
                         {
-                            // need update
-                            AddMessage($"{PluginFile} の更新が必要です : {telemetryVersion} → {currentVersion}");
-                            needCopy = true;
+                            AddMessage($"{PluginFile} は既に最新バージョンがインストールされています : {telemetryVersion}");
                         }
                     }
 
@@ -92,7 +97,7 @@ internal class PluginInstaller
                 AddMessage($"お手数ですが、手動で {PluginFile} のコピーをお願いいたします");
                 AddMessage(ex.ToString());
                 AddMessage($"");
-                if(onlyCheck) return true;
+                if (onlyCheck) return true;
             }
             finally
             {
@@ -104,7 +109,7 @@ internal class PluginInstaller
         return false;
     }
 
-    void AddMessage(string message)  => AddMessageFromInstaller?.Invoke(this, new AddMessageEventArgs(message));
+    void AddMessage(string message) => AddMessageFromInstaller?.Invoke(this, new AddMessageEventArgs(message));
 
     string? GetSteamPath()
     {
@@ -146,6 +151,6 @@ internal class AddMessageEventArgs : EventArgs
     {
         Message = message;
     }
-    public string Message { get; private set; }
+    internal string Message { get; private set; }
 
 }
