@@ -59,11 +59,11 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 * ETS2 / ATS
     * Telemetry DLL が x64 版のみ提供しているので、x86 でゲームされている方は利用できません。
 
-## セットアップ方法
+## セットアップ方法 <sup>new! v1.6</sup>
 1. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の `ToraCon-Helper_vX.X.X.X.zip` という名前の zip ファイルをダウンロードし、好きな場所に解凍します。
 2. `ToraConHelper.exe` を起動します。
 3. 初回起動時やアプリ更新時は、Telemetry DLL のインストールや更新が必要になるため、次のようなメッセージが表示されます。
-  * 「はい」を選択すると、（Steam のゲーム インストール先が Program Files なので）管理者権限でインストール プロセスが起動します。
+  * 「はい」を選択すると、（Steam の既定のゲーム インストール先が Program Files なので）管理者権限でインストール プロセスが起動します。
   * 最新版の Telemetry DLL に更新後、次回以降の起動時はこちらは表示されません。
 
 ![](images/TelemetryDllInstallDialog.png)
@@ -124,7 +124,7 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 リターダーを最大段数から一段下げると、一気に全段戻します。
 
-#### 指定速度以下でリターダーを自動的にオフ<sup>new! v1.5</sup>
+#### 指定速度以下でリターダーを自動的にオフ
 指定された速度以下になると、リターダーを操作無しに自動的にオフにします。
 
 信号で停止したとき、リターダーをオフにし忘れてしまうことがなくなります。
