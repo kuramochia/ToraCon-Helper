@@ -54,6 +54,12 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.HELPER_PROJECT_FILE_PATH}}
 
+    - name: "Download Telemetry Artifacts"
+      uses: actions/download-artifact@v4
+      with:
+        name: plugins
+        path: "ToraConHelper/bin/Release/net4.8"
+       
     - name: "ToraCon-Helper Upload to Artifacts"
       uses: actions/upload-artifact@v4
       with:
