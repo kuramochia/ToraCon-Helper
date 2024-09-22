@@ -8,7 +8,7 @@
 		<LangVersion>Latest</LangVersion>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 		<StartupObject>ToraConHelper.Program</StartupObject>
-		<FileVersion>1.5.0.0</FileVersion>
+		<FileVersion>1.5.1.0</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 	<ItemGroup>
@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="System.Text.Json" Version="8.0.4" />
 		<PackageReference Include="WPF-UI" Version="3.0.5" />
@@ -33,12 +33,5 @@
 	<ItemGroup>
 		<Resource Include="icon.ico" />
 	</ItemGroup>
-
-  <!-- Partial の .cs ファイルを纏めて表示 -->
-  <ItemGroup>
-    <Compile Update="ViewModels\ViewModel.*.cs">
-      <DependentUpon>ViewModels\ViewModel.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
 
 </Project>
