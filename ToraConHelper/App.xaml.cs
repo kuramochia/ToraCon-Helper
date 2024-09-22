@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 using System.Windows;
+using ToraConHelper.Installer;
 using ToraConHelper.Services;
 using ToraConHelper.Services.TelemetryActions;
 using ToraConHelper.ViewModels;
@@ -55,6 +57,25 @@ public partial class App : Application
             ContextMenuStrip = menu,
         };
         notifyIcon.DoubleClick += showAction;
+
+        // Telemetry DLL 更新チェック
+        CheckTelemetryDLL();
+    }
+
+    private void CheckTelemetryDLL()
+    {
+        var installer = new PluginInstaller();
+        if (installer.NeedInstall())
+        {
+            var msg = $"Telemetry DLL の更新が必要です。更新しますか？{Environment.NewLine}(※)管理者権限が必要です";
+            if (MessageBox.Show(msg, MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                // Create new process
+                var pInfo = new ProcessStartInfo(System.Reflection.Assembly.GetExecutingAssembly().Location, "-install");
+                pInfo.Verb = "runas";
+                Process.Start(pInfo);
+            }
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)
