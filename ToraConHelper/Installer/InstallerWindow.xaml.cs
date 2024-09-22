@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace ToraConHelper.Installer;
@@ -19,9 +9,9 @@ namespace ToraConHelper.Installer;
 /// <summary>
 /// InstallerWindow.xaml の相互作用ロジック
 /// </summary>
-public partial class InstallerWindow : Window
+public partial class InstallerWindow
 {
-    private readonly ObservableCollection<string> messages = new ();
+    private readonly ObservableCollection<string> messages = new();
     public InstallerWindow()
     {
         InitializeComponent();
@@ -49,8 +39,7 @@ public partial class InstallerWindow : Window
         }));
     }
 }
-
-public class PluginApp : Application
+public partial class PluginApp : Application
 {
     public PluginApp() : base()
     {
