@@ -78,7 +78,6 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 ![](images/appimage.png)
 
-6. もし
 
 ## アプリの設定
 設定を変更すると、`ToraConHelper.exe` と同じフォルダに `ToraCon-Helper_Settings.json` を出力します。
