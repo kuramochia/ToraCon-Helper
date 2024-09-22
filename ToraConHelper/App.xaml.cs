@@ -91,6 +91,7 @@ public partial class App : Application
         services.AddSingleton<RetarderFullOffAction>();
         services.AddSingleton<EngineBrakeAutoOffAction>();
         services.AddSingleton<ReterderAutoOffAction>();
+        services.AddSingleton<AutoFullfuelAction>();
 
         return services.BuildServiceProvider();
     }

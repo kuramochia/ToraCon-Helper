@@ -71,7 +71,11 @@ public struct InputData {
     //public bool Accmode;
     //public bool Showmirrors;
     //public bool Flasher4way;
-    //public bool Activate;
+
+    /// <summary>
+    /// 決定
+    /// </summary>
+    public bool Activate;
     //public bool Assistact1;
     //public bool Assistact2;
     //public bool Assistact3;
