@@ -59,12 +59,26 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 * ETS2 / ATS
     * Telemetry DLL が x64 版のみ提供しているので、x86 でゲームされている方は利用できません。
 
-## セットアップ方法
-1. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の `ToraCon-Helper_vX.X.X.X.zip` という名前の zip ファイルをダウンロードし、解凍します。
-2. 解凍したフォルダの中に `plugins` と `ToraCon-Helper` フォルダがあります。
-3. `plugins\win_x64` フォルダにある `ToraCon-scs-telemetry.dll` を、ETS2/ATS の plugin フォルダにコピーします。（通常、プラグインフォルダは ETS2 = `C:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2\bin\win_x64\plugins`、ATS = `C:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator\bin\win_x64\plugins` です。）
-4. `ToraCon-Helper` フォルダを好きな場所に配置し、`ToraConHelper.exe` を起動します。
+## セットアップ方法 <sup>new! v1.6</sup>
+1. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の `ToraCon-Helper_vX.X.X.X.zip` という名前の zip ファイルをダウンロードし、好きな場所に解凍します。
+2. `ToraConHelper.exe` を起動します。
+3. 初回起動時やアプリ更新時は、Telemetry DLL のインストールや更新が必要になるため、次のようなメッセージが表示されます。
+  * 「はい」を選択すると、（Steam の既定のゲーム インストール先が Program Files なので）管理者権限でインストール プロセスが起動します。
+  * 最新版の Telemetry DLL に更新後、次回以降の起動時はこちらは表示されません。
+
+![](images/TelemetryDllInstallDialog.png)
+
+4. Telemetry DLL のインストールプロセスは、次のようなウィンドウが表示されます。エラーが無ければ、DLL のコピーは終了です。右上の × ボタンで閉じてください。
+  * もし、__「エラーが発生しました」__ と表示された場合は、表示内容と一緒に [Issues](https://github.com/kuramochia/ToraCon-Helper/issues) へお願いします。
+  * Telemetry DLL を手動でインストールする場合は、`plugins` フォルダ配下に DLL があります。
+
+![](images/TelemetryDllInstallWindow.png)
+
+5. アプリ本体は次のような画面が表示されます。
+
 ![](images/appimage.png)
+
+6. もし
 
 ## アプリの設定
 設定を変更すると、`ToraConHelper.exe` と同じフォルダに `ToraCon-Helper_Settings.json` を出力します。
@@ -110,7 +124,7 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 リターダーを最大段数から一段下げると、一気に全段戻します。
 
-#### 指定速度以下でリターダーを自動的にオフ<sup>new! v1.5</sup>
+#### 指定速度以下でリターダーを自動的にオフ
 指定された速度以下になると、リターダーを操作無しに自動的にオフにします。
 
 信号で停止したとき、リターダーをオフにし忘れてしまうことがなくなります。
@@ -153,3 +167,6 @@ Key2Key のスクリプト作成含め、X でこのお三方にはいろいろ�
     * ETS2Talk などの ETS2 向けアプリ作成先駆者。
 * [ダーさん](https://x.com/Darling04476831)
     * まなスカ、SCANIA 2016 S/R バニラ車両用 新型テールランプ with シーケンシャルウインカー 等の Modder。
+
+## Telemetry 情報の一覧
+[RenCloud](https://github.com/RenCloud/) さんの [README](https://github.com/RenCloud/scs-sdk-plugin/blob/master/README.md#telemetry-fields-and-the-c-object) を確認してください。
