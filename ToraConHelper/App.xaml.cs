@@ -67,7 +67,7 @@ public partial class App : Application
         var installer = new PluginInstaller();
         if (installer.NeedInstall())
         {
-            var msg = $"Telemetry DLL の更新が必要です。更新しますか？{Environment.NewLine}(※)管理者権限が必要です";
+            var msg = $"Telemetry DLL が更新されています。インストールを行いますか？{Environment.NewLine}管理者権限が必要です。";
             if (MessageBox.Show(msg, MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 // Create new process
