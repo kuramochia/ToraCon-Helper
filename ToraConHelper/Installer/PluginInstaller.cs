@@ -2,11 +2,9 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Threading;
 
 namespace ToraConHelper.Installer;
 
@@ -50,7 +48,7 @@ internal class PluginInstaller
                     {
                         if (onlyCheck) return true;
                         Directory.CreateDirectory(pluginFolder);
-                        AddMessage($"plugin フォルダが見つからないため、作成しました : {pluginFolder}");
+                        AddMessage($"plugins フォルダが見つからないため、作成しました : {pluginFolder}");
                     }
 
                     // Telemetry DLL のファイルバージョン確認
