@@ -26,6 +26,10 @@ public partial class ViewModel
             ReterderAutoOffActionEnabled = ReterderAllReduceActionEnabled,
             ReterderAutoOffActionLimitSpeedKph = ReterderAutoOffActionLimitSpeedKph,
             AutoFullFuelEnabled = AutoFullFuelEnabled,
+            BlinkerForLaneChangeEnabled = BlinkerForLaneChangeEnabled,
+            BlinkerForLaneChangeLimitSpeedKph = BlinkerForLaneChangeLimitSpeedKph,
+            BlinkerForLaneChangeOffSeconds = BlinkerForLaneChangeOffSeconds,
+            BlinkerForLaneChangeSteeringAngle = BlinkerForLaneChangeSteeringAngle,
         };
         return s;
     }
@@ -50,5 +54,9 @@ public partial class ViewModel
         ReterderAutoOffActionEnabled = s.ReterderAutoOffActionEnabled;
         ReterderAutoOffActionLimitSpeedKph = s.ReterderAutoOffActionLimitSpeedKph;
         AutoFullFuelEnabled = s.AutoFullFuelEnabled;
+        BlinkerForLaneChangeEnabled = s.BlinkerForLaneChangeEnabled;
+        BlinkerForLaneChangeLimitSpeedKph = s.BlinkerForLaneChangeLimitSpeedKph;
+        BlinkerForLaneChangeOffSeconds = s.BlinkerForLaneChangeOffSeconds;
+        BlinkerForLaneChangeSteeringAngle = s.BlinkerForLaneChangeSteeringAngle;
     }
 }
