@@ -28,4 +28,10 @@ public class Settings
     public int ReterderAutoOffActionLimitSpeedKph { get; set; } = 10;
 
     public bool AutoFullFuelEnabled { get; set; } = false;
+
+    public bool BlinkerForLaneChangeEnabled { get; set; } = false;
+    public int BlinkerForLaneChangeLimitSpeedKph { get; set; } = 40;
+    public int BlinkerForLaneChangeSteeringAngle { get; set; } = 25;
+    public int BlinkerForLaneChangeOffSeconds { get; set; } = 5;
+
 }
