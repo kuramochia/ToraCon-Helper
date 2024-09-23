@@ -10,7 +10,7 @@
     Title="HomePage"
     d:Background="Black"
     d:DataContext="{d:DesignInstance viewmodels:ViewModel}"
-    d:DesignHeight="800"
+    d:DesignHeight="2500"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Page.Resources>
@@ -99,7 +99,7 @@
                 <ui:Card>
                     <ui:Card.Footer>
                         <StackPanel>
-                            <TextBlock Margin="0,0,0,10" Text="ゲームで設定しているハンドルの回転角度を指定します。" />
+                            <TextBlock Margin="0,0,0,10" Text="ゲームで設定しているハンドルの回転角度を指定" />
                             <ComboBox
                                 Width="100"
                                 Margin="0,0,0,10"
@@ -107,7 +107,7 @@
                                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:HomePage}, Path=SteeringRotationAngles}"
                                 SelectedItem="{Binding Path=SteeringRotationAngle}"
                                 ToolTip="ゲームで設定しているハンドルの回転角度を指定します。" />
-                            <TextBlock Margin="0,0,0,10" Text="ウィンカー オートキャンセルが動作するハンドル角度を指定します。" />
+                            <TextBlock Margin="0,0,0,10" Text="ウィンカー オートキャンセルが動作するハンドル角度を指定" />
                             <StackPanel Margin="10,0,10,20" Orientation="Horizontal">
                                 <Slider
                                     x:Name="blinkerHideAngleSlider"
@@ -135,6 +135,80 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="ウィンカー オートキャンセルが動作するハンドル回転角度を調整" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerHideOnSteeringActionEnabled}" />
                     </Grid>
+                </ui:Card>
+                <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="高速道路 車線変更用ショート ウィンカー" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerForLaneChangeEnabled}" />
+                    </Grid>
+                    <ui:Card.Footer>
+                        <StackPanel>
+                            <TextBlock Margin="0,0,0,10" Text="ゲームで設定しているハンドルの回転角度を指定" />
+                            <ComboBox
+                                Width="100"
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Left"
+                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:HomePage}, Path=SteeringRotationAngles}"
+                                SelectedItem="{Binding Path=SteeringRotationAngle}"
+                                ToolTip="ゲームで設定しているハンドルの回転角度を指定" />
+                            <TextBlock Margin="0,0,0,10" Text="ショート ウィンカーが有効なハンドル回転角度" />
+                            <StackPanel Margin="10,0,10,20" Orientation="Horizontal">
+                                <Slider
+                                    Width="300"
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Left"
+                                    IsEnabled="{Binding Path=BlinkerForLaneChangeEnabled}"
+                                    LargeChange="10"
+                                    Maximum="90"
+                                    Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding Path=BlinkerForLaneChangeSteeringAngle}" />
+                                <TextBlock Padding="20,0" VerticalAlignment="Top">
+                                    <Run Text="{Binding Path=BlinkerForLaneChangeSteeringAngle}" />
+                                    <Run Text="度" />
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock Margin="0,0,0,10" Text="ショート ウィンカーが有効になる最低速度" />
+                            <StackPanel Margin="10,0,10,20" Orientation="Horizontal">
+                                <Slider
+                                    Width="300"
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Left"
+                                    LargeChange="10"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding Path=BlinkerForLaneChangeLimitSpeedKph}" />
+                                <TextBlock Padding="20,0" VerticalAlignment="Top">
+                                    <Run Text="{Binding Path=BlinkerForLaneChangeLimitSpeedKph}" />
+                                    <Run Text="km/h" />
+                                    <Run Text=" = " />
+                                    <Run Text="{Binding Path=BlinkerForLaneChangeLimitSpeedKph, Converter={StaticResource mphConv}}" />
+                                    <Run Text=" Mph" />
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock Margin="0,0,0,10" Text="ショート ウィンカーが動作する（消える）までの時間" />
+                            <StackPanel Margin="10,0,10,20" Orientation="Horizontal">
+                                <Slider
+                                    Width="300"
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Left"
+                                    LargeChange="10"
+                                    Maximum="30"
+                                    Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding Path=BlinkerForLaneChangeOffSeconds}" />
+                                <TextBlock Padding="20,0" VerticalAlignment="Top">
+                                    <Run Text="{Binding Path=BlinkerForLaneChangeOffSeconds}" />
+                                    <Run Text="秒" />
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </ui:Card.Footer>
                 </ui:Card>
             </StackPanel>
         </ui:CardExpander>
