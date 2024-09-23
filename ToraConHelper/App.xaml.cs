@@ -113,6 +113,7 @@ public partial class App : Application
         services.AddSingleton<EngineBrakeAutoOffAction>();
         services.AddSingleton<ReterderAutoOffAction>();
         services.AddSingleton<AutoFullfuelAction>();
+        services.AddSingleton<BlinkerForLaneChangeAction>();
 
         return services.BuildServiceProvider();
     }
