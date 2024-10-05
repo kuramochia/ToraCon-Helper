@@ -30,6 +30,8 @@ public partial class ViewModel
             BlinkerForLaneChangeLimitSpeedKph = BlinkerForLaneChangeLimitSpeedKph,
             BlinkerForLaneChangeOffSeconds = BlinkerForLaneChangeOffSeconds,
             BlinkerForLaneChangeSteeringAngle = BlinkerForLaneChangeSteeringAngle,
+            BlinkerLikeRealCarDInputActionEnabled = BlinkerLikeRealCarDInputActionEnabled,
+            BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
         };
         return s;
     }
@@ -58,5 +60,7 @@ public partial class ViewModel
         BlinkerForLaneChangeLimitSpeedKph = s.BlinkerForLaneChangeLimitSpeedKph;
         BlinkerForLaneChangeOffSeconds = s.BlinkerForLaneChangeOffSeconds;
         BlinkerForLaneChangeSteeringAngle = s.BlinkerForLaneChangeSteeringAngle;
+        BlinkerLikeRealCarDInputActionEnabled = s.BlinkerLikeRealCarDInputActionEnabled;
+        BlinkerDInputJoyStickType = s.BlinkerDInputJoyStickType;
     }
 }
