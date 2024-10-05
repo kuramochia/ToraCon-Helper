@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Gameloop.Vdf.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using ToraConHelper.Services.TelemetryActions;
+using Vortice.DirectInput;
 
 namespace ToraConHelper.ViewModels;
 
@@ -12,6 +12,36 @@ public partial class ViewModel
     private bool blinkerLikeRealCarActionEnabled;
 
     partial void OnBlinkerLikeRealCarActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<BlinkerLikeRealCarAction>(oldValue, newValue);
+
+    [ObservableProperty]
+    private bool blinkerLikeRealCarDInputActionEnabled;
+
+    partial void OnBlinkerLikeRealCarDInputActionEnabledChanged(bool oldValue, bool newValue)
+    {
+        OnActionEnabledChanged<BlinkerLikeRealCarDInputAction>(oldValue, newValue);
+        OnBlinkerDInputJoyStickTypeChanged(BlinkerDInputJoyStickType);
+    }
+
+    [ObservableProperty]
+    private BlinkerJoyStickType blinkerDInputJoyStickType;
+
+    partial void OnBlinkerDInputJoyStickTypeChanged(BlinkerJoyStickType value)
+    {
+        var action = App.Current.Services.GetService<BlinkerLikeRealCarDInputAction>();
+
+        // 右レバー（左ハンドル）
+        if (value == BlinkerJoyStickType.RightStick)
+        {
+            action!.LeftBlinkerJoyStick = JoystickOffset.Buttons46;
+            action!.RightBlinkerJoyStick = JoystickOffset.Buttons45;
+        }
+        // 左レバー（右ハンドル）
+        else
+        {
+            action!.LeftBlinkerJoyStick = JoystickOffset.Buttons39;
+            action!.RightBlinkerJoyStick = JoystickOffset.Buttons40;
+        }
+    }
 
     [ObservableProperty]
     private bool blinkerHideOnSteeringActionEnabled;
