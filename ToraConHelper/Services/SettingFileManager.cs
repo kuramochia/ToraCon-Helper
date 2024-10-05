@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ToraConHelper.Services;
 
@@ -13,6 +14,16 @@ public interface ISettingFileMamager
 public class SettingFileManager : ISettingFileMamager
 {
     private const string SettingFileName = "ToraCon-Helper_Settings.json";
+
+    private static readonly JsonSerializerOptions jsonSerializeOptions = new JsonSerializerOptions
+    {
+        WriteIndented = true,
+        Converters =
+        {
+            new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+        }
+    };
+
     private string FilePath => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), SettingFileName);
 
     public Settings Load()
@@ -22,10 +33,8 @@ public class SettingFileManager : ISettingFileMamager
             return new Settings();
         }
         var json = File.ReadAllText(FilePath);
-        return JsonSerializer.Deserialize<Settings>(json)!;
+        return JsonSerializer.Deserialize<Settings>(json, jsonSerializeOptions)!;
     }
-
-    private static readonly JsonSerializerOptions jsonSerializeOptions = new JsonSerializerOptions { WriteIndented = true };
 
     public void Save(Settings settings)
     {
