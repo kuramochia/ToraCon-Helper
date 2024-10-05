@@ -29,6 +29,14 @@
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
         <local:MphConverter x:Key="mphConv" />
+        <ObjectDataProvider
+            x:Key="BlinkerJoyStickTypeEnums"
+            MethodName="GetValues"
+            ObjectType="{x:Type viewmodels:BlinkerJoyStickType}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="viewmodels:BlinkerJoyStickType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Page.Resources>
     <StackPanel>
         <ui:CardExpander Margin="10" IsExpanded="True">
@@ -94,6 +102,36 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="ウィンカー戻す動作を実車に近づける" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerLikeRealCarActionEnabled}" />
+                    </Grid>
+                </ui:Card>
+                <!--  DirectInput Blinker  -->
+                <ui:Card>
+                    <ui:Card.Footer>
+                        <StackPanel>
+                            <TextBlock>
+                                <Run Text="ウィンカーが出ているときに、逆側のウィンカー入力をすると、ウィンカーを消すことができます。" />
+                                <LineBreak />
+                                <Run FontWeight="Bold" Text="トラコン専用です。 DirectInput の入力を監視します。" />
+                                <LineBreak />
+                                <Run FontWeight="Bold" Text="ゲーム内のキー設定から、ウィンカーの設定を外してください。" />
+                            </TextBlock>
+                            <TextBlock Margin="0,10,0,10" Text="ウィンカーに利用するレバー" />
+                            <ComboBox
+                                Width="200"
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Left"
+                                ItemsSource="{Binding Source={StaticResource BlinkerJoyStickTypeEnums}}"
+                                SelectedItem="{Binding Path=BlinkerDInputJoyStickType}"
+                                ToolTip="ウィンカーに利用するレバー" />
+                        </StackPanel>
+                    </ui:Card.Footer>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="(トラコン専用) DirectInput を使ってウィンカー戻す動作を実車に近づける" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerLikeRealCarDInputActionEnabled}" />
                     </Grid>
                 </ui:Card>
                 <ui:Card>
