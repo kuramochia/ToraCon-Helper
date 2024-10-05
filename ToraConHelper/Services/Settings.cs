@@ -1,4 +1,6 @@
-﻿namespace ToraConHelper.Services;
+﻿using ToraConHelper.ViewModels;
+
+namespace ToraConHelper.Services;
 
 public class Settings
 {
@@ -33,5 +35,9 @@ public class Settings
     public int BlinkerForLaneChangeLimitSpeedKph { get; set; } = 40;
     public int BlinkerForLaneChangeSteeringAngle { get; set; } = 25;
     public int BlinkerForLaneChangeOffSeconds { get; set; } = 5;
+
+    public bool BlinkerLikeRealCarDInputActionEnabled { get; set; } = false;
+
+    public BlinkerJoyStickType BlinkerDInputJoyStickType { get; set; } = BlinkerJoyStickType.LeftStick;
 
 }
