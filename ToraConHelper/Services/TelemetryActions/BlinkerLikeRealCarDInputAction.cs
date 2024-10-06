@@ -100,8 +100,18 @@ public class BlinkerLikeRealCarDInputAction : ITelemetryAction, IDisposable
             {
                 case InputType.LeftOn: { input.SetLeftBlinker(); break; }
                 case InputType.RightOn: { input.SetRightBlinker(); break; }
-                case InputType.LeftOff: { input.SetLeftBlinkerHide(); break; }
-                case InputType.RightOff: { input.SetRightBlinkerHide(); break; }
+                case InputType.LeftOff:
+                    {
+                        // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                        input.SetLeftBlinker();
+                        break;
+                    }
+                case InputType.RightOff:
+                    {
+                        // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                        input.SetRightBlinker();
+                        break;
+                    }
             }
         }
     }
