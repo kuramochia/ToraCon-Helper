@@ -20,6 +20,7 @@ jobs:
       - name: Assign self to pull request
         if: github.event_name == 'pull_request'
         run: |
-          gh pr edit ${{ github.event.pull_request.number }} --add-assignee @me
+          gh pr edit ${{ github.event.pull_request.number }} --add-assignee @me --repo ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
