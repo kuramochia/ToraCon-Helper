@@ -27,12 +27,14 @@ public class TelemetryActionsManager : IDisposable
     {
         _actions.Add(action);
         if(action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Add(actionWithEvents);
+        action.OnActionAdded();
     }
 
     public void RemoveAction(ITelemetryAction action)
     {
         _actions.Remove(action);
         if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Remove(actionWithEvents);
+        action.OnActionRemoved();
     }
 
     public void Start()
@@ -247,7 +249,7 @@ public class TelemetryActionsManager : IDisposable
 
     private void Telemetry_Data(SCSTelemetry data, bool updated)
     {
-        if (!updated || _running) return;
+        if (!updated || _running || !data.SdkActive) return;
         try
         {
             _running = true;
