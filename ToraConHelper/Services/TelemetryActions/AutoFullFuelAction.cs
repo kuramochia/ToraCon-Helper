@@ -6,6 +6,10 @@ namespace ToraConHelper.Services.TelemetryActions;
 
 internal class AutoFullfuelAction : TelemetryActionWithEventsBase
 {
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    {
+    }
+
     public override void OnRefuelStart()
     {
         //Debug.WriteLine(nameof(OnRefuelStart));
@@ -31,4 +35,5 @@ internal class AutoFullfuelAction : TelemetryActionWithEventsBase
         input.Connect();
         input.SetActivate(value);
     }
+
 }
