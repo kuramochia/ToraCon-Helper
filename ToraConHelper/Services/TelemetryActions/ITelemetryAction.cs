@@ -10,6 +10,8 @@ public interface ITelemetryAction
     /// </summary>
     /// <param name="telemetry"></param>
     void OnTelemetryUpdated(SCSTelemetry telemetry);
+    void OnActionAdded();
+    void OnActionRemoved();
 }
 
 /// <summary>
@@ -31,50 +33,31 @@ public interface ITelemetryActionWithEvents : ITelemetryAction
 
 public abstract class TelemetryActionBase : ITelemetryAction
 {
-    public virtual void OnTelemetryUpdated(SCSTelemetry telemetry)
-    {
-    }
+    public abstract void OnTelemetryUpdated(SCSTelemetry telemetry);
+
+    public virtual void OnActionAdded() { }
+    public virtual void OnActionRemoved() { }
 }
 
 public abstract class TelemetryActionWithEventsBase : TelemetryActionBase, ITelemetryActionWithEvents
 {
-    public virtual void OnFerry()
-    {
-    }
+    public virtual void OnFerry() { }
 
-    public virtual void OnFined()
-    {
-    }
+    public virtual void OnFined() { }
 
-    public virtual void OnJobCancelled()
-    {
-    }
+    public virtual void OnJobCancelled() { }
 
-    public virtual void OnJobDelivered()
-    {
-    }
+    public virtual void OnJobDelivered() { }
 
-    public virtual void OnJobStarted()
-    {
-    }
+    public virtual void OnJobStarted() { }
 
-    public virtual void OnRefuelEnd()
-    {
-    }
+    public virtual void OnRefuelEnd() { }
 
-    public virtual void OnRefuelPayed()
-    {
-    }
+    public virtual void OnRefuelPayed() { }
 
-    public virtual void OnRefuelStart()
-    {
-    }
+    public virtual void OnRefuelStart() { }
 
-    public virtual void OnTollgate()
-    {
-    }
+    public virtual void OnTollgate() { }
 
-    public virtual void OnTrain()
-    {
-    }
+    public virtual void OnTrain() { }
 }
