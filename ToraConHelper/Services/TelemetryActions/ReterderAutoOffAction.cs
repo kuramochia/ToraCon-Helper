@@ -3,14 +3,14 @@ using SCSSdkClient.Object;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-public class ReterderAutoOffAction : ITelemetryAction
+public class ReterderAutoOffAction : TelemetryActionBase
 {
     /// <summary>
     /// リターダーを自動的に戻す速度
     /// </summary>
     public int LimitSpeedKph { get; set; } = 10;
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // 指定読度以下か
         var currentSpeedKph = telemetry.TruckValues.CurrentValues.DashboardValues.Speed.Kph;

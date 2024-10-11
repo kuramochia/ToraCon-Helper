@@ -3,14 +3,14 @@ using SCSSdkClient.Object;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-internal class EngineBrakeAutoOffAction : ITelemetryAction
+internal class EngineBrakeAutoOffAction : TelemetryActionBase
 {
     /// <summary>
     /// エンジンブレーキをオフにする速度
     /// </summary>
     public int LimitSpeedKph { get; set; }
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         var currentSpeedKph = telemetry.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
         if (currentSpeedKph <= LimitSpeedKph)

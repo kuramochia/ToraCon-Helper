@@ -7,9 +7,12 @@ using System.Management;
 
 namespace ToraConHelper.Services;
 
-internal class GameProcessDetector : IDisposable
+public class GameProcessDetector : IDisposable
 {
     private static readonly string[] targets = new string[] { "eurotrucks2.exe", "amtrucks.exe" };
+
+
+    private bool _started;
 
     private List<ManagementEventWatcher> startEvents = new(targets.Length);
     private List<ManagementEventWatcher> endEvents = new(targets.Length);
@@ -18,6 +21,8 @@ internal class GameProcessDetector : IDisposable
     public event EventHandler<EventArgs>? GameProcessEnded;
 
     public GameProcessDetector() { }
+
+    public bool IsStarted { get { return _started; } }
 
     public void StartWatchers()
     {
@@ -32,6 +37,7 @@ internal class GameProcessDetector : IDisposable
         {
             GameProcessStarted?.Invoke(this, EventArgs.Empty);
         }
+        _started = true;
     }
 
     public void StopWatchers()
@@ -50,6 +56,7 @@ internal class GameProcessDetector : IDisposable
         }
         startEvents.Clear();
         endEvents.Clear();
+        _started = false;
     }
 
     private ManagementEventWatcher WatchForProcessStart(string processName)
@@ -90,12 +97,20 @@ internal class GameProcessDetector : IDisposable
         return watcher;
     }
 
-    private void ProcessEnded(object sender, EventArrivedEventArgs e) => GameProcessEnded?.Invoke(this, e);
+    private void ProcessEnded(object sender, EventArrivedEventArgs e)
+    {
+        Debug.WriteLine($"{nameof(ProcessEnded)}");
+        GameProcessEnded?.Invoke(this, e);
+    }
 
-    private void ProcessStarted(object sender, EventArrivedEventArgs e) => GameProcessStarted?.Invoke(this, e);
+    private void ProcessStarted(object sender, EventArrivedEventArgs e)
+    {
+        Debug.WriteLine($"{nameof(ProcessStarted)}");
+        GameProcessStarted?.Invoke(this, e);
+    }
 
     public void Dispose()
     {
-        StopWatchers();
+        if (_started) StopWatchers();
     }
 }

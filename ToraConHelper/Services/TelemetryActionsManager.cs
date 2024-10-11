@@ -247,7 +247,7 @@ public class TelemetryActionsManager : IDisposable
 
     private void Telemetry_Data(SCSTelemetry data, bool updated)
     {
-        if (!updated || _running) return;
+        if (!updated || _running || !data.SdkActive) return;
         try
         {
             _running = true;

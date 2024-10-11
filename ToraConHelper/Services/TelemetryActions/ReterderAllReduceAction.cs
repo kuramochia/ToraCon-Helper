@@ -3,7 +3,7 @@ using SCSSdkClient.Object;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-public class ReterderAllReduceAction : ITelemetryAction
+public class ReterderAllReduceAction : TelemetryActionBase
 {
     /// <summary>
     /// リターダーを前段戻す速度
@@ -12,7 +12,7 @@ public class ReterderAllReduceAction : ITelemetryAction
 
     private int _reterderLevel = 0;
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         var reterderLevel = telemetry.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel;
         // リターダー段数が、前と変わらないか、前よりも大きい場合
