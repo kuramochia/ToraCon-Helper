@@ -6,11 +6,11 @@ namespace ToraConHelper.Services.TelemetryActions;
 /// <summary>
 /// リターダーフルから1段戻したら全段戻す
 /// </summary>
-public class RetarderFullOffAction : ITelemetryAction
+public class RetarderFullOffAction : TelemetryActionBase
 {
     private uint _currentRetarderLevel = 0;
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         var stepCount = telemetry.TruckValues.ConstantsValues.MotorValues.RetarderStepCount;
         var retarderlevel = telemetry.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel;
