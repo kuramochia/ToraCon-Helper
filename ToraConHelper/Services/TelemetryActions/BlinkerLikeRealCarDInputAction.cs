@@ -28,6 +28,8 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
 
     private void _gameProcessDetector_GameProcessEnded(object sender, EventArgs e) => _dInputController.Release();
 
+    public override void OnActionRemoved() => _dInputController.Release();
+
     public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // Dinput 初期化
@@ -127,7 +129,11 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
         }
     }
 
-    public void Dispose() => _dInputController?.Dispose();
+    public void Dispose()
+    {
+        _gameProcessDetector.GameProcessEnded -= _gameProcessDetector_GameProcessEnded;
+        _dInputController.Dispose();
+    }
 
     internal enum InputType
     {
