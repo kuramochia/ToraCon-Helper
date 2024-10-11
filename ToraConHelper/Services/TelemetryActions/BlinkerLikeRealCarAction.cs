@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-public class BlinkerLikeRealCarAction : ITelemetryAction
+public class BlinkerLikeRealCarAction : TelemetryActionBase
 {
     private bool _blinkerLeft, _blinkerRight;
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // 左右ウィンカーがアクティブかどうか（ハザードランプには反応しない）
         var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
