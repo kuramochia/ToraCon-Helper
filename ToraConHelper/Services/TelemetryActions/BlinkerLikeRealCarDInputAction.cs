@@ -10,14 +10,27 @@ namespace ToraConHelper.Services.TelemetryActions;
 /// <summary>
 /// DirectInput の入力を拾って、ウィンカーを完全に実車っぽくする
 /// </summary>
-public class BlinkerLikeRealCarDInputAction : ITelemetryAction, IDisposable
+public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
 {
     private DirectInputController _dInputController = new();
+
+    private GameProcessDetector _gameProcessDetector;
 
     public JoystickOffset LeftBlinkerJoyStick { get; set; }
     public JoystickOffset RightBlinkerJoyStick { get; set; }
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public BlinkerLikeRealCarDInputAction(GameProcessDetector gameProcessDetector) : base()
+    {
+        _gameProcessDetector = gameProcessDetector;
+        _gameProcessDetector.GameProcessEnded += _gameProcessDetector_GameProcessEnded;
+        if (!_gameProcessDetector.IsStarted) _gameProcessDetector.StartWatchers();
+    }
+
+    private void _gameProcessDetector_GameProcessEnded(object sender, EventArgs e) => _dInputController.Release();
+
+    public override void OnActionRemoved() => _dInputController.Release();
+
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // Dinput 初期化
         if (!_dInputController.Initialize())
@@ -116,8 +129,11 @@ public class BlinkerLikeRealCarDInputAction : ITelemetryAction, IDisposable
         }
     }
 
-    public void Dispose() => _dInputController?.Dispose();
-
+    public void Dispose()
+    {
+        _gameProcessDetector.GameProcessEnded -= _gameProcessDetector_GameProcessEnded;
+        _dInputController.Dispose();
+    }
 
     internal enum InputType
     {
