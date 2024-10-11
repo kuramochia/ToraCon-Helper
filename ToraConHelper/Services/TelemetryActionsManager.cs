@@ -27,12 +27,14 @@ public class TelemetryActionsManager : IDisposable
     {
         _actions.Add(action);
         if(action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Add(actionWithEvents);
+        action.OnActionAdded();
     }
 
     public void RemoveAction(ITelemetryAction action)
     {
         _actions.Remove(action);
         if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Remove(actionWithEvents);
+        action.OnActionRemoved();
     }
 
     public void Start()
