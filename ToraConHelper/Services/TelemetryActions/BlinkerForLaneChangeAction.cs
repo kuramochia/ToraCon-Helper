@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-public class BlinkerForLaneChangeAction : ITelemetryAction
+public class BlinkerForLaneChangeAction : TelemetryActionBase
 {
     public float LowerLimitKph { get; set; } 
     public float SteeringLimit { get; set; } 
@@ -17,7 +17,7 @@ public class BlinkerForLaneChangeAction : ITelemetryAction
     private long _limitTicks = 0;
     private (float Min, float Max) _steeringLimitPair = default;
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // 前回のステアリング値よりも大きくなった＝もっとハンドル切ってる
         var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
