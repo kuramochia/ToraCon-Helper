@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace ToraConHelper.Services.TelemetryActions;
 
 // ウィンカーが出ているときにハンドルを指定角度まで回したらウィンカーを消すアクション
-public class BlinkerHideOnSteeringAction : ITelemetryAction
+public class BlinkerHideOnSteeringAction : TelemetryActionBase
 {
     /// <summary>
     /// ウィンカーを消すまでの指定角度（0~1）マイナスはダメ
@@ -15,7 +15,7 @@ public class BlinkerHideOnSteeringAction : ITelemetryAction
 
     private float? _maxSteering = null;
 
-    public void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         var currentSteering = telemetry.ControlValues.GameValues.Steering;
 
