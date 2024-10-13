@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using ToraConHelper.ViewModels;
 using Wpf.Ui;
 
