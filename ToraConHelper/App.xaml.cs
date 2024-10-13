@@ -25,6 +25,8 @@ public partial class App : Application
     private System.Windows.Forms.NotifyIcon? notifyIcon;
 
     private EventHandler? showAction;
+
+    private EventHandler? showPowerToysAction;
     public new static App Current => (App)Application.Current;
 
     public IServiceProvider Services { get; }
@@ -42,12 +44,22 @@ public partial class App : Application
             MainWindow.ShowInTaskbar = true;
             MainWindow.Show();
             MainWindow.Activate();
+
+            // 最小化していたら表示する
+            if (MainWindow.WindowState == WindowState.Minimized) MainWindow.WindowState = WindowState.Normal;
+        };
+
+        showPowerToysAction = (object s, EventArgs e) =>
+        {
+            showAction(s, e);
+            ((MainWindow)MainWindow).ShowPowerToysPage();
         };
 
         // タスクトレイアイコン
-        var icon = GetResourceStream(new Uri("icon.ico", UriKind.Relative)).Stream;
+        using var icon = GetResourceStream(new Uri("icon.ico", UriKind.Relative)).Stream;
         var menu = new System.Windows.Forms.ContextMenuStrip();
         menu.Items.Add("表示", null, showAction);
+        menu.Items.Add("PowerToys を表示", null, showPowerToysAction);
         menu.Items.Add("終了", null, (s, e) => Shutdown());
         notifyIcon = new System.Windows.Forms.NotifyIcon
         {
@@ -94,7 +106,8 @@ public partial class App : Application
         services.AddSingleton<MainWindow>();
         services.AddSingleton<HomePage>();
         services.AddSingleton<AboutPage>();
-        services.AddSingleton<IPageService,PageService>();
+        services.AddSingleton<PowerToysPage>();
+        services.AddSingleton<IPageService, PageService>();
 
         // ViewModels
         services.AddSingleton<ViewModel>();

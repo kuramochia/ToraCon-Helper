@@ -27,8 +27,11 @@ public partial class MainWindow
                 true                                     // Whether to change accents automatically
             );
 
-            // 最初は HomePage
-            navigationView.Navigate("HomePage");
+            // 最後に表示した Page を保存
+            navigationView.Navigated += (sender, args) => viewModel.LastShownPage = args.Page.GetType().Name;
+
+            viewModel.LastShownPage ??= "HomePage";
+            navigationView.Navigate(viewModel.LastShownPage);
         };
 
         if (!viewModel.TaskTrayOnStart)
@@ -36,6 +39,9 @@ public partial class MainWindow
             this.Show();
         }
     }
+
+    public void ShowHomePage() => navigationView.Navigate("HomePage");
+    public void ShowPowerToysPage() => navigationView.Navigate("PowerToysPage");
 
     protected override void OnClosing(CancelEventArgs e)
     {
