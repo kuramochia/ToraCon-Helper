@@ -22,11 +22,11 @@
         <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
-        <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                        <Setter Property="Focusable" Value="False"/>
+                    <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Focusable" Value="False" />
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -64,6 +64,17 @@
                         <Button.Content>
                             <TextBlock>
                                 <Run>ゲーム起動</Run>
+                                <ui:SymbolIcon Symbol="Games24" />
+                            </TextBlock>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Margin="0,0"
+                        Command="{Binding OpenGameFolderCommand}"
+                        DockPanel.Dock="Right">
+                        <Button.Content>
+                            <TextBlock>
+                                <Run>ゲームフォルダ表示</Run>
                                 <ui:SymbolIcon Symbol="Share24" />
                             </TextBlock>
                         </Button.Content>
@@ -154,6 +165,17 @@
                         <Button.Content>
                             <TextBlock>
                                 <Run>ゲーム起動</Run>
+                                <ui:SymbolIcon Symbol="Games24" />
+                            </TextBlock>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Margin="0,0"
+                        Command="{Binding OpenGameFolderCommand}"
+                        DockPanel.Dock="Right">
+                        <Button.Content>
+                            <TextBlock>
+                                <Run>ゲームフォルダ表示</Run>
                                 <ui:SymbolIcon Symbol="Share24" />
                             </TextBlock>
                         </Button.Content>

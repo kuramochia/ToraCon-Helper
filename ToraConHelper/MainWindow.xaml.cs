@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using ToraConHelper.ViewModels;
 using Wpf.Ui;
 
@@ -27,8 +28,11 @@ public partial class MainWindow
                 true                                     // Whether to change accents automatically
             );
 
-            // 最初は HomePage
-            ShowHomePage();
+            // 最後に表示した Page を保存
+            navigationView.Navigated += (sender, args) => viewModel.LastShownPage = args.Page.GetType().Name;
+
+            viewModel.LastShownPage ??= "HomePage";
+            navigationView.Navigate(viewModel.LastShownPage);
         };
 
         if (!viewModel.TaskTrayOnStart)
