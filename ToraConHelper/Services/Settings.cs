@@ -10,6 +10,8 @@ public class Settings
     public bool GoToTasktrayOnAppClose { get; set; } = false;
     public bool TaskTrayOnStart { get; set; } = false;
 
+    public string? LastShownPage { get; set; } = null;
+
     public bool BlinkerLikeRealCarActionEnabled { get; set; } = true;
     public bool RetarderAllReduceActionEnabled { get; set; } = true;
     public int RetarderAllReduceActionLimitSpeedKph { get; set; } = 30;

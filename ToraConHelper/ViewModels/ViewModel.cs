@@ -54,6 +54,9 @@ public partial class ViewModel : ObservableObject
 
     [ObservableProperty]
     private bool taskTrayOnStart;
+
+    [ObservableProperty]
+    private string? lastShownPage;
     #endregion
 
 

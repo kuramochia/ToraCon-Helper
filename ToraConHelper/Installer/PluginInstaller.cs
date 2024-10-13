@@ -7,7 +7,6 @@ namespace ToraConHelper.Installer;
 
 internal class PluginInstaller
 {
-    const string BinaryPath = "bin\\win_x64";
     const string PluginPath = "plugins";
     const string PluginFile = "ToraCon-scs-telemetry.dll";
     const string CopySourcePath = $".\\plugins\\win_x64\\{PluginFile}";
@@ -21,14 +20,15 @@ internal class PluginInstaller
         AddMessage("");
         // ゲーム フォルダを探す
         var paths = SteamHelper.DetectGamePaths();
-        foreach (var p in paths)
+        foreach (var path in paths)
         {
+            var p = path.Path;
             try
             {
                 AddMessage($"ゲームが見つかりました : {p}");
 
                 // プラグインフォルダを探す、無ければ作る
-                var exePath = Path.Combine(p, BinaryPath);
+                var exePath = SteamHelper.GetExePath(p);
                 if (!Directory.Exists(exePath))
                 {
                     AddMessage($"ゲームフォルダが見つかりませんでした : {exePath}");
