@@ -12,6 +12,7 @@ public partial class ViewModel
             IsActive = IsActive,
             GoToTasktrayOnAppClose = GoToTasktrayOnAppClose,
             TaskTrayOnStart = TaskTrayOnStart,
+            LastShownPage = LastShownPage,
 
             BlinkerLikeRealCarActionEnabled = BlinkerLikeRealCarActionEnabled,
             RetarderAllReduceActionEnabled = ReterderAllReduceActionEnabled,
@@ -33,6 +34,10 @@ public partial class ViewModel
             BlinkerLikeRealCarDInputActionEnabled = BlinkerLikeRealCarDInputActionEnabled,
             BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
         };
+        s.PowerToysSettings ??= new();
+        s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
+        s.PowerToysSettings.Add(GameType.ATS, Ats!.ToSettings());
+
         return s;
     }
 
@@ -42,6 +47,7 @@ public partial class ViewModel
         IsActive = s.IsActive;
         GoToTasktrayOnAppClose = s.GoToTasktrayOnAppClose;
         TaskTrayOnStart = s.TaskTrayOnStart;
+        LastShownPage = s.LastShownPage;
 
         BlinkerLikeRealCarActionEnabled = s.BlinkerLikeRealCarActionEnabled;
         ReterderAllReduceActionEnabled = s.RetarderAllReduceActionEnabled;
@@ -62,5 +68,8 @@ public partial class ViewModel
         BlinkerForLaneChangeSteeringAngle = s.BlinkerForLaneChangeSteeringAngle;
         BlinkerLikeRealCarDInputActionEnabled = s.BlinkerLikeRealCarDInputActionEnabled;
         BlinkerDInputJoyStickType = s.BlinkerDInputJoyStickType;
+
+        Ets2 = PowerToysViewModel.FromSettings(this, GameType.ETS2, s.PowerToysSettings?[GameType.ETS2]);
+        Ats = PowerToysViewModel.FromSettings(this, GameType.ATS, s.PowerToysSettings?[GameType.ATS]);
     }
 }

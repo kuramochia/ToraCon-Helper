@@ -22,6 +22,12 @@ public partial class MainWindowViewModel : ObservableObject
                     TargetPageType = typeof(HomePage),
                     TargetPageTag = nameof(HomePage),
                 },
+                new NavigationViewItem {
+                    Content="PowerToys",
+                    Icon = new SymbolIcon { Symbol = SymbolRegular.Toolbox24 },
+                    TargetPageType = typeof(PowerToysPage),
+                    TargetPageTag= nameof(PowerToysPage),
+                },
             ];
 
         FooterNavigationViewItems =
