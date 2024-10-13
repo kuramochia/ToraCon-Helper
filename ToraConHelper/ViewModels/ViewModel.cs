@@ -25,10 +25,12 @@ public partial class ViewModel : ObservableObject
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        if (!isInitialization)
-        {
-            settingFile.Save(ToSettings());
-        }
+        Save();
+    }
+
+    internal void Save()
+    {
+        if (!isInitialization) settingFile.Save(ToSettings());
     }
 
     #region General Settings

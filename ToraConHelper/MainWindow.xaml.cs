@@ -28,7 +28,7 @@ public partial class MainWindow
             );
 
             // 最初は HomePage
-            navigationView.Navigate("HomePage");
+            ShowHomePage();
         };
 
         if (!viewModel.TaskTrayOnStart)
@@ -36,6 +36,9 @@ public partial class MainWindow
             this.Show();
         }
     }
+
+    public void ShowHomePage() => navigationView.Navigate("HomePage");
+    public void ShowPowerToysPage() => navigationView.Navigate("PowerToysPage");
 
     protected override void OnClosing(CancelEventArgs e)
     {

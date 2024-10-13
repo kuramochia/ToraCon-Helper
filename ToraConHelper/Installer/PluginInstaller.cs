@@ -1,19 +1,12 @@
-﻿using Gameloop.Vdf;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using ToraConHelper.Helpers;
 
 namespace ToraConHelper.Installer;
 
 internal class PluginInstaller
 {
-    readonly Dictionary<string, string> GameIds = new() {
-        { /*ETS2*/"227300", "steamapps\\common\\Euro Truck Simulator 2" },
-        { /*ATS*/"270880", "steamapps\\common\\American Truck Simulator" }
-    };
     const string BinaryPath = "bin\\win_x64";
     const string PluginPath = "plugins";
     const string PluginFile = "ToraCon-scs-telemetry.dll";
@@ -27,7 +20,7 @@ internal class PluginInstaller
         AddMessage("Telemetry DLL インストールプロセス開始");
         AddMessage("");
         // ゲーム フォルダを探す
-        var paths = DetectGamePaths();
+        var paths = SteamHelper.DetectGamePaths();
         foreach (var p in paths)
         {
             try
@@ -110,39 +103,6 @@ internal class PluginInstaller
     }
 
     void AddMessage(string message) => AddMessageFromInstaller?.Invoke(this, new AddMessageEventArgs(message));
-
-    string? GetSteamPath()
-    {
-        var steamKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
-        return steamKey?.GetValue("SteamPath") as string;
-    }
-
-    IEnumerable<string> DetectGamePaths()
-    {
-        try
-        {
-            var vdfFile = Path.Combine(GetSteamPath(), "steamapps\\libraryfolders.vdf");
-            dynamic vdf = VdfConvert.Deserialize(File.ReadAllText(vdfFile));
-
-            var result = new List<string>();
-            foreach (dynamic content in vdf.Value)
-            {
-                var basePath = content.Value.path.Value as string;
-                var apps = content.Value.apps;
-                foreach (dynamic app in apps)
-                {
-                    var detectedGames = GameIds.Where(id => id.Key == app.Key as string).Select(id => Path.Combine(basePath, id.Value));
-                    result.AddRange(detectedGames);
-                }
-            }
-            return result;
-        }
-        catch
-        {
-            return [];
-        }
-    }
-
 }
 
 internal class AddMessageEventArgs : EventArgs
