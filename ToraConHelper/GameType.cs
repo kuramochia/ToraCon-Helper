@@ -2,7 +2,6 @@
 
 namespace ToraConHelper;
 
-    [Flags]
 public enum GameType
 {
     None = 0,
