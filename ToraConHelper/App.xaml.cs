@@ -44,6 +44,9 @@ public partial class App : Application
             MainWindow.ShowInTaskbar = true;
             MainWindow.Show();
             MainWindow.Activate();
+
+            // 最小化していたら表示する
+            if (MainWindow.WindowState == WindowState.Minimized) MainWindow.WindowState = WindowState.Normal;
         };
 
         showPowerToysAction = (object s, EventArgs e) =>
@@ -53,7 +56,7 @@ public partial class App : Application
         };
 
         // タスクトレイアイコン
-        var icon = GetResourceStream(new Uri("icon.ico", UriKind.Relative)).Stream;
+        using var icon = GetResourceStream(new Uri("icon.ico", UriKind.Relative)).Stream;
         var menu = new System.Windows.Forms.ContextMenuStrip();
         menu.Items.Add("表示", null, showAction);
         menu.Items.Add("PowerToys を表示", null, showPowerToysAction);
