@@ -25,7 +25,7 @@ public partial class PowerToysViewModel : ObservableObject
         gameUri = PowerToysHelper.GetGameRunUri(gameType)!;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanOpenGameFolder))]
     private void OpenGame() => Process.Start(gameUri.ToString());
 
     [ObservableProperty]
@@ -39,6 +39,16 @@ public partial class PowerToysViewModel : ObservableObject
         LocalProfiles = new(GetLocalProfiles());
         SteamProfiles = new(GetSteamProfiles());
     }
+
+    #region OpenGameFolder
+    [RelayCommand(CanExecute = nameof(CanOpenGameFolder))]
+    private void OpenGameFolder()
+    {
+        var gamePath = SteamHelper.GetGameFolder(gameType);
+        if (gamePath != null) Process.Start(SteamHelper.GetExePath(gamePath));
+    }
+    private bool CanOpenGameFolder() => SteamHelper.GetGameFolder(gameType) != null;
+    #endregion
 
     #region OpenGameDataFolder
     [RelayCommand(CanExecute = nameof(CanOpenGameDataFolder))]
