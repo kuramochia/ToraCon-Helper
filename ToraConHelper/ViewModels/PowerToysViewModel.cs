@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
+using ToraConHelper.Helpers;
 using ToraConHelper.Services;
 
 namespace ToraConHelper.ViewModels;
@@ -22,7 +22,7 @@ public partial class PowerToysViewModel : ObservableObject
     {
         this.gameType = gameType;
         this.parentViewModel = parentViewModel;
-        gameUri = GetGameRunUri()!;
+        gameUri = PowerToysHelper.GetGameRunUri(gameType)!;
     }
 
     [RelayCommand]
@@ -87,7 +87,8 @@ public partial class PowerToysViewModel : ObservableObject
                 .Select(pf => new ProfileFolderData() { FullName = pf })
                 .OrderByDescending(pfd => pfd.LastWriteTime);
         }
-        catch {
+        catch
+        {
             return Enumerable.Empty<ProfileFolderData>();
         }
     }
@@ -118,34 +119,10 @@ public partial class PowerToysViewModel : ObservableObject
     static internal PowerToysViewModel FromSettings(ViewModel parentViewModel, GameType gameType, PowerToysSettings? settings)
     {
         PowerToysViewModel result = new(gameType, parentViewModel);
-        result.GameDataFolder = settings != null ? settings.GameDataFolder : result.GetDefaultGameDataFolder();
+        result.GameDataFolder = settings != null ? settings.GameDataFolder : PowerToysHelper.GetDefaultGameDataFolder(gameType);
         return result;
     }
     #endregion Setialization Helper
-
-    internal string GetDefaultGameDataFolder()
-    {
-        switch (gameType)
-        {
-            case GameType.ETS2:
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Euro Truck Simulator 2");
-            case GameType.ATS:
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "American Truck Simulator");
-        }
-        return string.Empty;
-    }
-
-    internal Uri? GetGameRunUri()
-    {
-        switch (gameType)
-        {
-            case GameType.ETS2:
-                return new Uri("steam://run/227300");
-            case GameType.ATS:
-                return new Uri("steam://run/270880");
-        }
-        return null;
-    }
 }
 
 public partial class ProfileFolderData : ObservableObject
@@ -161,26 +138,14 @@ public partial class ProfileFolderData : ObservableObject
         this.LastWriteTime = dirInfo.LastWriteTime;
         try
         {
-            var bytes = ConvertHexStringToByteArray(Name);
             // プロファイルフォルダ名(デコード済み)
-            DecodedName = new UTF8Encoding().GetString(bytes);
+            DecodedName = PowerToysHelper.ConvertHexProfileNameToString(this.Name);
         }
         catch
         {
             // デコード失敗したので、手動で作ったフォルダ
             DecodedName = Name;
         }
-    }
-
-    public static byte[] ConvertHexStringToByteArray(string hex)
-    {
-        int length = hex.Length;
-        byte[] bytes = new byte[length / 2];
-        for (int i = 0; i < length; i += 2)
-        {
-            bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
-        }
-        return bytes;
     }
 
     [ObservableProperty]
