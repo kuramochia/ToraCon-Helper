@@ -1,4 +1,6 @@
-﻿using ToraConHelper.ViewModels;
+﻿using System.Collections.Generic;
+using ToraConHelper.Helpers;
+using ToraConHelper.ViewModels;
 
 namespace ToraConHelper.Services;
 
@@ -39,5 +41,12 @@ public class Settings
     public bool BlinkerLikeRealCarDInputActionEnabled { get; set; } = false;
 
     public BlinkerJoyStickType BlinkerDInputJoyStickType { get; set; } = BlinkerJoyStickType.LeftStick;
+
+    public Dictionary<GameType, PowerToysSettings>? PowerToysSettings { get; set; }
+}
+
+public class PowerToysSettings
+{
+    public string? GameDataFolder { get; set; }
 
 }
