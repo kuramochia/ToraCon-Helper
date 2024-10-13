@@ -34,8 +34,8 @@ public partial class ViewModel
             BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
         };
         s.PowerToysSettings ??= new();
-        s.PowerToysSettings.Add(GameType.ETS2, Ets2.ToSettings());
-        s.PowerToysSettings.Add(GameType.ATS, Ats.ToSettings());
+        s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
+        s.PowerToysSettings.Add(GameType.ATS, Ats!.ToSettings());
 
         return s;
     }
