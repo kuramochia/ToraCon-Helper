@@ -12,6 +12,7 @@ public partial class ViewModel
             IsActive = IsActive,
             GoToTasktrayOnAppClose = GoToTasktrayOnAppClose,
             TaskTrayOnStart = TaskTrayOnStart,
+            LastShownPage = LastShownPage,
 
             BlinkerLikeRealCarActionEnabled = BlinkerLikeRealCarActionEnabled,
             RetarderAllReduceActionEnabled = ReterderAllReduceActionEnabled,
@@ -46,6 +47,7 @@ public partial class ViewModel
         IsActive = s.IsActive;
         GoToTasktrayOnAppClose = s.GoToTasktrayOnAppClose;
         TaskTrayOnStart = s.TaskTrayOnStart;
+        LastShownPage = s.LastShownPage;
 
         BlinkerLikeRealCarActionEnabled = s.BlinkerLikeRealCarActionEnabled;
         ReterderAllReduceActionEnabled = s.RetarderAllReduceActionEnabled;
