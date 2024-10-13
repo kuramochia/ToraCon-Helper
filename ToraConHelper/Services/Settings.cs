@@ -1,4 +1,6 @@
-﻿using ToraConHelper.ViewModels;
+﻿using System.Collections.Generic;
+using ToraConHelper.Helpers;
+using ToraConHelper.ViewModels;
 
 namespace ToraConHelper.Services;
 
@@ -7,6 +9,8 @@ public class Settings
     public bool IsActive { get; set; } = true;
     public bool GoToTasktrayOnAppClose { get; set; } = false;
     public bool TaskTrayOnStart { get; set; } = false;
+
+    public string? LastShownPage { get; set; } = null;
 
     public bool BlinkerLikeRealCarActionEnabled { get; set; } = true;
     public bool RetarderAllReduceActionEnabled { get; set; } = true;
@@ -39,5 +43,12 @@ public class Settings
     public bool BlinkerLikeRealCarDInputActionEnabled { get; set; } = false;
 
     public BlinkerJoyStickType BlinkerDInputJoyStickType { get; set; } = BlinkerJoyStickType.LeftStick;
+
+    public Dictionary<GameType, PowerToysSettings>? PowerToysSettings { get; set; }
+}
+
+public class PowerToysSettings
+{
+    public string? GameDataFolder { get; set; }
 
 }
