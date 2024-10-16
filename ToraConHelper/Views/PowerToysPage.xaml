@@ -54,7 +54,7 @@
         <ui:CardExpander
             Margin="10"
             DataContext="{Binding Ets2}"
-            IsExpanded="True">
+            IsExpanded="False">
             <ui:CardExpander.Header>
                 <DockPanel LastChildFill="True">
                     <Button
@@ -155,7 +155,7 @@
         <ui:CardExpander
             Margin="10"
             DataContext="{Binding Ats}"
-            IsExpanded="True">
+            IsExpanded="False">
             <ui:CardExpander.Header>
                 <DockPanel LastChildFill="True">
                     <Button
