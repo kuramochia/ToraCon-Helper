@@ -78,10 +78,11 @@ public partial class App : Application
         };
         notifyIcon.DoubleClick += showAction;
 
+        // 多重起動時の表示依頼を拾う
+        _ = RunPerProcessCommunicationAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+
         // Telemetry DLL 更新チェック
         CheckTelemetryDLL();
-
-        await RunPerProcessCommunicationAsync(cancellationTokenSource.Token).ConfigureAwait(false);
     }
 
     private void CheckTelemetryDLL()
