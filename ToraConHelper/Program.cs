@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO.Pipes;
 using System.Threading;
+using System.Threading.Tasks;
 using ToraConHelper.Installer;
 
 namespace ToraConHelper;
@@ -9,7 +11,7 @@ public class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        if ( args.Length == 1 && string.Equals("-install", args[0],StringComparison.OrdinalIgnoreCase))
+        if (args.Length == 1 && string.Equals("-install", args[0], StringComparison.OrdinalIgnoreCase))
         {
             var pluginApp = new PluginApp();
             pluginApp.Run();
@@ -26,11 +28,26 @@ public class Program
                     var app = new App();
                     app.Run();
                 }
+                else
+                {
+                    // 5秒であきらめる
+                    CancellationTokenSource cancellationTokenSource = new();
+                    cancellationTokenSource.CancelAfter(5000);
+                    // 既存のウィンドウを表示
+                    ShowAlreadyWindowAsync(cancellationTokenSource.Token).Wait();
+                }
             }
             finally
             {
                 if (createdNew) mutex.ReleaseMutex();
             }
         }
+    }
+
+    private static async Task ShowAlreadyWindowAsync(CancellationToken cancellationToken)
+    {
+        // 接続するだけで Show 依頼ということにする
+        using var client = new NamedPipeClientStream(".", App.NamedPipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+        await client.ConnectAsync(cancellationToken);
     }
 }
