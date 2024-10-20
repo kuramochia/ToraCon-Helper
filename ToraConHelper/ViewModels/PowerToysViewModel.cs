@@ -17,13 +17,19 @@ public partial class PowerToysViewModel : ObservableObject
 
     private GameType gameType;
     private Uri gameUri;
+    private GameProcessDetector gameProcessDetector;
 
     public PowerToysViewModel(GameType gameType, ViewModel parentViewModel)
     {
         this.gameType = gameType;
         this.parentViewModel = parentViewModel;
+        this.gameProcessDetector = parentViewModel.GameProcessDetector;
+        gameProcessDetector.GameProcessEnded += GameProcessDetector_GameProcessEnded;
+        if (!gameProcessDetector.IsStarted) gameProcessDetector.StartWatchers();
         gameUri = PowerToysHelper.GetGameRunUri(gameType)!;
     }
+
+    private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e) => ReloadProfiles();
 
     [RelayCommand(CanExecute = nameof(CanOpenGameFolder))]
     private void OpenGame() => Process.Start(gameUri.ToString());
@@ -34,7 +40,11 @@ public partial class PowerToysViewModel : ObservableObject
     partial void OnGameDataFolderChanged(string? value)
     {
         parentViewModel.Save();
+        ReloadProfiles();
+    }
 
+    private void ReloadProfiles()
+    {
         // Update Profiles Data
         LocalProfiles = new(GetLocalProfiles());
         SteamProfiles = new(GetSteamProfiles());
