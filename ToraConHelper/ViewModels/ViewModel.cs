@@ -11,15 +11,19 @@ public partial class ViewModel : ObservableObject
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
     private readonly TelemetryActionsManager telemetryActionsManager;
+    private readonly GameProcessDetector gameProcessDetector;
+    internal GameProcessDetector GameProcessDetector { get { return gameProcessDetector; } }
 
-    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager) : base()
+    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector) : base()
     {
         this.settingFile = settingFile;
         this.telemetryActionsManager = telemetryActionsManager;
+        this.gameProcessDetector = gameProcessDetector;
 
         isInitialization = true;
         LoadFromSettings(this.settingFile);
         isInitialization = false;
+
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
