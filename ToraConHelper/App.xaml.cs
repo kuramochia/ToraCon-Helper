@@ -40,7 +40,7 @@ public partial class App : Application
     public IServiceProvider Services { get; }
 
 
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         // ちょっと雑だけど、MainWindowを DI から取る -> ViewModel を DI から取る → 初期化と動作開始、という流れ

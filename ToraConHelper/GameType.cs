@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace ToraConHelper;
 
 public enum GameType
