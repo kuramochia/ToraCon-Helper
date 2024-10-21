@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.ComponentModel;
 using ToraConHelper.Services;
 using ToraConHelper.Services.TelemetryActions;
 
 namespace ToraConHelper.ViewModels;
 
-public partial class ViewModel : ObservableObject
+public partial class ViewModel : ObservableObject, IDisposable
 {
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
@@ -78,4 +79,9 @@ public partial class ViewModel : ObservableObject
         }
     }
     #endregion
+    public void Dispose()
+    {
+        Ets2?.Dispose();
+        Ats?.Dispose();
+    }
 }

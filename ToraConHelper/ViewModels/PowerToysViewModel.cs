@@ -11,7 +11,7 @@ using ToraConHelper.Services;
 
 namespace ToraConHelper.ViewModels;
 
-public partial class PowerToysViewModel : ObservableObject
+public partial class PowerToysViewModel : ObservableObject, IDisposable
 {
     private ViewModel parentViewModel;
 
@@ -30,6 +30,8 @@ public partial class PowerToysViewModel : ObservableObject
     }
 
     private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e) => ReloadProfiles();
+
+    public void Dispose() => gameProcessDetector.GameProcessEnded -= GameProcessDetector_GameProcessEnded;
 
     [RelayCommand(CanExecute = nameof(CanOpenGameFolder))]
     private void OpenGame() => Process.Start(gameUri.ToString());
