@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO.Ports;
 using ToraConHelper.Services.TelemetryActions;
 
 namespace ToraConHelper.ViewModels;
