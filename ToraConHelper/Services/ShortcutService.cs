@@ -20,6 +20,7 @@ public class ShortcutService
             try
             {
                 lnk.TargetPath = ExeFilePath;
+                lnk.WorkingDirectory = Path.GetDirectoryName(ExeFilePath);
                 lnk.IconLocation = $"{ExeFilePath}, 0";
                 lnk.Save();
                 return true;
