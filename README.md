@@ -22,7 +22,7 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
     * テレメトリーから情報を取っているので、どうしてもウィンカーが表示されてからになってしまいます。
     * この制限事項が微妙・・・という方でトラコンをお持ちの方は、下記の DirectInput 版をご利用下さい。
 
-* __(トラコン専用) DirectInput を使ってウィンカーが出ているときに逆側のウィンカーを出すと、消えるアクション<sup>new! v1.8</sup>__
+* (トラコン専用) DirectInput を使ってウィンカーが出ているときに逆側のウィンカーを出すと、消えるアクション
   * 制限事項を撤廃するために DirectInput API を使って、トラコンのウィンカー入力を行います。
   * DirectInput は対象のコントローラーを探す必要があるのですが、トラコン本体（ハンドルの方）を一本釣りでひっかけていますので、トラコン専用です。
   * 利用するための条件は２つ
@@ -110,12 +110,17 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 * このアプリケーションを再度起動したときに、画面を表示させずにタスクトレイに常駐します。
 * 画面を表示したいときはタスクトレイのアイコンをダブルクリック、または右クリック → 表示 を選択します。
 
+#### スタートアップに登録
+* Windows ユーザーのログイン時に自動的にこのアプリを起動するように設定できます。
+  * オン にすると、`C:\Users\[USERNAME]\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup` にショートカットを作成します。
+  * オフ にすると、作成したショートカット ファイルを削除します
+
 
 ### ウィンカー関連 アクション設定
 #### ウィンカー戻す動作を実車に近づける
 * ウィンカーが出ているときに、逆側のウィンカー入力をすると、ウィンカーを消すことができます。（ただし一瞬だけ逆側のウィンカーが表示されます）
 
-#### __(トラコン専用) DirectInput を使ってウィンカー戻す動作を実車に近づける<sup>new! v1.8</sup>__
+#### (トラコン専用) DirectInput を使ってウィンカー戻す動作を実車に近づける
 * ウィンカーが出ているときに、逆側のウィンカー入力をすると、ウィンカーを消すことができます。
   * 制限事項を撤廃するために DirectInput API を使って、トラコンのウィンカー入力を行います。
   * [HORI Force Feedback Truck Control System for Windows® PC（通称「トラコン」）](https://hori.jp/products/hpc/hpc-044/) 専用です。
@@ -170,7 +175,7 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 * 給油時に Enter や OK ボタンを一度押して、給油を開始してしまえば、ボタンを離しても満タンまで給油が続きます（代わりにボタンを押し続けます）
 * 給油するとき、満タンになるまでボタンを押し続けるのが面倒な方向けです。
 
-## PowerToys <sup>new! v1.9</sup>
+## PowerToys
 ETS2/ATS のいろんなフォルダ・ファイルを簡単に閲覧・起動できるページを用意しました。
 
 ![](images/appPowerToyPageImage.png)
