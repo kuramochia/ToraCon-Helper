@@ -130,6 +130,7 @@ public partial class App : Application
         services.AddSingleton<ISettingFileMamager, SettingFileManager>();
         services.AddSingleton<TelemetryActionsManager>();
         services.AddSingleton<GameProcessDetector>();
+        services.AddSingleton<ShortcutService>();
 
         // Services.TelemetryActions
         services.AddSingleton<BlinkerLikeRealCarAction>();
