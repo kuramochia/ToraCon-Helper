@@ -13,18 +13,21 @@ public partial class ViewModel : ObservableObject, IDisposable
     private readonly ISettingFileMamager settingFile;
     private readonly TelemetryActionsManager telemetryActionsManager;
     private readonly GameProcessDetector gameProcessDetector;
+    private readonly ShortcutService shortcutService;
     internal GameProcessDetector GameProcessDetector { get { return gameProcessDetector; } }
 
-    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector) : base()
+    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector, ShortcutService shortCutService) : base()
     {
         this.settingFile = settingFile;
         this.telemetryActionsManager = telemetryActionsManager;
         this.gameProcessDetector = gameProcessDetector;
+        this.shortcutService = shortCutService;
 
         isInitialization = true;
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
+        IsShortcutCreated = shortcutService.HasShortcutFile();
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -64,6 +67,25 @@ public partial class ViewModel : ObservableObject, IDisposable
     private string? lastShownPage;
     #endregion
 
+    #region Shortcut
+
+    [ObservableProperty]
+    private bool isShortcutCreated;
+
+    partial void OnIsShortcutCreatedChanged(bool value)
+    {
+        if (value)
+        {
+            shortcutService.Create();
+        }
+        else
+        {
+            shortcutService.Delete();
+        }
+        IsShortcutCreated = shortcutService.HasShortcutFile();
+    }
+
+    #endregion
 
     #region Private methods
     private void OnActionEnabledChanged<T>(bool oldValue, bool newValue) where T : ITelemetryAction
