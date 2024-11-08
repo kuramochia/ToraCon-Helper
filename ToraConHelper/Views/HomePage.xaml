@@ -45,9 +45,6 @@
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
-                    <ui:Card.Footer>
-                        <TextBlock Text="ゲームからテレメトリー情報を取得し、下記のアクションを実行します。" />
-                    </ui:Card.Footer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -56,11 +53,11 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="テレメトリー動作" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=IsActive}" />
                     </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="ゲームからテレメトリー情報を取得し、下記のアクションを実行します。" />
+                    </ui:Card.Footer>
                 </ui:Card>
                 <ui:Card>
-                    <ui:Card.Footer>
-                        <TextBlock Text="アプリをｘで終了すると、タスクトレイに収納されます。アプリを終了するときは、タスクトレイの右クリック メニューから。" />
-                    </ui:Card.Footer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -69,11 +66,11 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="アプリ終了時にタスクトレイに格納" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=GoToTasktrayOnAppClose}" />
                     </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="アプリをｘで終了すると、タスクトレイに収納されます。アプリを終了するときは、タスクトレイの右クリック メニューから。" />
+                    </ui:Card.Footer>
                 </ui:Card>
                 <ui:Card>
-                    <ui:Card.Footer>
-                        <TextBlock Text="アプリの起動時にウィンドウを出さずにタスクトレイに格納状態で開始します。" />
-                    </ui:Card.Footer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -82,6 +79,9 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="起動時にタスクトレイに格納" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=TaskTrayOnStart}" />
                     </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="アプリの起動時にウィンドウを出さずにタスクトレイに格納状態で開始します。" />
+                    </ui:Card.Footer>
                 </ui:Card>
                 <ui:Card>
                     <Grid>
@@ -105,9 +105,6 @@
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
-                    <ui:Card.Footer>
-                        <TextBlock Text="ウィンカーが出ているときに、逆側のウィンカー入力をすると、ウィンカーを消すことができます。（ただし一瞬だけ逆側のウィンカーが表示されます）" />
-                    </ui:Card.Footer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -116,9 +113,20 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="ウィンカー戻す動作を実車に近づける" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerLikeRealCarActionEnabled}" />
                     </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="ウィンカーが出ているときに、逆側のウィンカー入力をすると、ウィンカーを消すことができます。（ただし一瞬だけ逆側のウィンカーが表示されます）" />
+                    </ui:Card.Footer>
                 </ui:Card>
                 <!--  DirectInput Blinker  -->
                 <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="(トラコン専用) DirectInput を使ってウィンカー戻す動作を実車に近づける" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerLikeRealCarDInputActionEnabled}" />
+                    </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
                             <TextBlock>
@@ -138,16 +146,16 @@
                                 ToolTip="ウィンカーに利用するレバー" />
                         </StackPanel>
                     </ui:Card.Footer>
+                </ui:Card>
+                <ui:Card>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="(トラコン専用) DirectInput を使ってウィンカー戻す動作を実車に近づける" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerLikeRealCarDInputActionEnabled}" />
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="ウィンカー オートキャンセルが動作するハンドル回転角度を調整" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerHideOnSteeringActionEnabled}" />
                     </Grid>
-                </ui:Card>
-                <ui:Card>
                     <ui:Card.Footer>
                         <StackPanel>
                             <TextBlock Margin="0,0,0,10" Text="ゲームで設定しているハンドルの回転角度を指定" />
@@ -177,14 +185,6 @@
                             </StackPanel>
                         </StackPanel>
                     </ui:Card.Footer>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="ウィンカー オートキャンセルが動作するハンドル回転角度を調整" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=BlinkerHideOnSteeringActionEnabled}" />
-                    </Grid>
                 </ui:Card>
                 <ui:Card>
                     <Grid>
@@ -268,6 +268,14 @@
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを全部戻す" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAllReduceActionEnabled}" />
+                    </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
                             <TextBlock Margin="0,0,0,10" Text="指定された速度以下でリターダーを戻す入力を行うと、リターダーを一気に全段戻します。" />
@@ -291,19 +299,8 @@
                             </StackPanel>
                         </StackPanel>
                     </ui:Card.Footer>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを全部戻す" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAllReduceActionEnabled}" />
-                    </Grid>
                 </ui:Card>
                 <ui:Card>
-                    <ui:Card.Footer>
-                        <TextBlock Text="リターダーを 0 段から一段上げると、一気にトラックの持つ最大段数まで上げます。" />
-                    </ui:Card.Footer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -312,11 +309,11 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="リターダーを一段入れたら最大段数まで上げる" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderFullOnActionEnabled}" />
                     </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="リターダーを 0 段から一段上げると、一気にトラックの持つ最大段数まで上げます。" />
+                    </ui:Card.Footer>
                 </ui:Card>
                 <ui:Card>
-                    <ui:Card.Footer>
-                        <TextBlock Text="リターダーを最大段数から一段下げると、一気に全段戻します。" />
-                    </ui:Card.Footer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -325,8 +322,19 @@
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="リターダーを最大段数から一段下げたら全段下げる" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderFullOffActionEnabled}" />
                     </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="リターダーを最大段数から一段下げると、一気に全段戻します。" />
+                    </ui:Card.Footer>
                 </ui:Card>
                 <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを自動的にオフ" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAutoOffActionEnabled}" />
+                    </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
                             <TextBlock Margin="0,0,0,10" Text="指定された速度以下になると、操作不要でリターダーを自動的にオフにします。" />
@@ -350,14 +358,6 @@
                             </StackPanel>
                         </StackPanel>
                     </ui:Card.Footer>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを自動的にオフ" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAutoOffActionEnabled}" />
-                    </Grid>
                 </ui:Card>
 
             </StackPanel>
@@ -369,6 +369,14 @@
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でエンジンブレーキを自動的にオフ" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=EngineBrakeAutoOffActionEnabled}" />
+                    </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
                             <TextBlock Margin="0,0,0,10" Text="指定された速度以下になると、エンジンブレーキ トグルスイッチを押して自動的にオフにします。" />
@@ -393,14 +401,6 @@
                             </StackPanel>
                         </StackPanel>
                     </ui:Card.Footer>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でエンジンブレーキを自動的にオフ" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=EngineBrakeAutoOffActionEnabled}" />
-                    </Grid>
                 </ui:Card>
             </StackPanel>
         </ui:CardExpander>
