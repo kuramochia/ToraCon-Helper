@@ -15,7 +15,7 @@ public class SettingFileManager : ISettingFileMamager
 {
     private const string SettingFileName = "ToraCon-Helper_Settings.json";
 
-    private static readonly JsonSerializerOptions jsonSerializeOptions = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions jsonSerializeOptions = new()
     {
         WriteIndented = true,
         Converters =

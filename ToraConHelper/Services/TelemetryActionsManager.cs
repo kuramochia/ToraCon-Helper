@@ -14,9 +14,9 @@ public class TelemetryActionsManager : IDisposable
 
     private bool _running = false;
 
-    private readonly List<ITelemetryAction> _actions = new();
+    private readonly List<ITelemetryAction> _actions = [];
 
-    private readonly List<ITelemetryActionWithEvents> _actionsWithEvents = new();
+    private readonly List<ITelemetryActionWithEvents> _actionsWithEvents = [];
 
     public TelemetryActionsManager() { }
 
@@ -41,21 +41,21 @@ public class TelemetryActionsManager : IDisposable
         Stop();
         _telemetry = new SCSSdkTelemetry();
         _telemetry.Data += Telemetry_Data;
-        _telemetry.JobStarted += _telemetry_JobStarted;
-        _telemetry.JobCancelled += _telemetry_JobCancelled;
-        _telemetry.Fined += _telemetry_Fined;
-        _telemetry.Tollgate += _telemetry_Tollgate;
-        _telemetry.Ferry += _telemetry_Ferry;
-        _telemetry.Train += _telemetry_Train;
-        _telemetry.RefuelStart += _telemetry_RefuelStart;
-        _telemetry.RefuelEnd += _telemetry_RefuelEnd;
-        _telemetry.RefuelPayed += _telemetry_RefuelPayed;
+        _telemetry.JobStarted += Telemetry_JobStarted;
+        _telemetry.JobCancelled += Telemetry_JobCancelled;
+        _telemetry.Fined += Telemetry_Fined;
+        _telemetry.Tollgate += Telemetry_Tollgate;
+        _telemetry.Ferry += Telemetry_Ferry;
+        _telemetry.Train += Telemetry_Train;
+        _telemetry.RefuelStart += Telemetry_RefuelStart;
+        _telemetry.RefuelEnd += Telemetry_RefuelEnd;
+        _telemetry.RefuelPayed += Telemetry_RefuelPayed;
         Debug.WriteLine($"SCSSdkTelemetry Start. UpdateInterval={_telemetry.UpdateInterval}ms");
     }
 
     #region event handler
 
-    private void _telemetry_RefuelPayed(object sender, EventArgs e)
+    private void Telemetry_RefuelPayed(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -76,7 +76,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_RefuelEnd(object sender, EventArgs e)
+    private void Telemetry_RefuelEnd(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -97,7 +97,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_RefuelStart(object sender, EventArgs e)
+    private void Telemetry_RefuelStart(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -118,7 +118,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_Train(object sender, EventArgs e)
+    private void Telemetry_Train(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -139,7 +139,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_Ferry(object sender, EventArgs e)
+    private void Telemetry_Ferry(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -160,7 +160,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_Tollgate(object sender, EventArgs e)
+    private void Telemetry_Tollgate(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -181,7 +181,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_Fined(object sender, EventArgs e)
+    private void Telemetry_Fined(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -202,7 +202,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_JobCancelled(object sender, EventArgs e)
+    private void Telemetry_JobCancelled(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -223,7 +223,7 @@ public class TelemetryActionsManager : IDisposable
         }
     }
 
-    private void _telemetry_JobStarted(object sender, EventArgs e)
+    private void Telemetry_JobStarted(object sender, EventArgs e)
     {
         if (_running) return;
         try
@@ -272,15 +272,15 @@ public class TelemetryActionsManager : IDisposable
         if (_telemetry != null)
         {
             _telemetry.Data -= Telemetry_Data;
-            _telemetry.JobStarted -= _telemetry_JobStarted;
-            _telemetry.JobCancelled -= _telemetry_JobCancelled;
-            _telemetry.Fined -= _telemetry_Fined;
-            _telemetry.Tollgate -= _telemetry_Tollgate;
-            _telemetry.Ferry -= _telemetry_Ferry;
-            _telemetry.Train -= _telemetry_Train;
-            _telemetry.RefuelStart -= _telemetry_RefuelStart;
-            _telemetry.RefuelEnd -= _telemetry_RefuelEnd;
-            _telemetry.RefuelPayed -= _telemetry_RefuelPayed;
+            _telemetry.JobStarted -= Telemetry_JobStarted;
+            _telemetry.JobCancelled -= Telemetry_JobCancelled;
+            _telemetry.Fined -= Telemetry_Fined;
+            _telemetry.Tollgate -= Telemetry_Tollgate;
+            _telemetry.Ferry -= Telemetry_Ferry;
+            _telemetry.Train -= Telemetry_Train;
+            _telemetry.RefuelStart -= Telemetry_RefuelStart;
+            _telemetry.RefuelEnd -= Telemetry_RefuelEnd;
+            _telemetry.RefuelPayed -= Telemetry_RefuelPayed;
             _telemetry.Dispose();
             _telemetry = null;
         }
