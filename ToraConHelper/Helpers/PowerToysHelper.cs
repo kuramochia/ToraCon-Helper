@@ -8,26 +8,22 @@ internal static class PowerToysHelper
 {
     internal static string GetDefaultGameDataFolder(GameType gameType)
     {
-        switch (gameType)
+        return gameType switch
         {
-            case GameType.ETS2:
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Euro Truck Simulator 2");
-            case GameType.ATS:
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "American Truck Simulator");
-        }
-        return string.Empty;
+            GameType.ETS2 => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Euro Truck Simulator 2"),
+            GameType.ATS => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "American Truck Simulator"),
+            _ => string.Empty,
+        };
     }
 
     internal static Uri? GetGameRunUri(GameType gameType)
     {
-        switch (gameType)
+        return gameType switch
         {
-            case GameType.ETS2:
-                return new Uri("steam://run/227300");
-            case GameType.ATS:
-                return new Uri("steam://run/270880");
-        }
-        return null;
+            GameType.ETS2 => new Uri("steam://run/227300"),
+            GameType.ATS => new Uri("steam://run/270880"),
+            _ => null,
+        };
     }
 
     internal static string ConvertHexProfileNameToString(string hex)

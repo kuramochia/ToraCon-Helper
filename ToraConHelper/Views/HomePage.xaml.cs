@@ -16,7 +16,7 @@ public partial class HomePage : Page
     }
 
     public ObservableCollection<int> SteeringRotationAngles { get; private set; } = 
-        new (){ 
+        [ 
             360,
             540,
             720,
@@ -26,5 +26,5 @@ public partial class HomePage : Page
             1440,
             1620,
             1800,
-        };
+        ];
 }
