@@ -34,7 +34,7 @@ public partial class ViewModel
             BlinkerLikeRealCarDInputActionEnabled = BlinkerLikeRealCarDInputActionEnabled,
             BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
         };
-        s.PowerToysSettings ??= new();
+        s.PowerToysSettings ??= [];
         s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
         s.PowerToysSettings.Add(GameType.ATS, Ats!.ToSettings());
 

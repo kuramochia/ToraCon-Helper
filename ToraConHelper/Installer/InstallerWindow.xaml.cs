@@ -11,7 +11,7 @@ namespace ToraConHelper.Installer;
 /// </summary>
 public partial class InstallerWindow
 {
-    private readonly ObservableCollection<string> messages = new();
+    private readonly ObservableCollection<string> messages = [];
     public InstallerWindow()
     {
         InitializeComponent();

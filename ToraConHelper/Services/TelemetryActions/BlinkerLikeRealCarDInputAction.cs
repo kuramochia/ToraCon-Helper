@@ -12,9 +12,9 @@ namespace ToraConHelper.Services.TelemetryActions;
 /// </summary>
 public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
 {
-    private DirectInputController _dInputController = new();
+    private readonly DirectInputController _dInputController = new();
 
-    private GameProcessDetector _gameProcessDetector;
+    private readonly GameProcessDetector _gameProcessDetector;
 
     public JoystickOffset LeftBlinkerJoyStick { get; set; }
     public JoystickOffset RightBlinkerJoyStick { get; set; }
@@ -22,11 +22,11 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
     public BlinkerLikeRealCarDInputAction(GameProcessDetector gameProcessDetector) : base()
     {
         _gameProcessDetector = gameProcessDetector;
-        _gameProcessDetector.GameProcessEnded += _gameProcessDetector_GameProcessEnded;
+        _gameProcessDetector.GameProcessEnded += GameProcessDetector_GameProcessEnded;
         if (!_gameProcessDetector.IsStarted) _gameProcessDetector.StartWatchers();
     }
 
-    private void _gameProcessDetector_GameProcessEnded(object sender, EventArgs e) => _dInputController.Release();
+    private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e) => _dInputController.Release();
 
     public override void OnActionRemoved() => _dInputController.Release();
 
@@ -131,7 +131,7 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
 
     public void Dispose()
     {
-        _gameProcessDetector.GameProcessEnded -= _gameProcessDetector_GameProcessEnded;
+        _gameProcessDetector.GameProcessEnded -= GameProcessDetector_GameProcessEnded;
         _dInputController.Dispose();
     }
 
