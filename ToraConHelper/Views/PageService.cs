@@ -4,15 +4,8 @@ using Wpf.Ui;
 
 namespace ToraConHelper.Views;
 
-public class PageService : IPageService
+public class PageService(IServiceProvider serviceProvider) : IPageService
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public PageService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
-
     public T? GetPage<T>()
         where T : class
     {
@@ -21,7 +14,7 @@ public class PageService : IPageService
             throw new InvalidOperationException("The page should be a WPF control.");
         }
 
-        return (T?)_serviceProvider.GetService(typeof(T));
+        return (T?)serviceProvider.GetService(typeof(T));
     }
 
     public FrameworkElement? GetPage(Type pageType)
@@ -31,6 +24,6 @@ public class PageService : IPageService
             throw new InvalidOperationException("The page should be a WPF control.");
         }
 
-        return _serviceProvider.GetService(pageType) as FrameworkElement;
+        return serviceProvider.GetService(pageType) as FrameworkElement;
     }
 }
