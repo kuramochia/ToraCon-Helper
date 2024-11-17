@@ -12,7 +12,7 @@ namespace ToraConHelper.Services;
 public class DirectInputController : IDisposable
 {
     // トラコンの ProductGUID
-    private static readonly Guid TrackControlSystemProductGuid = new Guid("{017a0f0d-0000-0000-0000-504944564944}");
+    private static readonly Guid TrackControlSystemProductGuid = new("{017a0f0d-0000-0000-0000-504944564944}");
     public IDirectInputDevice8? Device { get; private set; }
 
     public bool IsInitialized { get { return Device != null; } }
