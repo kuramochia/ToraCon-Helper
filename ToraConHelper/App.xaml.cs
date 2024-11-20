@@ -33,7 +33,7 @@ public partial class App : Application
 
     private EventHandler? showPowerToysAction;
 
-    private CancellationTokenSource cancellationTokenSource = new();
+    private readonly CancellationTokenSource cancellationTokenSource = new();
 
     public new static App Current => (App)Application.Current;
 
@@ -94,8 +94,10 @@ public partial class App : Application
             if (MessageBox.Show(msg, MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 // Create new process
-                var pInfo = new ProcessStartInfo(System.Reflection.Assembly.GetExecutingAssembly().Location, "-install");
-                pInfo.Verb = "runas";
+                var pInfo = new ProcessStartInfo(System.Reflection.Assembly.GetExecutingAssembly().Location, "-install")
+                {
+                    Verb = "runas"
+                };
                 Process.Start(pInfo);
             }
         }

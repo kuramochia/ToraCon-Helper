@@ -9,13 +9,13 @@ namespace ToraConHelper.Services;
 
 public class GameProcessDetector : IDisposable
 {
-    private static readonly string[] targets = new string[] { "eurotrucks2.exe", "amtrucks.exe" };
+    private static readonly string[] targets = ["eurotrucks2.exe", "amtrucks.exe"];
 
 
     private bool _started;
 
-    //private List<ManagementEventWatcher> startEvents = new(targets.Length);
-    private List<ManagementEventWatcher> endEvents = new(targets.Length);
+    //private readonly List<ManagementEventWatcher> startEvents = new(targets.Length);
+    private readonly List<ManagementEventWatcher> endEvents = new(targets.Length);
 
     //public event EventHandler<EventArgs>? GameProcessStarted;
     public event EventHandler<EventArgs>? GameProcessEnded;
@@ -91,7 +91,7 @@ public class GameProcessDetector : IDisposable
         string scope = @"\\.\root\CIMV2";
 
         // Create a watcher and listen for events
-        ManagementEventWatcher watcher = new ManagementEventWatcher(scope, queryString);
+        ManagementEventWatcher watcher = new (scope, queryString);
         watcher.EventArrived += ProcessEnded;
         watcher.Start();
         return watcher;
