@@ -3,9 +3,8 @@ using System.ComponentModel;
 
 namespace ToraConHelper.Views;
 
-public class EnumDescriptionConverter : EnumConverter
+public class EnumDescriptionConverter(Type type) : EnumConverter(type)
 {
-    public EnumDescriptionConverter(Type type) : base(type) { }
     public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
     {
         if (destinationType == typeof(string))
