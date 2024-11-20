@@ -13,11 +13,11 @@ namespace ToraConHelper.ViewModels;
 
 public partial class PowerToysViewModel : ObservableObject, IDisposable
 {
-    private ViewModel parentViewModel;
+    private readonly ViewModel parentViewModel;
 
-    private GameType gameType;
-    private Uri gameUri;
-    private GameProcessDetector gameProcessDetector;
+    private readonly GameType gameType;
+    private readonly Uri gameUri;
+    private readonly GameProcessDetector gameProcessDetector;
 
     public PowerToysViewModel(GameType gameType, ViewModel parentViewModel)
     {
@@ -95,10 +95,10 @@ public partial class PowerToysViewModel : ObservableObject, IDisposable
 
     #region Profiles 
     [ObservableProperty]
-    private ObservableCollection<ProfileFolderData> localProfiles = new();
+    private ObservableCollection<ProfileFolderData> localProfiles = [];
 
     [ObservableProperty]
-    private ObservableCollection<ProfileFolderData> steamProfiles = new();
+    private ObservableCollection<ProfileFolderData> steamProfiles = [];
 
 
     private IEnumerable<ProfileFolderData> GetLocalProfiles()
@@ -111,7 +111,7 @@ public partial class PowerToysViewModel : ObservableObject, IDisposable
         }
         catch
         {
-            return Enumerable.Empty<ProfileFolderData>();
+            return [];
         }
     }
 
@@ -125,7 +125,7 @@ public partial class PowerToysViewModel : ObservableObject, IDisposable
         }
         catch
         {
-            return Enumerable.Empty<ProfileFolderData>();
+            return [];
         }
     }
     #endregion
@@ -133,15 +133,19 @@ public partial class PowerToysViewModel : ObservableObject, IDisposable
     #region Setialization Helper
     internal PowerToysSettings ToSettings()
     {
-        PowerToysSettings result = new();
-        result.GameDataFolder = GameDataFolder;
+        PowerToysSettings result = new()
+        {
+            GameDataFolder = GameDataFolder
+        };
         return result;
     }
 
     static internal PowerToysViewModel FromSettings(ViewModel parentViewModel, GameType gameType, PowerToysSettings? settings)
     {
-        PowerToysViewModel result = new(gameType, parentViewModel);
-        result.GameDataFolder = settings != null ? settings.GameDataFolder : PowerToysHelper.GetDefaultGameDataFolder(gameType);
+        PowerToysViewModel result = new(gameType, parentViewModel)
+        {
+            GameDataFolder = settings != null ? settings.GameDataFolder : PowerToysHelper.GetDefaultGameDataFolder(gameType)
+        };
         return result;
     }
     #endregion Setialization Helper
