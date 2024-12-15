@@ -24,6 +24,7 @@ public class TelemetryActionsManager : IDisposable
 
     public void AddAction(ITelemetryAction action)
     {
+        if (action == null) return;
         _actions.Add(action);
         if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Add(actionWithEvents);
         action.OnActionAdded();
@@ -31,6 +32,7 @@ public class TelemetryActionsManager : IDisposable
 
     public void RemoveAction(ITelemetryAction action)
     {
+        if (action == null) return;
         _actions.Remove(action);
         if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Remove(actionWithEvents);
         action.OnActionRemoved();
@@ -252,9 +254,9 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actions)
+            foreach (ITelemetryAction act in _actions)
             {
-                if (act != null && act.OnTelemetryUpdated(data)) break;
+                if (act.OnTelemetryUpdated(data)) break;
             }
         }
         catch (Exception ex)
