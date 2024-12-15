@@ -10,8 +10,9 @@ public class RetarderFullOffAction : TelemetryActionBase
 {
     private uint _currentRetarderLevel = 0;
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
+        var changed = false;
         var stepCount = telemetry.TruckValues.ConstantsValues.MotorValues.RetarderStepCount;
         var retarderlevel = telemetry.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel;
 
@@ -22,7 +23,9 @@ public class RetarderFullOffAction : TelemetryActionBase
             using var input = new SCSSdkTelemetryInput();
             input.Connect();
             input.SetRetarder(0);
+            changed = true;
         }
         _currentRetarderLevel = retarderlevel;
+        return changed;
     }
 }

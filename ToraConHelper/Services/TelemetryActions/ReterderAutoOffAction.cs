@@ -10,7 +10,7 @@ public class ReterderAutoOffAction : TelemetryActionBase
     /// </summary>
     public int LimitSpeedKph { get; set; } = 10;
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // 指定読度以下か
         var currentSpeedKph = telemetry.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
@@ -24,7 +24,9 @@ public class ReterderAutoOffAction : TelemetryActionBase
                 using var input = new SCSSdkTelemetryInput();
                 input.Connect();
                 input.SetRetarder(0);
+                return true;
             }
         }
+        return false;
     }
 }
