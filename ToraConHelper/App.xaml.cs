@@ -145,6 +145,7 @@ public partial class App : Application
         services.AddSingleton<AutoFullfuelAction>();
         services.AddSingleton<BlinkerForLaneChangeAction>();
         services.AddSingleton<BlinkerLikeRealCarDInputAction>();
+        services.AddSingleton<ReterderSkipInputAction>();
 
         return services.BuildServiceProvider();
     }
