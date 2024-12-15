@@ -30,13 +30,13 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
 
     public override void OnActionRemoved() => _dInputController.Release();
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // Dinput 初期化
         if (!_dInputController.Initialize())
         {
             Debug.WriteLine("DirectInputController Initialize Failed.");
-            return;
+            return false;
         }
 
         // Dinput の情報取得
@@ -54,6 +54,8 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
                 }
             }
         }
+
+        var changed = false;
 
         // Dinput 更新アリ
         if (hasUpdate)
@@ -117,16 +119,19 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
                     {
                         // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
                         input.SetLeftBlinker();
+                        changed = true;
                         break;
                     }
                 case InputType.RightOff:
                     {
                         // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
                         input.SetRightBlinker();
+                        changed = true;
                         break;
                     }
             }
         }
+        return changed;
     }
 
     public void Dispose()
