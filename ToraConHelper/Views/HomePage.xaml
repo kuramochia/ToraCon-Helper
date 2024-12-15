@@ -360,6 +360,37 @@
                     </ui:Card.Footer>
                 </ui:Card>
 
+                <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="リターダーの入力を N 段スキップ" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderSkipInputActionEnabled}" />
+                    </Grid>
+                    <ui:Card.Footer>
+                        <StackPanel>
+                            <TextBlock Margin="0,0,0,10" Text="リターダーの入力を N 段スキップして、疑似的にリターダーの操作段数を減らします。" />
+                            <StackPanel Margin="10,0,10,20" Orientation="Horizontal">
+                                <Slider
+                                    Width="300"
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Left"
+                                    LargeChange="1"
+                                    Maximum="3"
+                                    Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding Path=ReterderSkipInputLevel}" />
+                                <TextBlock Padding="20,0" VerticalAlignment="Top">
+                                    <Run Text="{Binding Path=ReterderSkipInputLevel}" />
+                                    <Run Text=" 段、入力をスキップ" />
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </ui:Card.Footer>
+                </ui:Card>
+
             </StackPanel>
         </ui:CardExpander>
 
