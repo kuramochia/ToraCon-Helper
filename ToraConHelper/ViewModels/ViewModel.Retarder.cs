@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO.Ports;
 using ToraConHelper.Services.TelemetryActions;
 
 namespace ToraConHelper.ViewModels;
@@ -48,5 +49,21 @@ public partial class ViewModel
     {
         var action = App.Current.Services.GetService<ReterderAutoOffAction>();
         action!.LimitSpeedKph = newValue;
+    }
+
+    // リターダーをスキップ入力する
+    [ObservableProperty]
+    private bool reterderSkipInputActionEnabled;
+
+    partial void OnReterderSkipInputActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderSkipInputAction>(oldValue, newValue);
+
+    // リターダーをスキップ入力するレベル
+    [ObservableProperty]
+    private int reterderSkipInputLevel;
+
+    partial void OnReterderSkipInputLevelChanged(int value)
+    {
+        var action = App.Current.Services.GetService<ReterderSkipInputAction>();
+        action!.SkipLevel = value;
     }
 }
