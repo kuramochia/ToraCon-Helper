@@ -12,8 +12,9 @@ public class ReterderAllReduceAction : TelemetryActionBase
 
     private uint _reterderLevel = 0;
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
+        var changed = false;
         var reterderLevel = telemetry.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel;
         var currentSpeedKph = telemetry.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
         // リターダー段数を減らしてる
@@ -25,10 +26,12 @@ public class ReterderAllReduceAction : TelemetryActionBase
             input.Connect();
             input.SetRetarder(0);
             _reterderLevel = 0;
+            changed = true;
         }
         else
         {
             _reterderLevel = reterderLevel;
         }
+        return changed;
     }
 }
