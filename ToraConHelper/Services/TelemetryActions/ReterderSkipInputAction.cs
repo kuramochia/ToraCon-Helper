@@ -11,8 +11,9 @@ public class ReterderSkipInputAction : TelemetryActionBase
     public int SkipLevel { get; set; } = 1;
 
     private uint _reterderLevel = 0;
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
+        var changed = false;
         var reterderLevel = telemetry.TruckValues.CurrentValues.MotorValues.BrakeValues.RetarderLevel;
         var stepCount = telemetry.TruckValues.ConstantsValues.MotorValues.RetarderStepCount;
 
@@ -27,7 +28,7 @@ public class ReterderSkipInputAction : TelemetryActionBase
             input.Connect();
             input.SetRetarder(nextLevel);
             _reterderLevel = nextLevel;
-
+            changed = true;
             Debug.WriteLine($"Skip Input Current:{_reterderLevel}");
         }
         // リターダーDown
@@ -42,12 +43,14 @@ public class ReterderSkipInputAction : TelemetryActionBase
             input.Connect();
             input.SetRetarder(nextLevel);
             _reterderLevel = nextLevel;
-
+            changed |= true;
             Debug.WriteLine($"Skip Input Current:{_reterderLevel}");
         }
         else
         {
             _reterderLevel = reterderLevel;
         }
+
+        return changed;
     }
 }
