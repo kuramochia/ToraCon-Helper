@@ -12,6 +12,7 @@ internal class EngineBrakeAutoOffAction : TelemetryActionBase
 
     public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
+        var changed = false;
         var currentSpeedKph = telemetry.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
         if (currentSpeedKph <= LimitSpeedKph)
         {
@@ -21,9 +22,9 @@ internal class EngineBrakeAutoOffAction : TelemetryActionBase
                 using var input = new SCSSdkTelemetryInput();
                 input.Connect();
                 input.SetEngineBrakeToggle();
-                return true;
+                changed = true;
             }
         }
-        return false;
+        return changed;
     }
 }
