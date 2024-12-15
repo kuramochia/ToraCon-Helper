@@ -43,7 +43,7 @@ public class ReterderSkipInputAction : TelemetryActionBase
             input.Connect();
             input.SetRetarder(nextLevel);
             _reterderLevel = nextLevel;
-            changed |= true;
+            changed = true;
             Debug.WriteLine($"Skip Input Current:{_reterderLevel}");
         }
         else
