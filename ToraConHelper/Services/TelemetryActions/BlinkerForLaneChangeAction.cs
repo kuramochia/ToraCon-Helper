@@ -94,7 +94,7 @@ public class BlinkerForLaneChangeAction : TelemetryActionBase
                 else if (right)
                 {
                     input.SetRightBlinkerHide();
-                    changed |= true;
+                    changed = true;
                 }
                 _isWatching = false;
                 Debug.WriteLine("監視終了 ウィンカー消した");
