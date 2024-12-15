@@ -6,9 +6,8 @@ namespace ToraConHelper.Services.TelemetryActions;
 
 internal class AutoFullfuelAction : TelemetryActionWithEventsBase
 {
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
-    {
-    }
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry) => false;
+
 
     public override void OnRefuelStart()
     {
