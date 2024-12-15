@@ -278,8 +278,8 @@ public class SCSSdkTelemetryInput: IDisposable {
     /// <exception cref="ArgumentOutOfRangeException">retarderCount が 0~5 以外の場合</exception>
     /// <exception cref="InvalidOperationException"></exception>
     public void SetRetarder(uint retarderCount, int waitMilliseconds = 100) {
-        //if (retarderCount < 0 || retarderCount > 5)
-        //    throw new ArgumentOutOfRangeException(nameof(retarderCount));
+        if (retarderCount < 0 || retarderCount > 5)
+            throw new ArgumentOutOfRangeException(nameof(retarderCount));
         if (!Hooked)
             throw new InvalidOperationException("not Connected");
 
