@@ -9,7 +9,7 @@ public interface ITelemetryAction
     /// テレメトリが更新されると呼び出されます。
     /// </summary>
     /// <param name="telemetry"></param>
-    void OnTelemetryUpdated(SCSTelemetry telemetry);
+    bool OnTelemetryUpdated(SCSTelemetry telemetry);
     void OnActionAdded();
     void OnActionRemoved();
 }
@@ -33,7 +33,7 @@ public interface ITelemetryActionWithEvents : ITelemetryAction
 
 public abstract class TelemetryActionBase : ITelemetryAction
 {
-    public abstract void OnTelemetryUpdated(SCSTelemetry telemetry);
+    public abstract bool OnTelemetryUpdated(SCSTelemetry telemetry);
 
     public virtual void OnActionAdded() { }
     public virtual void OnActionRemoved() { }

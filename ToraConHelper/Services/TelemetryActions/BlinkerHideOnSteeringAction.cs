@@ -15,8 +15,9 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
 
     private float? _maxSteering = null;
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
+        var changed = false;
         var currentSteering = telemetry.ControlValues.GameValues.Steering;
 
         // 前回のステアリング値よりも大きくなった＝もっとハンドル切ってる
@@ -27,7 +28,7 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
         if(!left && !right)
         {
             _maxSteering = null;
-            return;
+            return changed;
         }
 
         if ((left || right) && _maxSteering == null)
@@ -35,7 +36,7 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
             // 監視開始
             //Debug.WriteLine($"監視開始 current={currentSteering}");
             _maxSteering = currentSteering;
-            return;
+            return changed;
         }
 
         // オートキャンセル監視中に
@@ -53,6 +54,7 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
                     input.Connect();
                     input.SetLeftBlinkerHide();
                     _maxSteering = null;
+                    changed = true;
                 }
                 else if(_maxSteering.Value <= currentSteering)
                 {
@@ -70,6 +72,7 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
                     input.Connect();
                     input.SetRightBlinkerHide();
                     _maxSteering = null;
+                    changed = true;
                 }
                 else if (_maxSteering.Value >= currentSteering)
                 {
@@ -77,5 +80,6 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
                 }
             }
         }
+        return changed;
     }
 }
