@@ -17,7 +17,7 @@ public class BlinkerForLaneChangeAction : TelemetryActionBase
     private long _limitTicks = 0;
     private (float Min, float Max) _steeringLimitPair = default;
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
         // 前回のステアリング値よりも大きくなった＝もっとハンドル切ってる
         var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
@@ -95,7 +95,9 @@ public class BlinkerForLaneChangeAction : TelemetryActionBase
                 }
                 _isWatching = false;
                 Debug.WriteLine("監視終了 ウィンカー消した");
+                return true;
             }
         }
+        return false;
     }
 }

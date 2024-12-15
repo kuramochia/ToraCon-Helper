@@ -25,7 +25,7 @@ public class TelemetryActionsManager : IDisposable
     public void AddAction(ITelemetryAction action)
     {
         _actions.Add(action);
-        if(action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Add(actionWithEvents);
+        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Add(actionWithEvents);
         action.OnActionAdded();
     }
 
@@ -254,7 +254,7 @@ public class TelemetryActionsManager : IDisposable
             _running = true;
             foreach (var act in _actions)
             {
-                act?.OnTelemetryUpdated(data);
+                if (act != null && act.OnTelemetryUpdated(data)) break;
             }
         }
         catch (Exception ex)

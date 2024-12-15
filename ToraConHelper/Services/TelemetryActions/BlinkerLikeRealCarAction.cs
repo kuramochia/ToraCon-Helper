@@ -8,8 +8,9 @@ public class BlinkerLikeRealCarAction : TelemetryActionBase
 {
     private bool _blinkerLeft, _blinkerRight;
 
-    public override void OnTelemetryUpdated(SCSTelemetry telemetry)
+    public override bool OnTelemetryUpdated(SCSTelemetry telemetry)
     {
+        var changed = false;
         // 左右ウィンカーがアクティブかどうか（ハザードランプには反応しない）
         var left = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerLeftActive;
         var right = telemetry.TruckValues.CurrentValues.LightsValues.BlinkerRightActive;
@@ -33,6 +34,7 @@ public class BlinkerLikeRealCarAction : TelemetryActionBase
                 input.SetLeftBlinkerHide();
                 _blinkerLeft = false;
                 _blinkerRight = false;
+                changed = true;
             }
             // 左出てた、右になった
             else if (_blinkerLeft && right)
@@ -43,6 +45,7 @@ public class BlinkerLikeRealCarAction : TelemetryActionBase
                 input.SetRightBlinkerHide();
                 _blinkerLeft = false;
                 _blinkerRight = false;
+                changed = true;
             }
             else
             {
@@ -50,5 +53,6 @@ public class BlinkerLikeRealCarAction : TelemetryActionBase
                 _blinkerRight = right;
             }
         }
+        return changed;
     }
 }
