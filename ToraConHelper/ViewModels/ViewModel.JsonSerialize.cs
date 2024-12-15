@@ -33,6 +33,8 @@ public partial class ViewModel
             BlinkerForLaneChangeSteeringAngle = BlinkerForLaneChangeSteeringAngle,
             BlinkerLikeRealCarDInputActionEnabled = BlinkerLikeRealCarDInputActionEnabled,
             BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
+            ReterderSkipInputActionEnabled = ReterderSkipInputActionEnabled,
+            ReterderSkipInputLevel = ReterderSkipInputLevel,
         };
         s.PowerToysSettings ??= [];
         s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
@@ -68,6 +70,8 @@ public partial class ViewModel
         BlinkerForLaneChangeSteeringAngle = s.BlinkerForLaneChangeSteeringAngle;
         BlinkerLikeRealCarDInputActionEnabled = s.BlinkerLikeRealCarDInputActionEnabled;
         BlinkerDInputJoyStickType = s.BlinkerDInputJoyStickType;
+        ReterderSkipInputActionEnabled = s.ReterderSkipInputActionEnabled;
+        ReterderSkipInputLevel = s.ReterderSkipInputLevel;
 
         Ets2 = PowerToysViewModel.FromSettings(this, GameType.ETS2, s.PowerToysSettings?[GameType.ETS2]);
         Ats = PowerToysViewModel.FromSettings(this, GameType.ATS, s.PowerToysSettings?[GameType.ATS]);
