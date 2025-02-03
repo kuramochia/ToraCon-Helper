@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using ToraConHelper.ViewModels;
-using Wpf.Ui;
+using Wpf.Ui.Abstractions;
 
 namespace ToraConHelper;
 
@@ -11,13 +11,13 @@ public partial class MainWindow
 {
     private readonly ViewModel viewModel;
 
-    public MainWindow(ViewModel viewModel, MainWindowViewModel mainWindowViewModel, IPageService pageService)
+    public MainWindow(ViewModel viewModel, MainWindowViewModel mainWindowViewModel, INavigationViewPageProvider navigationViewPageProvider)
     {
         InitializeComponent();
         this.viewModel = viewModel;
         DataContext = mainWindowViewModel;
 
-        navigationView.SetPageService(pageService);
+        navigationView.SetPageProviderService(navigationViewPageProvider);
 
         Loaded += (sender, args) =>
         {
