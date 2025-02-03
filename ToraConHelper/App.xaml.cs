@@ -10,7 +10,7 @@ using ToraConHelper.Services;
 using ToraConHelper.Services.TelemetryActions;
 using ToraConHelper.ViewModels;
 using ToraConHelper.Views;
-using Wpf.Ui;
+using Wpf.Ui.Abstractions;
 
 namespace ToraConHelper;
 
@@ -122,7 +122,7 @@ public partial class App : Application
         services.AddSingleton<HomePage>();
         services.AddSingleton<AboutPage>();
         services.AddSingleton<PowerToysPage>();
-        services.AddSingleton<IPageService, PageService>();
+        services.AddSingleton<INavigationViewPageProvider, NavigationViewPageService>();
 
         // ViewModels
         services.AddSingleton<ViewModel>();
