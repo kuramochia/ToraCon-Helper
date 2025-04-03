@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.IO.Pipes;
+using System.Reflection;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using ToraConHelper.Installer;
@@ -18,6 +21,10 @@ public class Program
         }
         else
         {
+            // start ProfileOptimization ( Multicore JIT )
+            ProfileOptimization.SetProfileRoot(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            ProfileOptimization.StartProfile("ToraConHelper.JIT.profile");
+
             // 多重起動防止用 Mutex
             using Mutex mutex = new(true, "ToraConHelper", out var createdNew);
             try
