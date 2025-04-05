@@ -52,7 +52,8 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
                     // 左ウィンカー戻す
                     using var input = new SCSSdkTelemetryInput();
                     input.Connect();
-                    input.SetLeftBlinkerHide();
+                    // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                    input.SetLeftBlinker();
                     _maxSteering = null;
                     changed = true;
                 }
@@ -70,7 +71,8 @@ public class BlinkerHideOnSteeringAction : TelemetryActionBase
                     // 右ウィンカー戻す
                     using var input = new SCSSdkTelemetryInput();
                     input.Connect();
-                    input.SetRightBlinkerHide();
+                    // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                    input.SetRightBlinker();
                     _maxSteering = null;
                     changed = true;
                 }

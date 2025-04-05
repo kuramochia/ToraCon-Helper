@@ -88,12 +88,14 @@ public class BlinkerForLaneChangeAction : TelemetryActionBase
                 input.Connect();
                 if (left)
                 {
-                    input.SetLeftBlinkerHide();
+                    // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                    input.SetLeftBlinker();
                     changed = true;
                 }
                 else if (right)
                 {
-                    input.SetRightBlinkerHide();
+                    // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                    input.SetRightBlinker();
                     changed = true;
                 }
                 _isWatching = false;
