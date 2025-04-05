@@ -1,6 +1,5 @@
 ﻿using SCSSdkClient.Input;
 using SCSSdkClient.Object;
-using System.Diagnostics;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
@@ -31,7 +30,8 @@ public class BlinkerLikeRealCarAction : TelemetryActionBase
                 // 左消す入力
                 using var input = new SCSSdkTelemetryInput();
                 input.Connect();
-                input.SetLeftBlinkerHide();
+                // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                input.SetLeftBlinker();
                 _blinkerLeft = false;
                 _blinkerRight = false;
                 changed = true;
@@ -42,7 +42,8 @@ public class BlinkerLikeRealCarAction : TelemetryActionBase
                 // 右消す入力
                 using var input = new SCSSdkTelemetryInput();
                 input.Connect();
-                input.SetRightBlinkerHide();
+                // ウィンカー出ている方向への入力で、レバー音がする状態で消せる
+                input.SetRightBlinker();
                 _blinkerLeft = false;
                 _blinkerRight = false;
                 changed = true;
