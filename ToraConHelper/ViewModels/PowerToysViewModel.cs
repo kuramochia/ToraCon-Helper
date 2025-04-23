@@ -184,5 +184,15 @@ public partial class ProfileFolderData : ObservableObject
     private DateTime lastWriteTime;
 
     [RelayCommand]
-    void OpenFolder() => Process.Start(FullName);
+    void OpenFolder()
+    {
+        try
+        {
+            Process.Start(FullName);
+        }
+        catch
+        {
+            // nop
+        }
+    }
 }
