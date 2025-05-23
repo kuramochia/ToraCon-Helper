@@ -13,7 +13,6 @@ on:
 
 env:
   # Path to the solution file relative to the root of the project.
-  TELEMETRY_PROJECT_FILE_PATH: "scs-telemetry/scs-telemetry.vcxproj"
   HELPER_PROJECT_FILE_PATH: "./ToraCon-Helper.sln"
 
   # Configuration type to build.
@@ -38,31 +37,13 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.HELPER_PROJECT_FILE_PATH}}
 
-    - name: "Build Telemetry"
+    - name: "Build App"
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x64 ${{env.TELEMETRY_PROJECT_FILE_PATH}}
-    
-    - name: "Telemetry Upload to Artifacts"
-      uses: actions/upload-artifact@v4
-      with:
-        name: plugins
-        path: "scs-telemetry/Release/plugins/**/*.dll"
-        
-    - name: "Build .NET App"
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.HELPER_PROJECT_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x64 ${{env.HELPER_PROJECT_FILE_PATH}}
 
-    - name: "Download Telemetry Artifacts"
-      uses: actions/download-artifact@v4
-      with:
-        name: plugins
-        path: "ToraConHelper/bin/Release/net4.8/plugins"
-       
     - name: "ToraCon-Helper Upload to Artifacts"
       uses: actions/upload-artifact@v4
       with:
         name: ToraCon-Helper
-        path: "ToraConHelper/bin/Release/net4.8"
+        path: "ToraConHelper/bin/x64/Release/net4.8"
     

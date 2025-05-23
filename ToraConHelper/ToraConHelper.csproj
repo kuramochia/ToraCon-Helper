@@ -10,9 +10,16 @@
 		<StartupObject>ToraConHelper.Program</StartupObject>
 		<FileVersion>1.11.0.0</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="icon.ico" />
+		<None Remove="plugins\win_x64\ToraCon-scs-telemetry.dll" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="plugins\win_x64\ToraCon-scs-telemetry.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
