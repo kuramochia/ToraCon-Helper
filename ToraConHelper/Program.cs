@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.IO.Pipes;
-using System.Reflection;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ public class Program
         else
         {
             // start ProfileOptimization ( Multicore JIT )
-            ProfileOptimization.SetProfileRoot(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            ProfileOptimization.SetProfileRoot(Path.GetTempPath());
             ProfileOptimization.StartProfile("ToraConHelper.JIT.profile");
 
             // 多重起動防止用 Mutex

@@ -8,18 +8,27 @@
 		<LangVersion>Latest</LangVersion>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 		<StartupObject>ToraConHelper.Program</StartupObject>
-		<FileVersion>1.11.0.0</FileVersion>
+		<FileVersion>2.1.0.0</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="icon.ico" />
+		<None Remove="plugins\win_x64\ToraCon-scs-telemetry.dll" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="plugins\win_x64\ToraCon-scs-telemetry.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Gameloop.Vdf" Version="0.6.2" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
-		<PackageReference Include="System.Text.Json" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.17134.1000" />
+		<PackageReference Include="System.Text.Json" Version="9.0.5" />
 		<PackageReference Include="Vortice.DirectInput" Version="2.4.2" />
 		<PackageReference Include="WPF-UI" Version="4.0.2" />
 	</ItemGroup>

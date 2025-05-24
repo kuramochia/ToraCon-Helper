@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -24,7 +24,7 @@ public class SettingFileManager : ISettingFileMamager
         }
     };
 
-    private string FilePath => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), SettingFileName);
+    private string FilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ToraCon-Helper", SettingFileName);
 
     public Settings Load()
     {
@@ -38,6 +38,7 @@ public class SettingFileManager : ISettingFileMamager
 
     public void Save(Settings settings)
     {
+        if (!Directory.Exists(Path.GetDirectoryName(FilePath))) Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         var json = JsonSerializer.Serialize(settings, jsonSerializeOptions);
         File.WriteAllText(FilePath, json);
     }
