@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using ToraConHelper.Services;
 using ToraConHelper.Services.TelemetryActions;
 
@@ -9,25 +12,23 @@ namespace ToraConHelper.ViewModels;
 
 public partial class ViewModel : ObservableObject, IDisposable
 {
+    private const string SettingAppStartupUrl = "ms-settings:startupapps";
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
     private readonly TelemetryActionsManager telemetryActionsManager;
     private readonly GameProcessDetector gameProcessDetector;
-    private readonly ShortcutService shortcutService;
     internal GameProcessDetector GameProcessDetector { get { return gameProcessDetector; } }
 
-    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector, ShortcutService shortCutService) : base()
+    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector) : base()
     {
         this.settingFile = settingFile;
         this.telemetryActionsManager = telemetryActionsManager;
         this.gameProcessDetector = gameProcessDetector;
-        this.shortcutService = shortCutService;
 
         isInitialization = true;
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
-        IsShortcutCreated = shortcutService.HasShortcutFile();
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -63,28 +64,11 @@ public partial class ViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private bool taskTrayOnStart;
 
+    [RelayCommand]
+    private void RegisterStartup() => Process.Start(SettingAppStartupUrl);
+
     [ObservableProperty]
     private string? lastShownPage;
-    #endregion
-
-    #region Shortcut
-
-    [ObservableProperty]
-    private bool isShortcutCreated;
-
-    partial void OnIsShortcutCreatedChanged(bool value)
-    {
-        if (value)
-        {
-            shortcutService.Create();
-        }
-        else
-        {
-            shortcutService.Delete();
-        }
-        IsShortcutCreated = shortcutService.HasShortcutFile();
-    }
-
     #endregion
 
     #region Private methods
