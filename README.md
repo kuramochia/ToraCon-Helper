@@ -1,6 +1,5 @@
 # ToraCon-Helper [![Downloads](https://img.shields.io/github/downloads/kuramochia/ToraCon-Helper/total)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Current Release](https://img.shields.io/github/release/kuramochia/ToraCon-Helper)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Licensed under the MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kuramochia/ToraCon-Helper/blob/master/LICENSE)
 
-
 ## なにこれ？
 [HORI Force Feedback Truck Control System for Windows® PC（通称「トラコン」）](https://hori.jp/products/hpc/hpc-044/) を ETS2/ATS でちょっと便利にするためのヘルパーアプリです。
 
@@ -22,8 +21,13 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
     * Telemetry DLL が x64 版のみ提供しているので、x86 でゲームされている方は利用できません。
 
 ## セットアップ方法
-1. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の `ToraCon-Helper_vX.X.X.X.zip` という名前の zip ファイルをダウンロードし、好きな場所に解凍します。
-2. `ToraConHelper.exe` を起動します。
+1. 下記のリンクをクリックし、Microsoft Store からToraCon-Helper をダウンロード、インストールしてください。
+
+<a href="https://apps.microsoft.com/detail/9n2vdmrmjw1s?referrer=appbadge&mode=direct">
+	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+</a>
+
+2. `ToraCon-Helper` を起動します。
 3. 初回起動時やアプリ更新時は、Telemetry DLL のインストールや更新が必要になるため、次のようなメッセージが表示されます。
   * 「はい」を選択すると、（Steam の既定のゲーム インストール先が Program Files なので）管理者権限でインストール プロセスが起動します。
   * 最新版の Telemetry DLL に更新後、次回以降の起動時はこちらは表示されません。
@@ -40,14 +44,8 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 ![](images/appimage.png)
 
-## アップデート方法
-1. `ToraConHelper.exe` を終了します。
-2. [リリースページ](https://github.com/kuramochia/ToraCon-Helper/releases) から最新の `ToraCon-Helper_vX.X.X.X.zip` という名前の zip ファイルをダウンロードし、上書きします。
-3. `ToraConHelper.exe` を起動します。
-
-
 ## アプリの設定
-設定を変更すると、`ToraConHelper.exe` と同じフォルダに `ToraCon-Helper_Settings.json` を出力します。
+設定を変更すると、`MyDocuments¥ToraCon-Helper` フォルダに `ToraCon-Helper_Settings.json` を出力します。
 
 ### 全体設定
 #### テレメトリー動作
@@ -62,8 +60,8 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 #### スタートアップに登録
 * Windows ユーザーのログイン時に自動的にこのアプリを起動するように設定できます。
-  * オン にすると、`C:\Users\[USERNAME]\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup` にショートカットを作成します。
-  * オフ にすると、作成したショートカット ファイルを削除します
+  * 既定で On になっていますので、必要に応じて変更してください。
+* 「設定」 ボタンを押すと、Windows のスタートアップ設定画面が表示されます。
 
 
 ### ウィンカー関連 アクション設定
