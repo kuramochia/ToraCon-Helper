@@ -90,10 +90,14 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="スタートアップに登録" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding IsShortcutCreated}" />
+                        <ui:Button Grid.Column="1" Command="{Binding Path=RegisterStartupCommand}" Content="設定" />
                     </Grid>
                     <ui:Card.Footer>
-                        <TextBlock Text="スタートアップにショートカットを作成して、ログイン時に自動起動します。" />
+                        <TextBlock>
+                            <Run Text="スタートアップに登録して、ログイン時に自動起動します。"/>
+                            <LineBreak/>
+                            <Run Text="ボタンを押すと、Windows の設定アプリのスタートアップ画面を起動します。"/>
+                        </TextBlock>
                     </ui:Card.Footer>
                 </ui:Card>
             </StackPanel>

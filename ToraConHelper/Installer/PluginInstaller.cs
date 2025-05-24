@@ -9,13 +9,15 @@ internal class PluginInstaller
 {
     const string PluginPath = "plugins";
     const string PluginFile = "ToraCon-scs-telemetry.dll";
-    const string CopySourcePath = $".\\plugins\\win_x64\\{PluginFile}";
+    const string SourcePath = $".\\plugins\\win_x64\\{PluginFile}";
 
     internal event EventHandler<AddMessageEventArgs>? AddMessageFromInstaller;
 
     internal bool NeedInstall() => InstallProcess(true);
     internal bool InstallProcess(bool onlyCheck = false)
     {
+        string CopySourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SourcePath);
+
         AddMessage("Telemetry DLL インストールプロセス開始");
         AddMessage("");
         // ゲーム フォルダを探す

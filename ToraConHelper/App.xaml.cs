@@ -94,9 +94,10 @@ public partial class App : Application
             if (MessageBox.Show(msg, MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 // Create new process
-                var pInfo = new ProcessStartInfo(System.Reflection.Assembly.GetExecutingAssembly().Location, "-install")
+                var pInfo = new ProcessStartInfo("ToraConHelper_installer.exe", "-install")
                 {
-                    Verb = "runas"
+                    Verb = "runas",
+                    UseShellExecute = true,
                 };
                 Process.Start(pInfo);
             }
@@ -132,7 +133,6 @@ public partial class App : Application
         services.AddSingleton<ISettingFileMamager, SettingFileManager>();
         services.AddSingleton<TelemetryActionsManager>();
         services.AddSingleton<GameProcessDetector>();
-        services.AddSingleton<ShortcutService>();
 
         // Services.TelemetryActions
         services.AddSingleton<BlinkerLikeRealCarAction>();
