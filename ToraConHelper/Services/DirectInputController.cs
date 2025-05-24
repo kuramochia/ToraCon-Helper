@@ -13,6 +13,8 @@ public class DirectInputController : IDisposable
 {
     // トラコンの ProductGUID
     private static readonly Guid TrackControlSystemProductGuid = new("{017a0f0d-0000-0000-0000-504944564944}");
+
+    private static readonly object _lock = new();
     public IDirectInputDevice8? Device { get; private set; }
 
     public bool IsInitialized { get { return Device != null; } }
@@ -66,25 +68,21 @@ public class DirectInputController : IDisposable
 
     public void Release()
     {
-        try
+        lock (_lock)
         {
-            if (Device != null)
+            if (Device == null) return;
+            try
             {
-                // Dispose でエラーになる場合があるので、Catch しておく
-                try
-                {
-                    Device.Unacquire();
-                    Device.Release();
-                    Device.Dispose();
-                }
-                catch { }
-                finally
-                {
-                    Device = null;
-                }
+                Device.Unacquire();
+                Device.Release();
+                //Device.Dispose();
+            }
+            catch { }
+            finally
+            {
+                Device = null;
             }
         }
-        catch { }
     }
 
     public void Dispose() => Release();
