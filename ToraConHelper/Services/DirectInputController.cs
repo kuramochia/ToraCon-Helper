@@ -70,10 +70,18 @@ public class DirectInputController : IDisposable
         {
             if (Device != null)
             {
-                Device.Unacquire();
-                Device.Release();
-                Device.Dispose();
-                Device = null;
+                // Dispose でエラーになる場合があるので、Catch しておく
+                try
+                {
+                    Device.Unacquire();
+                    Device.Release();
+                    Device.Dispose();
+                }
+                catch { }
+                finally
+                {
+                    Device = null;
+                }
             }
         }
         catch { }
