@@ -13,29 +13,33 @@ public class DirectInputController : IDisposable
 {
     // トラコンの ProductGUID
     private static readonly Guid TrackControlSystemProductGuid = new("{017a0f0d-0000-0000-0000-504944564944}");
-    public IDirectInputDevice8? Device { get; private set; }
 
-    public bool IsInitialized { get { return Device != null; } }
+    private IDirectInputDevice8? _device;
+    private IDirectInput8? _dinput;
+
+    public bool IsInitialized { get { return _dinput != null && _device != null; } }
     public bool Initialize()
     {
-        if (Device != null) return true;
+        if (IsInitialized) return true;
         try
         {
-            using IDirectInput8 dinput = DInput.DirectInput8Create();
+            if (_dinput == null)
+            {
+                _dinput = DInput.DirectInput8Create();
+            }
             // デバイスタイプは Driving 固定
-            IList<DeviceInstance> devices = dinput.GetDevices(DeviceType.Driving, DeviceEnumerationFlags.AttachedOnly);
+            IList<DeviceInstance> devices = _dinput.GetDevices(DeviceType.Driving, DeviceEnumerationFlags.AttachedOnly);
 
             // トラコンの GUID で一本釣り
             DeviceInstance deviceInstance = devices.FirstOrDefault(d => d.ProductGuid == TrackControlSystemProductGuid);
             if (deviceInstance == null) return false;
+            
+            _device = _dinput.CreateDevice(deviceInstance.InstanceGuid);
 
-            IDirectInputDevice8 device = dinput.CreateDevice(deviceInstance.InstanceGuid);
-
-            device.SetCooperativeLevel((IntPtr)device, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
-            device.SetDataFormat<RawJoystickState>();
-            device.Properties.BufferSize = 1024;
-            device.Acquire();
-            Device = device;
+            _device.SetCooperativeLevel((IntPtr)_device, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
+            _device.SetDataFormat<RawJoystickState>();
+            _device.Properties.BufferSize = 1024;
+            _device.Acquire();
             return true;
         }
         catch (Exception ex)
@@ -54,7 +58,7 @@ public class DirectInputController : IDisposable
     {
         try
         {
-            return Device?.GetBufferedJoystickData();
+            return _device?.GetBufferedJoystickData();
         }
         catch (Exception ex)
         {
@@ -68,23 +72,16 @@ public class DirectInputController : IDisposable
     {
         try
         {
-            if (Device != null)
-            {
-                // Dispose でエラーになる場合があるので、Catch しておく
-                try
-                {
-                    Device.Unacquire();
-                    Device.Release();
-                    Device.Dispose();
-                }
-                catch { }
-                finally
-                {
-                    Device = null;
-                }
-            }
+            _device?.Unacquire();
+            _device?.Dispose();
+            _dinput?.Dispose();
         }
         catch { }
+        finally
+        {
+            _device = null;
+            _dinput = null;
+        }
     }
 
     public void Dispose() => Release();
