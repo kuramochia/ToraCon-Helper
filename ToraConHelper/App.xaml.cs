@@ -86,6 +86,7 @@ public partial class App : Application
         // Telemetry DLL 更新チェック
         CheckTelemetryDLL();
 
+        // メッセージ専用ウィンドウを作成
         messageOnlyWindow = new();
         messageOnlyWindow.Show();
     }
