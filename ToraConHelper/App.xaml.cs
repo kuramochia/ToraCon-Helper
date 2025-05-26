@@ -39,6 +39,8 @@ public partial class App : Application
 
     public IServiceProvider Services { get; }
 
+    private MessageOnlyWindow? messageOnlyWindow;
+
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -83,6 +85,10 @@ public partial class App : Application
 
         // Telemetry DLL 更新チェック
         CheckTelemetryDLL();
+
+        // メッセージ専用ウィンドウを作成
+        messageOnlyWindow = new();
+        messageOnlyWindow.Show();
     }
 
     private void CheckTelemetryDLL()
@@ -112,6 +118,8 @@ public partial class App : Application
         (Services as IDisposable)?.Dispose();
         notifyIcon!.DoubleClick -= showAction;
         notifyIcon!.Dispose();
+        messageOnlyWindow?.Close();
+        messageOnlyWindow?.Dispose();
         base.OnExit(e);
     }
 
