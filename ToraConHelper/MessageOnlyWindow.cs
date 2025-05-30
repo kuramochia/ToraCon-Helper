@@ -53,7 +53,7 @@ internal class MessageOnlyWindow : Form
         {
             case WM_QUERYENDSESSION:
                 // ENDSESSION_CLOSEAPP フラグがセットされている場合、アプリケーションの再起動を登録します
-                if ((m.LParam.ToInt32() & ENDSESSION_CLOSEAPP) != 0)
+                if ((m.LParam.ToInt64() & ENDSESSION_CLOSEAPP) != 0)
                 {
                     RelaunchHelper.RegisterApplicationRestart(
                         null, 
@@ -63,7 +63,7 @@ internal class MessageOnlyWindow : Form
                 break;
             case WM_ENDSESSION:
                 // ENDSESSION_CLOSEAPP フラグがセットされている場合、アプリを終了してストアから更新を受け取る
-                if ((m.LParam.ToInt32() & ENDSESSION_CLOSEAPP) != 0)
+                if ((m.LParam.ToInt64() & ENDSESSION_CLOSEAPP) != 0)
                 {
                     App.Current.Shutdown();
                 }
