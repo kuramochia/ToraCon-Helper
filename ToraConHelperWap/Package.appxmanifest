@@ -15,11 +15,11 @@
   <Identity
     Name="1445kuramochia.ToraCon-Helper"
     Publisher="CN=33C05C0F-4C63-4E93-83D7-0AD7451F92EB"
-    Version="2.1.2.0" />
+    Version="2.1.3.0" />
 
   <Properties>
     <DisplayName>ToraCon-Helper</DisplayName>
-    <PublisherDisplayName>kuramochia.live.jp</PublisherDisplayName>
+    <PublisherDisplayName>kuramochia Lab</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
     <uap16:UpdateWhileInUse>defer</uap16:UpdateWhileInUse>
     <uap17:UpdateWhileInUse>defer</uap17:UpdateWhileInUse>
