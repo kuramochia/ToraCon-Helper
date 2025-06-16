@@ -1,4 +1,4 @@
-# ToraCon-Helper [![Downloads](https://img.shields.io/github/downloads/kuramochia/ToraCon-Helper/total)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Current Release](https://img.shields.io/github/release/kuramochia/ToraCon-Helper)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Licensed under the MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kuramochia/ToraCon-Helper/blob/master/LICENSE)
+# ToraCon-Helper [![Current Release](https://img.shields.io/github/release/kuramochia/ToraCon-Helper)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Licensed under the MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kuramochia/ToraCon-Helper/blob/master/LICENSE)
 
 ## なにこれ？
 [HORI Force Feedback Truck Control System for Windows® PC（通称「トラコン」）](https://hori.jp/products/hpc/hpc-044/) を ETS2/ATS でちょっと便利にするためのヘルパーアプリです。
@@ -21,10 +21,10 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
     * Telemetry DLL が x64 版のみ提供しているので、x86 でゲームされている方は利用できません。
 
 ## セットアップ方法
-1. 下記のリンクをクリックし、Microsoft Store からToraCon-Helper をダウンロード、インストールしてください。
+1. 下記のリンクをクリックし、Microsoft Store から ToraCon-Helper をダウンロード、インストールしてください。
 
 <a href="https://apps.microsoft.com/detail/9n2vdmrmjw1s?referrer=appbadge&mode=direct">
-	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="400"/>
 </a>
 
 2. `ToraCon-Helper` を起動します。
