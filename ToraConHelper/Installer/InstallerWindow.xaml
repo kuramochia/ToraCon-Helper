@@ -11,7 +11,21 @@
     Height="450"
     FontSize="14"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="20">
-        <ListBox ItemsSource="{Binding .}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListBox ItemsSource="{Binding .}" Grid.Row="0" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
+            <Button Content="プラグインを手動でコピー" x:Name="pluginFolderButton" Click="pluginFolderButton_Click"/>
+            <Button Content="閉じる" x:Name="closeButton" Click="closeButton_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

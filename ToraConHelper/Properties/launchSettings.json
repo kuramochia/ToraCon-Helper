@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ToraConHelper": {
+      "commandName": "Project",
+      "commandLineArgs": "-install"
+    }
+  }
+}

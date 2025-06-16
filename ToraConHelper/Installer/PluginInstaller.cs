@@ -9,7 +9,7 @@ internal class PluginInstaller
 {
     const string PluginPath = "plugins";
     const string PluginFile = "ToraCon-scs-telemetry.dll";
-    const string SourcePath = $".\\plugins\\win_x64\\{PluginFile}";
+    internal const string SourcePath = $".\\plugins\\win_x64\\{PluginFile}";
 
     internal event EventHandler<AddMessageEventArgs>? AddMessageFromInstaller;
 

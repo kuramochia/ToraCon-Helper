@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -38,6 +40,11 @@ public partial class InstallerWindow
             messages.Add(e.Message);
         }));
     }
+
+    private void closeButton_Click(object sender, RoutedEventArgs e) => Close();
+
+    private void pluginFolderButton_Click(object sender, RoutedEventArgs e)
+        => Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.GetDirectoryName(PluginInstaller.SourcePath)));
 }
 public partial class PluginApp : Application
 {
