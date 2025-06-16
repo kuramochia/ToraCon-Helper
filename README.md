@@ -34,10 +34,10 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 ![](images/TelemetryDllInstallDialog.png)
 
-4. Telemetry DLL のインストールプロセスは、次のようなウィンドウが表示されます。エラーが無ければ、DLL のコピーは終了です。右上の × ボタンで閉じてください。
+4. Telemetry DLL のインストールプロセスは、次のようなウィンドウが表示されます。エラーが無ければ、DLL のコピーは終了です。右下の「閉じる」ボタンで閉じてください。
   * もし、__「エラーが発生しました」__ と表示された場合は、表示内容と一緒に [Issues](https://github.com/kuramochia/ToraCon-Helper/issues) へお願いします。
-  * Telemetry DLL を手動でインストールする場合は、`plugins` フォルダ配下に DLL があります。
-
+  * Telemetry DLL を手動でインストールする場合は、「プラグインを手動でコピー」ボタンを押し、表示された `ToraCon-scs-telemetry.dll` を ETS2/ATS のインストールフォルダ (例: Euro Truck Simulator 2\bin\win_x64\plugins) にコピーしてください。
+  
 ![](images/TelemetryDllInstallWindow.png)
 
 5. アプリ本体は次のような画面が表示されます。
