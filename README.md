@@ -1,4 +1,4 @@
-# ToraCon-Helper [![Downloads](https://img.shields.io/github/downloads/kuramochia/ToraCon-Helper/total)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Current Release](https://img.shields.io/github/release/kuramochia/ToraCon-Helper)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Licensed under the MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kuramochia/ToraCon-Helper/blob/master/LICENSE)
+# ToraCon-Helper [![Current Release](https://img.shields.io/github/release/kuramochia/ToraCon-Helper)](https://github.com/kuramochia/ToraCon-Helper/releases) [![Licensed under the MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kuramochia/ToraCon-Helper/blob/master/LICENSE)
 
 ## なにこれ？
 [HORI Force Feedback Truck Control System for Windows® PC（通称「トラコン」）](https://hori.jp/products/hpc/hpc-044/) を ETS2/ATS でちょっと便利にするためのヘルパーアプリです。
@@ -21,10 +21,10 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
     * Telemetry DLL が x64 版のみ提供しているので、x86 でゲームされている方は利用できません。
 
 ## セットアップ方法
-1. 下記のリンクをクリックし、Microsoft Store からToraCon-Helper をダウンロード、インストールしてください。
+1. 下記のリンクをクリックし、Microsoft Store から ToraCon-Helper をダウンロード、インストールしてください。
 
 <a href="https://apps.microsoft.com/detail/9n2vdmrmjw1s?referrer=appbadge&mode=direct">
-	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="400"/>
 </a>
 
 2. `ToraCon-Helper` を起動します。
@@ -34,10 +34,10 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 
 ![](images/TelemetryDllInstallDialog.png)
 
-4. Telemetry DLL のインストールプロセスは、次のようなウィンドウが表示されます。エラーが無ければ、DLL のコピーは終了です。右上の × ボタンで閉じてください。
+4. Telemetry DLL のインストールプロセスは、次のようなウィンドウが表示されます。エラーが無ければ、DLL のコピーは終了です。右下の「閉じる」ボタンで閉じてください。
   * もし、__「エラーが発生しました」__ と表示された場合は、表示内容と一緒に [Issues](https://github.com/kuramochia/ToraCon-Helper/issues) へお願いします。
-  * Telemetry DLL を手動でインストールする場合は、`plugins` フォルダ配下に DLL があります。
-
+  * Telemetry DLL を手動でインストールする場合は、「プラグインを手動でコピー」ボタンを押し、表示された `ToraCon-scs-telemetry.dll` を ETS2/ATS のインストールフォルダ (例: Euro Truck Simulator 2\bin\win_x64\plugins) にコピーしてください。
+  
 ![](images/TelemetryDllInstallWindow.png)
 
 5. アプリ本体は次のような画面が表示されます。
