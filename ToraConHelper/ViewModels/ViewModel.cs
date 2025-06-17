@@ -64,6 +64,9 @@ public partial class ViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private bool taskTrayOnStart;
 
+    [ObservableProperty]
+    private bool minimizeOnStart;
+
     [RelayCommand]
     private void RegisterStartup() => Process.Start(SettingAppStartupUrl);
 
