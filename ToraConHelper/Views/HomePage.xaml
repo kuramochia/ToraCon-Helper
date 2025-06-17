@@ -89,6 +89,19 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="起動時に最小化" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=MinimizeOnStart}" />
+                    </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="アプリの起動時にウィンドウを出さずに最小化状態で開始します。タスクトレイに格納もオンの場合はそちらを優先します。" />
+                    </ui:Card.Footer>
+                </ui:Card>
+                <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="スタートアップに登録" />
                         <ui:Button Grid.Column="1" Command="{Binding Path=RegisterStartupCommand}" Content="設定" />
                     </Grid>

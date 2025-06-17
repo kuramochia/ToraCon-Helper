@@ -36,6 +36,7 @@ public partial class MainWindow
 
         if (!viewModel.TaskTrayOnStart)
         {
+            WindowState = viewModel.MinimizeOnStart ? System.Windows.WindowState.Minimized : System.Windows.WindowState.Normal;
             this.Show();
         }
     }
