@@ -9,7 +9,7 @@ public class Settings
     public bool IsActive { get; set; } = true;
     public bool GoToTasktrayOnAppClose { get; set; } = false;
     public bool TaskTrayOnStart { get; set; } = false;
-
+    public bool MinimizeOnStart { get; set; } = false;
     public string? LastShownPage { get; set; } = null;
 
     public bool BlinkerLikeRealCarActionEnabled { get; set; } = false;
