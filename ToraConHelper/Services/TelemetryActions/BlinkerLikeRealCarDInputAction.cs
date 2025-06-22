@@ -35,7 +35,6 @@ public class BlinkerLikeRealCarDInputAction : TelemetryActionBase, IDisposable
         // Dinput 初期化
         if (!_dInputController.Initialize())
         {
-            Debug.WriteLine("DirectInputController Initialize Failed.");
             return false;
         }
 

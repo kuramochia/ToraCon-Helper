@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ToraConHelper.Helpers;
 using Vortice.DirectInput;
 
 namespace ToraConHelper.Services;
@@ -17,10 +18,42 @@ public class DirectInputController : IDisposable
     private IDirectInputDevice8? _device;
     private IDirectInput8? _dinput;
 
+    private readonly LockOutHelper _lockOutHelper = new(TimeSpan.FromSeconds(15));
+
     public bool IsInitialized { get { return _dinput != null && _device != null; } }
     public bool Initialize()
     {
-        if (IsInitialized) return true;
+        // ロックアウト中なら false
+        if (_lockOutHelper.IsLockedOut)
+        {
+            return false;
+        }
+
+        if (IsInitialized)
+        {
+            _lockOutHelper.ResetLockout();
+            return true;
+        }
+
+        var result = InitializeCore();
+
+        if (result)
+        {
+            _lockOutHelper.ResetLockout();
+        }
+        else
+        {
+            // トラコン未接続時の CPU 負荷を下げるため、1回失敗で15秒ロックアウトする
+            // トラコンが接続されていない状態でゲームスタートすると、ほぼ15秒に一回、DInput の初期化を試みることになる
+            _lockOutHelper.LockOut();
+            Debug.WriteLine("DirectInputController: Locked out until " + _lockOutHelper.RemainingLockout);
+        }
+
+        return result;
+    }
+
+    private bool InitializeCore()
+    {
         try
         {
             if (_dinput == null)
@@ -33,7 +66,7 @@ public class DirectInputController : IDisposable
             // トラコンの GUID で一本釣り
             DeviceInstance deviceInstance = devices.FirstOrDefault(d => d.ProductGuid == TrackControlSystemProductGuid);
             if (deviceInstance == null) return false;
-            
+
             _device = _dinput.CreateDevice(deviceInstance.InstanceGuid);
 
             _device.SetCooperativeLevel((IntPtr)_device, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
@@ -84,5 +117,9 @@ public class DirectInputController : IDisposable
         }
     }
 
-    public void Dispose() => Release();
+    public void Dispose()
+    {
+        Release();
+        GC.SuppressFinalize(this);
+    }
 }
