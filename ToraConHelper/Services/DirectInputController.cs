@@ -14,13 +14,57 @@ public class DirectInputController : IDisposable
     // トラコンの ProductGUID
     private static readonly Guid TrackControlSystemProductGuid = new("{017a0f0d-0000-0000-0000-504944564944}");
 
+    private const int LockoutThresholdCount = 3; // 連続失敗でロックアウトする回数
+    private const int LockoutDurationSeconds = 30; // ロックアウトの持続時間（秒）
+    // 連続呼び出しカウントとロックアウトタイム
+    private int _initializeFailCount = 0;
+    private DateTime? _initializeLockoutUntil = null;
+
     private IDirectInputDevice8? _device;
     private IDirectInput8? _dinput;
 
     public bool IsInitialized { get { return _dinput != null && _device != null; } }
     public bool Initialize()
     {
-        if (IsInitialized) return true;
+        // ロックアウト中なら false
+        if (_initializeLockoutUntil.HasValue && DateTime.Now < _initializeLockoutUntil.Value)
+        {
+            return false;
+        }
+
+        if (IsInitialized)
+        {
+            // 成功したらカウントリセット
+            _initializeFailCount = 0;
+            _initializeLockoutUntil = null;
+            return true;
+        }
+
+        var result = InitializeCore();
+
+        if (result)
+        {
+            // 成功したらカウントリセット
+            _initializeFailCount = 0;
+            _initializeLockoutUntil = null;
+        }
+        else
+        {
+            _initializeFailCount++;
+            if (_initializeFailCount >= LockoutThresholdCount)
+            {
+                // トラコン未接続時の CPU 負荷を下げるため
+                // 3回失敗で30秒ロックアウト、それ以降は1回失敗するごとに30秒ロックアウト
+                // トラコンが接続されていない状態でゲームスタートすると、ほぼ30秒に一回、DInput の初期化を試みることになる
+                _initializeLockoutUntil = DateTime.Now.AddSeconds(LockoutDurationSeconds);
+            }
+        }
+
+        return result;
+    }
+
+    private bool InitializeCore()
+    {
         try
         {
             if (_dinput == null)
@@ -33,7 +77,7 @@ public class DirectInputController : IDisposable
             // トラコンの GUID で一本釣り
             DeviceInstance deviceInstance = devices.FirstOrDefault(d => d.ProductGuid == TrackControlSystemProductGuid);
             if (deviceInstance == null) return false;
-            
+
             _device = _dinput.CreateDevice(deviceInstance.InstanceGuid);
 
             _device.SetCooperativeLevel((IntPtr)_device, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
