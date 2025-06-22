@@ -8,7 +8,7 @@
 		<LangVersion>Latest</LangVersion>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 		<StartupObject>ToraConHelper.Program</StartupObject>
-		<FileVersion>2.1.5.0</FileVersion>
+		<FileVersion>2.1.6.0</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Platforms>x64</Platforms>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
