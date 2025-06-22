@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using SCSSdkClient.Object;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -15,20 +16,35 @@ public partial class ViewModel : ObservableObject, IDisposable
     private const string SettingAppStartupUrl = "ms-settings:startupapps";
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
-    private readonly TelemetryActionsManager telemetryActionsManager;
-    private readonly GameProcessDetector gameProcessDetector;
-    internal GameProcessDetector GameProcessDetector { get { return gameProcessDetector; } }
+
+    private GameTimeAction gameInTimeAction;
+
+    internal GameProcessDetector GameProcessDetector { get; private set; }
+
+    internal TelemetryActionsManager TelemetryActionsManager { get; private set; }
 
     public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector) : base()
     {
         this.settingFile = settingFile;
-        this.telemetryActionsManager = telemetryActionsManager;
-        this.gameProcessDetector = gameProcessDetector;
+        TelemetryActionsManager = telemetryActionsManager;
+        GameProcessDetector = gameProcessDetector;
+
+        gameProcessDetector.GameProcessEnded += GameProcessDetector_GameProcessEnded;
+        if (!gameProcessDetector.IsStarted) gameProcessDetector.StartWatchers();
 
         isInitialization = true;
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
+        gameInTimeAction = App.Current.Services.GetService<GameTimeAction>()!;
+        gameInTimeAction.GameTimeUpdated += GameInTimeAction_GameTimeUpdated;
+        TelemetryActionsManager.AddAction(gameInTimeAction);
+    }
+
+    private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e)
+    {
+        // Game process has ended, update the game time
+        GameTime = null;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -50,11 +66,11 @@ public partial class ViewModel : ObservableObject, IDisposable
     {
         if (oldValue)
         {
-            telemetryActionsManager?.Stop();
+            TelemetryActionsManager?.Stop();
         }
         if (newValue)
         {
-            telemetryActionsManager?.Start();
+            TelemetryActionsManager?.Start();
         }
     }
 
@@ -72,6 +88,15 @@ public partial class ViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     private string? lastShownPage;
+
+
+    // Powertoys Page の時刻表示用
+    private void GameInTimeAction_GameTimeUpdated(SCSTelemetry.Time gameTime)
+        => GameTime = gameTime.Date;
+
+    [ObservableProperty]
+    private DateTime? gameTime;
+
     #endregion
 
     #region Private methods
@@ -80,11 +105,11 @@ public partial class ViewModel : ObservableObject, IDisposable
         var action = App.Current.Services.GetService<T>();
         if (oldValue)
         {
-            telemetryActionsManager?.RemoveAction(action!);
+            TelemetryActionsManager?.RemoveAction(action!);
         }
         if (newValue)
         {
-            telemetryActionsManager?.AddAction(action!);
+            TelemetryActionsManager?.AddAction(action!);
         }
     }
     #endregion
@@ -92,5 +117,8 @@ public partial class ViewModel : ObservableObject, IDisposable
     {
         Ets2?.Dispose();
         Ats?.Dispose();
+        GameProcessDetector.GameProcessEnded -= GameProcessDetector_GameProcessEnded;
+        gameInTimeAction.GameTimeUpdated -= GameInTimeAction_GameTimeUpdated;
+
     }
 }
