@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ToraConHelper.Helpers;
 using Vortice.DirectInput;
 
 namespace ToraConHelper.Services;
@@ -14,24 +15,23 @@ public class DirectInputController : IDisposable
     // トラコンの ProductGUID
     private static readonly Guid TrackControlSystemProductGuid = new("{017a0f0d-0000-0000-0000-504944564944}");
 
-    private const int LockoutDurationSeconds = 15; // ロックアウトの持続時間（秒）
-    private DateTime? _initializeLockoutUntil = null;   // ロックアウトタイム
-
     private IDirectInputDevice8? _device;
     private IDirectInput8? _dinput;
+
+    private readonly LockOutHelper _lockOutHelper = new(TimeSpan.FromSeconds(15));
 
     public bool IsInitialized { get { return _dinput != null && _device != null; } }
     public bool Initialize()
     {
         // ロックアウト中なら false
-        if (_initializeLockoutUntil.HasValue && DateTime.Now < _initializeLockoutUntil.Value)
+        if (_lockOutHelper.IsLockedOut)
         {
             return false;
         }
 
         if (IsInitialized)
         {
-            _initializeLockoutUntil = null;
+            _lockOutHelper.ResetLockout();
             return true;
         }
 
@@ -39,14 +39,14 @@ public class DirectInputController : IDisposable
 
         if (result)
         {
-            _initializeLockoutUntil = null;
+            _lockOutHelper.ResetLockout();
         }
         else
         {
             // トラコン未接続時の CPU 負荷を下げるため、1回失敗で15秒ロックアウトする
             // トラコンが接続されていない状態でゲームスタートすると、ほぼ15秒に一回、DInput の初期化を試みることになる
-            _initializeLockoutUntil = DateTime.Now.AddSeconds(LockoutDurationSeconds);
-            Debug.WriteLine("DirectInputController: Locked out until " + _initializeLockoutUntil.Value);
+            _lockOutHelper.LockOut();
+            Debug.WriteLine("DirectInputController: Locked out until " + _lockOutHelper.RemainingLockout);
         }
 
         return result;
@@ -117,5 +117,9 @@ public class DirectInputController : IDisposable
         }
     }
 
-    public void Dispose() => Release();
+    public void Dispose()
+    {
+        Release();
+        GC.SuppressFinalize(this);
+    }
 }
