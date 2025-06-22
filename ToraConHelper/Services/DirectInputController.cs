@@ -14,11 +14,8 @@ public class DirectInputController : IDisposable
     // トラコンの ProductGUID
     private static readonly Guid TrackControlSystemProductGuid = new("{017a0f0d-0000-0000-0000-504944564944}");
 
-    private const int LockoutThresholdCount = 3; // 連続失敗でロックアウトする回数
-    private const int LockoutDurationSeconds = 30; // ロックアウトの持続時間（秒）
-    // 連続呼び出しカウントとロックアウトタイム
-    private int _initializeFailCount = 0;
-    private DateTime? _initializeLockoutUntil = null;
+    private const int LockoutDurationSeconds = 15; // ロックアウトの持続時間（秒）
+    private DateTime? _initializeLockoutUntil = null;   // ロックアウトタイム
 
     private IDirectInputDevice8? _device;
     private IDirectInput8? _dinput;
@@ -34,8 +31,6 @@ public class DirectInputController : IDisposable
 
         if (IsInitialized)
         {
-            // 成功したらカウントリセット
-            _initializeFailCount = 0;
             _initializeLockoutUntil = null;
             return true;
         }
@@ -44,20 +39,14 @@ public class DirectInputController : IDisposable
 
         if (result)
         {
-            // 成功したらカウントリセット
-            _initializeFailCount = 0;
             _initializeLockoutUntil = null;
         }
         else
         {
-            _initializeFailCount++;
-            if (_initializeFailCount >= LockoutThresholdCount)
-            {
-                // トラコン未接続時の CPU 負荷を下げるため
-                // 3回失敗で30秒ロックアウト、それ以降は1回失敗するごとに30秒ロックアウト
-                // トラコンが接続されていない状態でゲームスタートすると、ほぼ30秒に一回、DInput の初期化を試みることになる
-                _initializeLockoutUntil = DateTime.Now.AddSeconds(LockoutDurationSeconds);
-            }
+            // トラコン未接続時の CPU 負荷を下げるため、1回失敗で15秒ロックアウトする
+            // トラコンが接続されていない状態でゲームスタートすると、ほぼ15秒に一回、DInput の初期化を試みることになる
+            _initializeLockoutUntil = DateTime.Now.AddSeconds(LockoutDurationSeconds);
+            Debug.WriteLine("DirectInputController: Locked out until " + _initializeLockoutUntil.Value);
         }
 
         return result;
