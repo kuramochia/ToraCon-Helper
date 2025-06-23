@@ -154,7 +154,7 @@ public partial class App : Application
         services.AddSingleton<BlinkerForLaneChangeAction>();
         services.AddSingleton<BlinkerLikeRealCarDInputAction>();
         services.AddSingleton<ReterderSkipInputAction>();
-        services.AddSingleton<GameTimeAction>();
+        services.AddSingleton<GameInfoAction>();
 
         return services.BuildServiceProvider();
     }

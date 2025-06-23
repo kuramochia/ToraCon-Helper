@@ -17,7 +17,7 @@ public partial class ViewModel : ObservableObject, IDisposable
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
 
-    private GameTimeAction gameInTimeAction;
+    private GameInfoAction gameInfoAction;
 
     internal GameProcessDetector GameProcessDetector { get; private set; }
 
@@ -36,15 +36,18 @@ public partial class ViewModel : ObservableObject, IDisposable
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
-        gameInTimeAction = App.Current.Services.GetService<GameTimeAction>()!;
-        gameInTimeAction.GameTimeUpdated += GameInTimeAction_GameTimeUpdated;
-        TelemetryActionsManager.AddAction(gameInTimeAction);
+        gameInfoAction = App.Current.Services.GetService<GameInfoAction>()!;
+        gameInfoAction.GameInfoUpdated += GameInfoAction_GameInfoUpdated;
+        TelemetryActionsManager.AddAction(gameInfoAction);
     }
 
     private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e)
     {
-        // Game process has ended, update the game time
+        // Game process has ended, reset some properties
         GameTime = null;
+        GameName = null;
+        NavigationDistance = null;
+        NavigationTime = null;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -90,12 +93,39 @@ public partial class ViewModel : ObservableObject, IDisposable
     private string? lastShownPage;
 
 
-    // Powertoys Page の時刻表示用
-    private void GameInTimeAction_GameTimeUpdated(SCSTelemetry.Time gameTime)
-        => GameTime = gameTime.Date;
+    #region Powertoys Page の情報表示用
 
+    // Powertoys Page の情報表示用
+    private void GameInfoAction_GameInfoUpdated(object sender, GameInfoUpdatedEventArgs e)
+    {
+        var currentGameTime = e.Telemetry.CommonValues.GameTime.Date;
+        if (GameTime != currentGameTime) GameTime = currentGameTime;
+
+        var currentGameName = e.Telemetry.Game.ToString().ToUpper();
+        if (GameName != currentGameName) GameName = currentGameName;
+
+        var currentNavigationDistance = e.Telemetry.NavigationValues.NavigationDistance / 1000; // m to km
+        if(NavigationDistance != currentNavigationDistance) NavigationDistance = currentNavigationDistance;
+
+        var currentNavigationTime = TimeSpan.FromSeconds(e.Telemetry.NavigationValues.NavigationTime);
+        if (NavigationTime != currentNavigationTime) NavigationTime = currentNavigationTime;
+    }
+
+    // ゲーム内時間
     [ObservableProperty]
     private DateTime? gameTime;
+
+    // ゲーム名
+    [ObservableProperty]
+    private string? gameName;
+
+    [ObservableProperty]
+    private float? navigationDistance;
+
+    [ObservableProperty]
+    private TimeSpan? navigationTime;
+
+    #endregion
 
     #endregion
 
@@ -118,7 +148,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         Ets2?.Dispose();
         Ats?.Dispose();
         GameProcessDetector.GameProcessEnded -= GameProcessDetector_GameProcessEnded;
-        gameInTimeAction.GameTimeUpdated -= GameInTimeAction_GameTimeUpdated;
+        gameInfoAction.GameInfoUpdated -= GameInfoAction_GameInfoUpdated;
 
     }
 }
