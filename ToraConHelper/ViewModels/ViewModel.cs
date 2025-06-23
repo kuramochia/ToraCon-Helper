@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using SCSSdkClient.Object;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -15,20 +16,38 @@ public partial class ViewModel : ObservableObject, IDisposable
     private const string SettingAppStartupUrl = "ms-settings:startupapps";
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
-    private readonly TelemetryActionsManager telemetryActionsManager;
-    private readonly GameProcessDetector gameProcessDetector;
-    internal GameProcessDetector GameProcessDetector { get { return gameProcessDetector; } }
+
+    private GameInfoAction gameInfoAction;
+
+    internal GameProcessDetector GameProcessDetector { get; private set; }
+
+    internal TelemetryActionsManager TelemetryActionsManager { get; private set; }
 
     public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector) : base()
     {
         this.settingFile = settingFile;
-        this.telemetryActionsManager = telemetryActionsManager;
-        this.gameProcessDetector = gameProcessDetector;
+        TelemetryActionsManager = telemetryActionsManager;
+        GameProcessDetector = gameProcessDetector;
+
+        gameProcessDetector.GameProcessEnded += GameProcessDetector_GameProcessEnded;
+        if (!gameProcessDetector.IsStarted) gameProcessDetector.StartWatchers();
 
         isInitialization = true;
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
+        gameInfoAction = App.Current.Services.GetService<GameInfoAction>()!;
+        gameInfoAction.GameInfoUpdated += GameInfoAction_GameInfoUpdated;
+        TelemetryActionsManager.AddAction(gameInfoAction);
+    }
+
+    private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e)
+    {
+        // Game process has ended, reset some properties
+        GameTime = null;
+        GameName = null;
+        NavigationDistance = null;
+        NavigationTime = null;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -50,11 +69,11 @@ public partial class ViewModel : ObservableObject, IDisposable
     {
         if (oldValue)
         {
-            telemetryActionsManager?.Stop();
+            TelemetryActionsManager?.Stop();
         }
         if (newValue)
         {
-            telemetryActionsManager?.Start();
+            TelemetryActionsManager?.Start();
         }
     }
 
@@ -72,6 +91,42 @@ public partial class ViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     private string? lastShownPage;
+
+
+    #region Powertoys Page の情報表示用
+
+    // Powertoys Page の情報表示用
+    private void GameInfoAction_GameInfoUpdated(object sender, GameInfoUpdatedEventArgs e)
+    {
+        var currentGameTime = e.Telemetry.CommonValues.GameTime.Date;
+        if (GameTime != currentGameTime) GameTime = currentGameTime;
+
+        var currentGameName = e.Telemetry.Game.ToString().ToUpper();
+        if (GameName != currentGameName) GameName = currentGameName;
+
+        var currentNavigationDistance = e.Telemetry.NavigationValues.NavigationDistance / 1000; // m to km
+        if(NavigationDistance != currentNavigationDistance) NavigationDistance = currentNavigationDistance;
+
+        var currentNavigationTime = TimeSpan.FromSeconds(e.Telemetry.NavigationValues.NavigationTime);
+        if (NavigationTime != currentNavigationTime) NavigationTime = currentNavigationTime;
+    }
+
+    // ゲーム内時間
+    [ObservableProperty]
+    private DateTime? gameTime;
+
+    // ゲーム名
+    [ObservableProperty]
+    private string? gameName;
+
+    [ObservableProperty]
+    private float? navigationDistance;
+
+    [ObservableProperty]
+    private TimeSpan? navigationTime;
+
+    #endregion
+
     #endregion
 
     #region Private methods
@@ -80,11 +135,11 @@ public partial class ViewModel : ObservableObject, IDisposable
         var action = App.Current.Services.GetService<T>();
         if (oldValue)
         {
-            telemetryActionsManager?.RemoveAction(action!);
+            TelemetryActionsManager?.RemoveAction(action!);
         }
         if (newValue)
         {
-            telemetryActionsManager?.AddAction(action!);
+            TelemetryActionsManager?.AddAction(action!);
         }
     }
     #endregion
@@ -92,5 +147,8 @@ public partial class ViewModel : ObservableObject, IDisposable
     {
         Ets2?.Dispose();
         Ats?.Dispose();
+        GameProcessDetector.GameProcessEnded -= GameProcessDetector_GameProcessEnded;
+        gameInfoAction.GameInfoUpdated -= GameInfoAction_GameInfoUpdated;
+
     }
 }
