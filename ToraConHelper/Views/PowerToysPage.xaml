@@ -280,7 +280,7 @@
                                         Style="{StaticResource TitleTextBlockStyle}" 
                                         Margin="20,0"
                                         DockPanel.Dock="Right"
-                                        Text="{Binding Path=NavigationDistance, StringFormat={}{0:0.0} km}"/>
+                                        Text="{Binding Path=NavigationDistance, StringFormat={}{0:0.0} km, TargetNullValue={x:Null}}"/>
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="距離" />
                                 </DockPanel>
                             </ui:Card>
