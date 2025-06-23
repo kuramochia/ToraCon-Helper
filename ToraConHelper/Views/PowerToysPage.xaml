@@ -281,7 +281,7 @@
                                         Margin="20,0"
                                         DockPanel.Dock="Right"
                                         Text="{Binding Path=NavigationDistance, StringFormat={}{0:0.0} km, TargetNullValue={x:Null}}"/>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="距離" />
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="移動距離" />
                                 </DockPanel>
                             </ui:Card>
                             <ui:Card>
@@ -294,7 +294,7 @@
                                         Margin="20,0"
                                         DockPanel.Dock="Right"
                                         Text="{Binding Path=NavigationTime, Converter={StaticResource tsConv}}"/>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="到達時間" />
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="所要時間" />
                                 </DockPanel>
                             </ui:Card>
                         </StackPanel>
