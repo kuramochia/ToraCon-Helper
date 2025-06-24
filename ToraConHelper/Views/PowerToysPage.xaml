@@ -315,27 +315,7 @@
                         <TextBlock 
                             Style="{StaticResource TitleTextBlockStyle}" 
                             Margin="20,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Path=DataContext.Now, RelativeSource={RelativeSource Self}, StringFormat={}{0:HH:mm:ss}}"
-                            DataContext="{DynamicResource DateTime}">
-                            <TextBlock.Resources>
-                                <system:DateTime x:Key="DateTime" x:Shared="false" />
-                                <Storyboard x:Key="Storyboard">
-                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="DataContext"
-                                               Duration="0:0:1"
-                                               RepeatBehavior="Forever"
-                                               AutoReverse="False">
-                                        <DiscreteObjectKeyFrame KeyTime="50%"
-                                            Value="{StaticResource DateTime}" />
-                                    </ObjectAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </TextBlock.Resources>
-                            <TextBlock.Triggers>
-                                <EventTrigger RoutedEvent="Loaded">
-                                    <BeginStoryboard Storyboard="{StaticResource Storyboard}" />
-                                </EventTrigger>
-                            </TextBlock.Triggers>
-                        </TextBlock>
+                            DockPanel.Dock="Right" x:Name="realTimeText"/>
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="リアル時間" />
                     </DockPanel>
                 </ui:Card>
