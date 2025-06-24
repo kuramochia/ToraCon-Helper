@@ -136,6 +136,7 @@ ETS2/ATS の [Telemetry SDK](https://modding.scssoft.com/wiki/Documentation/Engi
 ETS2/ATS のいろんなフォルダ・ファイルを簡単に閲覧・起動できるページを用意しました。
 
 ![](images/appPowerToyPageImage.png)
+![ゲーム内情報](images/game_info.png)
 
 ### PowerToys ページでできること
 * ゲームの起動
@@ -150,6 +151,11 @@ ETS2/ATS のいろんなフォルダ・ファイルを簡単に閲覧・起動�
   * 謎の(!?)プロファイル名をデコードして表示
   * 最終更新時刻が新しい順に表示
   * クリックするとそのプロファイルを開きます
+* ゲーム内情報
+  * 起動中のゲーム (ETS2 / ATS)
+  * ナビ情報（移動距離、所要時間）
+  * ゲーム内時間
+  * リアル時間
 
 ## バグを発見した
 [Issues](https://github.com/kuramochia/ToraCon-Helper/issues) をお願いします。
