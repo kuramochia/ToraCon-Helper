@@ -255,9 +255,18 @@
 
         <ui:CardExpander
             Margin="10"
-            IsExpanded="True">
+            IsExpanded="True"
+            x:Name="gameInfoExpander"
+            Expanded="gameInfoExpander_ExpandedChanged" Collapsed="gameInfoExpander_ExpandedChanged">
             <ui:CardExpander.Header>
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内情報" />
+                <!--<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内情報" />-->
+                <DockPanel LastChildFill="True">
+                    <TextBlock 
+                            Style="{StaticResource TitleTextBlockStyle}" 
+                            Margin="20,0"
+                            DockPanel.Dock="Right" x:Name="realTimeTitleText"/>
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内情報" />
+                </DockPanel>
             </ui:CardExpander.Header>
             <StackPanel>
                 <ui:Card>
