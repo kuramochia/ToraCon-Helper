@@ -1200,26 +1200,28 @@ SCSAPI_RESULT scs_telemetry_init(
  */
 SCSAPI_VOID scs_telemetry_shutdown() {
 #if LOGGING
-  logger::flush();
+    logger::flush();
 #endif
-  // Close MemoryMap
-  telem_ptr->sdkActive = false;
-  telem_ptr->scs_values.game = 0;
-  telem_ptr->scs_values.telemetry_plugin_revision = 0;
-  telem_ptr->scs_values.telemetry_version_game_major = 0;
-  telem_ptr->scs_values.telemetry_version_game_minor = 0;
-  telem_ptr->scs_values.version_major = 0;
-  telem_ptr->scs_values.version_minor = 0;
+    if (telem_mem != nullptr)
+    {
+        if (telem_mem->Hooked() && telem_ptr != nullptr) {
+            // Close MemoryMap
+            telem_ptr->sdkActive = false;
+            telem_ptr->scs_values.game = 0;
+            telem_ptr->scs_values.telemetry_plugin_revision = 0;
+            telem_ptr->scs_values.telemetry_version_game_major = 0;
+            telem_ptr->scs_values.telemetry_version_game_minor = 0;
+            telem_ptr->scs_values.version_major = 0;
+            telem_ptr->scs_values.version_minor = 0;
 
-  telem_ptr->time = 0;
-  telem_ptr->simulatedTime = 0;
-  telem_ptr->renderTime = 0;
-  telem_ptr->common_ui.time_abs = 0;
-  telem_ptr->common_f.scale = 0;
-
-  if (telem_mem != nullptr) {
-    telem_mem->Close();
-  }
+            telem_ptr->time = 0;
+            telem_ptr->simulatedTime = 0;
+            telem_ptr->renderTime = 0;
+            telem_ptr->common_ui.time_abs = 0;
+            telem_ptr->common_f.scale = 0;
+        }
+        telem_mem->Close();
+    }
 }
 
 // Telemetry api.
