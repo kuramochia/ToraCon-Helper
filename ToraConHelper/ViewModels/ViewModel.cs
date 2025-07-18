@@ -22,7 +22,7 @@ public partial class ViewModel : ObservableObject, IDisposable
 
     internal TelemetryActionsManager TelemetryActionsManager { get; private set; }
 
-    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector) : base()
+    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector, GameInfoAction gameInfoAction) : base()
     {
         this.settingFile = settingFile;
         TelemetryActionsManager = telemetryActionsManager;
@@ -35,7 +35,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
-        gameInfoAction = App.Current.Services.GetService<GameInfoAction>()!;
+        this.gameInfoAction = gameInfoAction;
         gameInfoAction.GameInfoUpdated += GameInfoAction_GameInfoUpdated;
         TelemetryActionsManager.AddAction(gameInfoAction);
     }
