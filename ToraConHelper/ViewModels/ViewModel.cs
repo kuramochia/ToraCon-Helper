@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using SCSSdkClient.Object;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using ToraConHelper.Services;
 using ToraConHelper.Services.TelemetryActions;
 
@@ -53,8 +52,18 @@ public partial class ViewModel : ObservableObject, IDisposable
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        Save();
+        if (IsSaveTargetName(e.PropertyName)) Save();
     }
+
+    private static readonly HashSet<string> IgnoreSaveTargetNames = new(new[]
+    {
+        nameof(GameTime),
+        nameof(GameName),
+        nameof(NavigationDistance),
+        nameof(NavigationTime),
+    }, StringComparer.InvariantCultureIgnoreCase);
+
+    private bool IsSaveTargetName(string propertyName) => !IgnoreSaveTargetNames.Contains(propertyName);
 
     internal void Save()
     {
@@ -105,7 +114,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         if (GameName != currentGameName) GameName = currentGameName;
 
         var currentNavigationDistance = e.Telemetry.NavigationValues.NavigationDistance / 1000; // m to km
-        if(NavigationDistance != currentNavigationDistance) NavigationDistance = currentNavigationDistance;
+        if (NavigationDistance != currentNavigationDistance) NavigationDistance = currentNavigationDistance;
 
         var currentNavigationTime = TimeSpan.FromSeconds(e.Telemetry.NavigationValues.NavigationTime);
         if (NavigationTime != currentNavigationTime) NavigationTime = currentNavigationTime;
