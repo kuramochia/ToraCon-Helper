@@ -3,7 +3,7 @@ using System;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-internal class GameInfoAction : TelemetryActionBase
+public class GameInfoAction : TelemetryActionBase
 {
     public event EventHandler<GameInfoUpdatedEventArgs>? GameInfoUpdated;
 
@@ -14,7 +14,7 @@ internal class GameInfoAction : TelemetryActionBase
     }
 }
 
-internal class GameInfoUpdatedEventArgs : EventArgs
+public class GameInfoUpdatedEventArgs : EventArgs
 {
     public SCSTelemetry Telemetry { get; }
     public GameInfoUpdatedEventArgs(SCSTelemetry telemetry)

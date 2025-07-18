@@ -25,7 +25,7 @@ public partial class ViewModel
             RetarderFullOffActionEnabled = RetarderFullOffActionEnabled,
             EngineBrakeAutoOffActionEnabled = EngineBrakeAutoOffActionEnabled,
             EngineBrakeAutoOffActionLimitSpeedKph = EngineBrakeAutoOffActionLimitSpeedKph,
-            ReterderAutoOffActionEnabled = ReterderAllReduceActionEnabled,
+            ReterderAutoOffActionEnabled = ReterderAutoOffActionEnabled,
             ReterderAutoOffActionLimitSpeedKph = ReterderAutoOffActionLimitSpeedKph,
             AutoFullFuelEnabled = AutoFullFuelEnabled,
             BlinkerForLaneChangeEnabled = BlinkerForLaneChangeEnabled,
