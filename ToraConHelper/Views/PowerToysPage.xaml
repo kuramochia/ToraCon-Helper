@@ -48,6 +48,7 @@
                 </StackPanel>
             </ui:CardAction>
         </DataTemplate>
+        <local:PowerToysNavigationDistanceConverter x:Key="distanceConv" />
     </Page.Resources>
 
     <StackPanel>
@@ -288,8 +289,14 @@
                                     <TextBlock 
                                         Style="{StaticResource TitleTextBlockStyle}" 
                                         Margin="20,0"
-                                        DockPanel.Dock="Right"
-                                        Text="{Binding Path=NavigationDistance, StringFormat={}{0:0} km, TargetNullValue={x:Null}}"/>
+                                        DockPanel.Dock="Right">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource distanceConv}">
+                                                <Binding Path="NavigationDistance"/>
+                                                <Binding Path="GameName"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="移動距離" />
                                 </DockPanel>
                             </ui:Card>
