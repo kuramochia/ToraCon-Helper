@@ -414,7 +414,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="アクセルを踏んでいる状態ででリターダーを全部戻す" />
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="アクセルを踏んでいる状態でリターダーを全部戻す" />
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAllReduceOnThrottleEnabled}" />
                     </Grid>
                     <ui:Card.Footer>
