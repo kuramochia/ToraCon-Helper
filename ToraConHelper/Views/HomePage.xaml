@@ -408,6 +408,20 @@
                     </ui:Card.Footer>
                 </ui:Card>
 
+                <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="アクセルを踏んでいる状態ででリターダーを全部戻す" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAllReduceOnThrottleEnabled}" />
+                    </Grid>
+                    <ui:Card.Footer>
+                        <TextBlock Text="アクセルを踏んでいる状態でリターダーを戻す入力を行うと、リターダーを一気に全段戻します。" />
+                    </ui:Card.Footer>
+                </ui:Card>
+
             </StackPanel>
         </ui:CardExpander>
 
