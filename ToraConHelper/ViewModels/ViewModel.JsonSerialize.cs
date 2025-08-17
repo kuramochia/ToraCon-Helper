@@ -36,6 +36,7 @@ public partial class ViewModel
             BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
             ReterderSkipInputActionEnabled = ReterderSkipInputActionEnabled,
             ReterderSkipInputLevel = ReterderSkipInputLevel,
+            ReterderAllReduceOnThrottleEnabled = ReterderAllReduceOnThrottleEnabled,
         };
         s.PowerToysSettings ??= [];
         s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
@@ -74,6 +75,7 @@ public partial class ViewModel
         BlinkerDInputJoyStickType = s.BlinkerDInputJoyStickType;
         ReterderSkipInputActionEnabled = s.ReterderSkipInputActionEnabled;
         ReterderSkipInputLevel = s.ReterderSkipInputLevel;
+        ReterderAllReduceOnThrottleEnabled = s.ReterderAllReduceOnThrottleEnabled;
 
         Ets2 = PowerToysViewModel.FromSettings(this, GameType.ETS2, s.PowerToysSettings?[GameType.ETS2]);
         Ats = PowerToysViewModel.FromSettings(this, GameType.ATS, s.PowerToysSettings?[GameType.ATS]);

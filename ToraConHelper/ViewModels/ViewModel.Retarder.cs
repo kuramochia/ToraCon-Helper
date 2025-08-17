@@ -66,4 +66,10 @@ public partial class ViewModel
         var action = App.Current.Services.GetService<ReterderSkipInputAction>();
         action!.SkipLevel = value;
     }
+
+    // リターダーをアクセル踏んでるときに全段落とす
+    [ObservableProperty]
+    private bool reterderAllReduceOnThrottleEnabled;
+
+    partial void OnReterderAllReduceOnThrottleEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderAllReduceOnThrottleAction>(oldValue, newValue);
 }

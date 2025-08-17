@@ -37,6 +37,8 @@ public class Settings
 
     public int ReterderSkipInputLevel { get; set; } = 1;
 
+    public bool ReterderAllReduceOnThrottleEnabled { get; set; } = false;
+
     public bool EngineBrakeAutoOffActionEnabled { get; set; } = false;
 
     public int EngineBrakeAutoOffActionLimitSpeedKph { get; set; } = 10;
