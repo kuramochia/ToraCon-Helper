@@ -39,6 +39,18 @@ public partial class MainWindow
             WindowState = viewModel.MinimizeOnStart ? System.Windows.WindowState.Minimized : System.Windows.WindowState.Normal;
             this.Show();
         }
+
+        mainWindowViewModel.PropertyChanged += async (sender, args) =>
+        {
+            if (args.PropertyName == nameof(MainWindowViewModel.IsRunning))
+            {
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    // Taskbar の オーバーレイアイコン表示切り替え
+                    taskbarItemInfo.Overlay = mainWindowViewModel.IsRunning ? (System.Windows.Media.ImageSource)FindResource("RunningOverlayIcon") : null;
+                });
+            }
+        };
     }
 
     public void ShowHomePage() => navigationView.Navigate("HomePage");
