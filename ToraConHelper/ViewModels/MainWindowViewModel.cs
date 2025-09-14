@@ -1,19 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.ObjectModel;
+using ToraConHelper.Services.TelemetryActions;
 using ToraConHelper.Views;
 using Wpf.Ui.Controls;
 
 namespace ToraConHelper.ViewModels;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ObservableObject, IDisposable
 {
     [ObservableProperty]
     private ObservableCollection<INavigationViewItem>? mainNavigationViewItems;
     [ObservableProperty]
     private ObservableCollection<INavigationViewItem>? footerNavigationViewItems;
 
-    public MainWindowViewModel()
+    private readonly ViewModel viewModel;
+
+    public MainWindowViewModel(ViewModel viewModel)
     {
+        this.viewModel = viewModel;
+
+        viewModel.GameInfoAction.GameInfoUpdated += OnGameInfoUpdated;
+        viewModel.GameProcessDetector.GameProcessEnded += OnGameProcessEnded;
+
         MainNavigationViewItems =
             [
                 new NavigationViewItem{
@@ -39,5 +48,18 @@ public partial class MainWindowViewModel : ObservableObject
                     TargetPageTag= nameof(AboutPage),
                 },
             ];
+    }
+
+    [ObservableProperty]
+    private bool isRunning = false;
+
+    private void OnGameInfoUpdated(object sender, GameInfoUpdatedEventArgs e) => IsRunning = true;
+
+    private void OnGameProcessEnded(object sender, EventArgs e) => IsRunning = false;
+
+    public void Dispose()
+    {
+        viewModel.GameInfoAction.GameInfoUpdated -= OnGameInfoUpdated;
+        viewModel.GameProcessDetector.GameProcessEnded -= OnGameProcessEnded;
     }
 }

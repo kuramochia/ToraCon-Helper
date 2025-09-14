@@ -16,7 +16,7 @@ public partial class ViewModel : ObservableObject, IDisposable
     private readonly bool isInitialization;
     private readonly ISettingFileMamager settingFile;
 
-    private GameInfoAction gameInfoAction;
+    internal GameInfoAction GameInfoAction { get; private set; }
 
     internal GameProcessDetector GameProcessDetector { get; private set; }
 
@@ -35,7 +35,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         LoadFromSettings(this.settingFile);
         isInitialization = false;
 
-        this.gameInfoAction = gameInfoAction;
+        GameInfoAction = gameInfoAction;
         gameInfoAction.GameInfoUpdated += GameInfoAction_GameInfoUpdated;
         TelemetryActionsManager.AddAction(gameInfoAction);
     }
@@ -157,7 +157,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         Ets2?.Dispose();
         Ats?.Dispose();
         GameProcessDetector.GameProcessEnded -= GameProcessDetector_GameProcessEnded;
-        gameInfoAction.GameInfoUpdated -= GameInfoAction_GameInfoUpdated;
+        GameInfoAction.GameInfoUpdated -= GameInfoAction_GameInfoUpdated;
 
     }
 }

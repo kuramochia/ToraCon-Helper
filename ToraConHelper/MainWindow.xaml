@@ -14,12 +14,49 @@
     d:DataContext="{d:DesignInstance viewmodels:MainWindowViewModel}"
     ExtendsContentIntoTitleBar="True"
     mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <SolidColorBrush x:Key="PrimaryAccentBrush" Color="{DynamicResource SystemAccentColorPrimary}"/>
+        <DrawingImage x:Key="RunningOverlayIcon">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing Geometry="F1 M 50,25L 0,0L 0,50L 50,25 Z" Brush="{DynamicResource PrimaryAccentBrush}"/>
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </ui:FluentWindow.Resources>
+    <ui:FluentWindow.TaskbarItemInfo>
+        <TaskbarItemInfo x:Name="taskbarItemInfo"/>
+    </ui:FluentWindow.TaskbarItemInfo>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:TitleBar Title="{Binding RelativeSource={RelativeSource AncestorType=ui:FluentWindow}, Path=Title}" />
+        <ui:TitleBar Title="{Binding RelativeSource={RelativeSource AncestorType=ui:FluentWindow}, Path=Title}">
+            <ui:TitleBar.Style>
+                <Style TargetType="ui:TitleBar" BasedOn="{StaticResource {x:Type ui:TitleBar}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsRunning}" Value="True">
+                            <Setter Property="Icon">
+                                <Setter.Value>
+                                    <ui:SymbolIcon Symbol="CaretRight24" Filled="True" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="28"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryAccentBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsRunning}" Value="False">
+                            <Setter Property="Icon">
+                                <Setter.Value>
+                                    <ui:ImageIcon Source="/icon.ico"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ui:TitleBar.Style>
+        </ui:TitleBar>
         <!--  NavigationView が不要な1ページアプリなんだけど、作っておく  -->
         <ui:NavigationView
             x:Name="navigationView"
