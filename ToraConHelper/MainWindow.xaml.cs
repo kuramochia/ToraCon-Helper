@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Threading;
 using ToraConHelper.ViewModels;
+using ToraConHelper.Views;
 using Wpf.Ui.Abstractions;
 
 namespace ToraConHelper;
@@ -11,13 +14,34 @@ public partial class MainWindow
 {
     private readonly ViewModel viewModel;
 
+    private WindowPositionSettings windowPositionSettings;
+
+    private DispatcherTimer stateSaveTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+
     public MainWindow(ViewModel viewModel, MainWindowViewModel mainWindowViewModel, INavigationViewPageProvider navigationViewPageProvider)
     {
         InitializeComponent();
+        windowPositionSettings = new(this);
         this.viewModel = viewModel;
         DataContext = mainWindowViewModel;
 
         navigationView.SetPageProviderService(navigationViewPageProvider);
+
+        stateSaveTimer.Tick += async (sender, args) =>
+        {
+            stateSaveTimer.Stop();
+            if (IsLoaded && WindowState != System.Windows.WindowState.Minimized)
+            {
+                Width = ActualWidth;
+                Height = ActualHeight;
+                UpdateLayout();
+                await windowPositionSettings.SaveWindowStateAsync();
+            }
+        };
+
+        SourceInitialized += (sender, args) => windowPositionSettings.LoadWindowState();
+        SizeChanged += (sender, args) => { if (!stateSaveTimer.IsEnabled) stateSaveTimer.Start(); };
+        LocationChanged += (sender, args) => { if (!stateSaveTimer.IsEnabled) stateSaveTimer.Start(); };
 
         Loaded += (sender, args) =>
         {
@@ -36,8 +60,8 @@ public partial class MainWindow
 
         if (!viewModel.TaskTrayOnStart)
         {
-            WindowState = viewModel.MinimizeOnStart ? System.Windows.WindowState.Minimized : System.Windows.WindowState.Normal;
             this.Show();
+            WindowState = viewModel.MinimizeOnStart ? System.Windows.WindowState.Minimized : System.Windows.WindowState.Normal;
         }
 
         mainWindowViewModel.PropertyChanged += async (sender, args) =>
