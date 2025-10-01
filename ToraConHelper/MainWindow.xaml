@@ -29,7 +29,7 @@
     <ui:FluentWindow.TaskbarItemInfo>
         <TaskbarItemInfo x:Name="taskbarItemInfo"/>
     </ui:FluentWindow.TaskbarItemInfo>
-    <Grid>
+    <Grid Margin="2,2,2,0"> <!-- TitleBar でリサイズ可能にするために、微妙なマージンを取る -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
