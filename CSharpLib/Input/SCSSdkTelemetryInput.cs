@@ -347,6 +347,55 @@ public class SCSSdkTelemetryInput: IDisposable {
         _memoryMappedView.Flush();
     }
 
+    /// <summary>
+    /// クルーズコントロール速度Up
+    /// </summary>
+    /// <param name="waitMilliseconds">入力している時間</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void SetCruiseControlIncrement(int waitMilliseconds = 100)
+    {
+        if (!Hooked)
+            throw new InvalidOperationException("not Connected");
+
+        _inputData.CruiseControlIncrement = true;
+
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+
+        // 待つ
+        Thread.Sleep(waitMilliseconds);
+
+        // false に戻す
+        _inputData.CruiseControlIncrement = false;
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+    }
+
+    /// <summary>
+    /// クルーズコントロール速度Down
+    /// </summary>
+    /// <param name="waitMilliseconds">入力している時間</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void SetCruiseControlDecrement(int waitMilliseconds = 100)
+    {
+        if (!Hooked)
+            throw new InvalidOperationException("not Connected");
+
+        _inputData.CruiseControlDecrement = true;
+
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+
+        // 待つ
+        Thread.Sleep(waitMilliseconds);
+
+        // false に戻す
+        _inputData.CruiseControlDecrement = false;
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+    }
     #endregion
 
 }

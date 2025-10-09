@@ -37,6 +37,9 @@ public partial class ViewModel
             ReterderSkipInputActionEnabled = ReterderSkipInputActionEnabled,
             ReterderSkipInputLevel = ReterderSkipInputLevel,
             ReterderAllReduceOnThrottleEnabled = ReterderAllReduceOnThrottleEnabled,
+            FollowSpeedLimitCruiseControlEnabled = FollowSpeedLimitCruiseControlEnabled,
+            CruiseControlMPHinATS = CruiseControlMPHinATS,
+            CruiseControlStep = CruiseControlStep,
         };
         s.PowerToysSettings ??= [];
         s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
@@ -76,6 +79,9 @@ public partial class ViewModel
         ReterderSkipInputActionEnabled = s.ReterderSkipInputActionEnabled;
         ReterderSkipInputLevel = s.ReterderSkipInputLevel;
         ReterderAllReduceOnThrottleEnabled = s.ReterderAllReduceOnThrottleEnabled;
+        FollowSpeedLimitCruiseControlEnabled = s.FollowSpeedLimitCruiseControlEnabled;
+        CruiseControlMPHinATS = s.CruiseControlMPHinATS;
+        CruiseControlStep = s.CruiseControlStep;
 
         Ets2 = PowerToysViewModel.FromSettings(this, GameType.ETS2, s.PowerToysSettings?[GameType.ETS2]);
         Ats = PowerToysViewModel.FromSettings(this, GameType.ATS, s.PowerToysSettings?[GameType.ATS]);
