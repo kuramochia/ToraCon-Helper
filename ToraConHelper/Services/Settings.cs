@@ -43,6 +43,13 @@ public class Settings
 
     public int EngineBrakeAutoOffActionLimitSpeedKph { get; set; } = 10;
 
+    public bool FollowSpeedLimitCruiseControlEnabled { get; set; } = false;
+
+    public bool CruiseControlMPHinATS { get; set; } = true;
+
+    public int CruiseControlStep { get; set; } = 5;
+
+
     public bool AutoFullFuelEnabled { get; set; } = true;
     public BlinkerJoyStickType BlinkerDInputJoyStickType { get; set; } = BlinkerJoyStickType.LeftStick;
 

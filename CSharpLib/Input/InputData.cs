@@ -130,4 +130,19 @@ public struct InputData {
     /// エンジンブレーキDown
     /// </summary>
     public bool EngineBrakeDown;
+
+    /// <summary>
+    /// クルーズコントロール
+    /// </summary>
+    public bool CruiseControl;
+
+    /// <summary>
+    /// クルーズコントロール Up
+    /// </summary>
+    public bool CruiseControlIncrement;
+
+    /// <summary>
+    /// クルーズコントロール Down
+    /// </summary>
+    public bool CruiseControlDecrement;
 }

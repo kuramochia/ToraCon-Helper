@@ -15,8 +15,8 @@ public partial class HomePage : Page
         DataContext = viewModel;
     }
 
-    public ObservableCollection<int> SteeringRotationAngles { get; private set; } = 
-        [ 
+    public ObservableCollection<int> SteeringRotationAngles { get; private set; } =
+        [
             360,
             540,
             720,
@@ -27,4 +27,6 @@ public partial class HomePage : Page
             1620,
             1800,
         ];
+
+    public ObservableCollection<int> CruiseControlSteps { get; private set; } = [1, 3, 5];
 }

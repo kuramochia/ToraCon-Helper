@@ -156,6 +156,7 @@ public partial class App : Application
         services.AddSingleton<ReterderSkipInputAction>();
         services.AddSingleton<ReterderAllReduceOnThrottleAction>();
         services.AddSingleton<GameInfoAction>();
+        services.AddSingleton<FollowSpeedLimitCruiseControlAction>();
 
         return services.BuildServiceProvider();
     }
