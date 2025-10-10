@@ -62,5 +62,5 @@ const scs_input_device_input_t inputs[] = {
 	{"engbrakedwn", "TCH EngineBrake Down", SCS_VALUE_TYPE_bool},
 	{"cruiectrl", "TCH Cruise Control", SCS_VALUE_TYPE_bool},
 	{"cruiectrlinc", "TCH CC Increment", SCS_VALUE_TYPE_bool},
-	{"cruiectrldec", "TCH CC Decriment", SCS_VALUE_TYPE_bool},
+	{"cruiectrldec", "TCH CC Decrement", SCS_VALUE_TYPE_bool},
 };
