@@ -11,6 +11,7 @@ using ToraConHelper.Services.TelemetryActions;
 using ToraConHelper.ViewModels;
 using ToraConHelper.Views;
 using Wpf.Ui.Abstractions;
+using WpfUi = Wpf.Ui.Controls;
 
 namespace ToraConHelper;
 
@@ -42,7 +43,7 @@ public partial class App : Application
     private MessageOnlyWindow? messageOnlyWindow;
 
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         // ちょっと雑だけど、MainWindowを DI から取る -> ViewModel を DI から取る → 初期化と動作開始、という流れ
@@ -84,20 +85,29 @@ public partial class App : Application
         _ = RunPerProcessCommunicationAsync(cancellationTokenSource.Token).ConfigureAwait(false);
 
         // Telemetry DLL 更新チェック
-        CheckTelemetryDLL();
+        await CheckTelemetryDLLAsync();
 
         // メッセージ専用ウィンドウを作成
         messageOnlyWindow = new();
         messageOnlyWindow.Show();
     }
 
-    private void CheckTelemetryDLL()
+    private async Task CheckTelemetryDLLAsync()
     {
         var installer = new PluginInstaller();
         if (installer.NeedInstall())
         {
             var msg = $"Telemetry DLL が更新されています。インストールを行いますか？{Environment.NewLine}管理者権限が必要です。";
-            if (MessageBox.Show(msg, MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            var msgBox = new WpfUi.MessageBox
+            {
+                Title = MainWindow.Title,
+                Content = msg,
+                PrimaryButtonText = "はい",
+                CloseButtonText = "いいえ",
+                IsPrimaryButtonEnabled  = true,
+                IsCloseButtonEnabled = true,
+            };
+            if((await msgBox.ShowDialogAsync()) == WpfUi.MessageBoxResult.Primary)
             {
                 // Create new process
                 var pInfo = new ProcessStartInfo("ToraConHelper_installer.exe", "-install")
