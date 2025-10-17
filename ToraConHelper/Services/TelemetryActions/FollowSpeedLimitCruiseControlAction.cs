@@ -36,7 +36,7 @@ public class FollowSpeedLimitCruiseControlAction : TelemetryActionBase
                     //CC速度UP
                     using var input = new SCSSdkTelemetryInput();
                     input.Connect();
-                    input.SetCruiseControlIncrement(25);
+                    input.SetCruiseControlIncrement(30);
                     changed = true;
                     Debug.WriteLine("CC Increment");
                 }
@@ -45,7 +45,7 @@ public class FollowSpeedLimitCruiseControlAction : TelemetryActionBase
                     //CC速度Down
                     using var input = new SCSSdkTelemetryInput();
                     input.Connect();
-                    input.SetCruiseControlDecrement(25);
+                    input.SetCruiseControlDecrement(30);
                     changed = true;
                     Debug.WriteLine("CC Decrement");
                 }
