@@ -22,6 +22,15 @@ public class TelemetryActionsManager : IDisposable
 
     public ReadOnlyCollection<ITelemetryAction> Actions { get { return _actions.AsReadOnly(); } }
 
+    public void InsertOfTopAction(ITelemetryAction action)
+    {
+        if (action == null) return;
+        int index = 0;
+        _actions.Insert(index, action);
+        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Insert(index, actionWithEvents);
+        action.OnActionAdded();
+    }
+
     public void AddAction(ITelemetryAction action)
     {
         if (action == null) return;
