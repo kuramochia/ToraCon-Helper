@@ -28,10 +28,10 @@ public class PowerToysNavigationDistanceConverter : IMultiValueConverter
         string gameName = (string)values[1];
 
         if (string.IsNullOrEmpty(gameName)) return string.Empty;
-        StringBuilder formatted = new($"{kph:0.0} km");
+        StringBuilder formatted = new($"{kph:0} km");
         if (string.CompareOrdinal("ATS", gameName) == 0)
         {
-            formatted.Append($" ({Math.Round(kph / 1.609344, 1):0.0} mile)");
+            formatted.Append($" ({Math.Round(kph / 1.609344, 1):0} mile)");
         }
         return formatted.ToString();
     }
