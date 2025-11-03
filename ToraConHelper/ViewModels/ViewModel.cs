@@ -47,6 +47,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         GameName = null;
         NavigationDistance = null;
         NavigationTime = null;
+        lastRenderTimestamp = 0;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -104,10 +105,15 @@ public partial class ViewModel : ObservableObject, IDisposable
 
     #region Powertoys Page の情報表示用
 
+    private ulong lastRenderTimestamp = 0;
+
     // Powertoys Page の情報表示用
     private void GameInfoAction_GameInfoUpdated(object sender, GameInfoUpdatedEventArgs e)
     {
-        if (e.Telemetry.RenderTimestamp % 30 != 0) return; // 30 フレームに 1 回だけ更新
+        // 500ms に 1 回だけ更新
+        if (lastRenderTimestamp + (500 * 1000) <= e.Telemetry.RenderTimestamp)
+            lastRenderTimestamp = e.Telemetry.RenderTimestamp;
+        else return;
         Debug.WriteLine($"GameInfoAction_GameInfoUpdated: RenderTimestamp={e.Telemetry.RenderTimestamp}");
         var currentGameTime = e.Telemetry.CommonValues.GameTime.Date;
         if (GameTime != currentGameTime) GameTime = currentGameTime;
