@@ -37,7 +37,7 @@ public partial class ViewModel : ObservableObject, IDisposable
 
         GameInfoAction = gameInfoAction;
         gameInfoAction.GameInfoUpdated += GameInfoAction_GameInfoUpdated;
-        TelemetryActionsManager.InsertOfTopAction(gameInfoAction);
+        TelemetryActionsManager.AddAction(gameInfoAction);
     }
 
     private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e)
