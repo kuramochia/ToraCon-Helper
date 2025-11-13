@@ -12,6 +12,9 @@ public class GameInfoAction : TelemetryActionBase
         GameInfoUpdated?.Invoke(this, new(telemetry));
         return false;
     }
+
+    // 優先度 高 (他のアクションよりも先に実行)
+    public override TelemetryActionPriority Priority => TelemetryActionPriority.High;
 }
 
 public class GameInfoUpdatedEventArgs : EventArgs

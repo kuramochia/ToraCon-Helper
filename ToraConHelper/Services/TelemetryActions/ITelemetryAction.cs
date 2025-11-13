@@ -3,6 +3,13 @@ using System;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
+public enum TelemetryActionPriority
+{
+    High = 8,
+    Default = 5,
+    Low = 2,
+}
+
 public interface ITelemetryAction
 {
     /// <summary>
@@ -12,6 +19,8 @@ public interface ITelemetryAction
     bool OnTelemetryUpdated(SCSTelemetry telemetry);
     void OnActionAdded();
     void OnActionRemoved();
+
+    TelemetryActionPriority Priority { get; }
 }
 
 /// <summary>
@@ -37,6 +46,9 @@ public abstract class TelemetryActionBase : ITelemetryAction
 
     public virtual void OnActionAdded() { }
     public virtual void OnActionRemoved() { }
+
+    public virtual TelemetryActionPriority Priority { get; } = TelemetryActionPriority.Default;
+
 }
 
 public abstract class TelemetryActionWithEventsBase : TelemetryActionBase, ITelemetryActionWithEvents

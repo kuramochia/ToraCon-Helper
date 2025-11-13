@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows.Threading;
 using ToraConHelper.Services.TelemetryActions;
 
 namespace ToraConHelper.Services;
@@ -14,36 +16,31 @@ public class TelemetryActionsManager : IDisposable
 
     private bool _running = false;
 
-    private readonly List<ITelemetryAction> _actions = [];
+    private readonly Dictionary<TelemetryActionPriority, List<ITelemetryAction>> _actions = new(
+            typeof(TelemetryActionPriority).GetEnumValues().OfType<TelemetryActionPriority>()
+            .Select(p => new KeyValuePair<TelemetryActionPriority, List<ITelemetryAction>>(p, new())).ToDictionary(kv => kv.Key, kv => kv.Value)
+            );
 
-    private readonly List<ITelemetryActionWithEvents> _actionsWithEvents = [];
+    private readonly Dictionary<TelemetryActionPriority, List<ITelemetryActionWithEvents>> _actionsWithEvents = new(
+            typeof(TelemetryActionPriority).GetEnumValues().OfType<TelemetryActionPriority>()
+            .Select(p => new KeyValuePair<TelemetryActionPriority, List<ITelemetryActionWithEvents>>(p, new())).ToDictionary(kv => kv.Key, kv => kv.Value)
+            );
 
     public TelemetryActionsManager() { }
-
-    public ReadOnlyCollection<ITelemetryAction> Actions { get { return _actions.AsReadOnly(); } }
-
-    public void InsertOfTopAction(ITelemetryAction action)
-    {
-        if (action == null) return;
-        int index = 0;
-        _actions.Insert(index, action);
-        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Insert(index, actionWithEvents);
-        action.OnActionAdded();
-    }
 
     public void AddAction(ITelemetryAction action)
     {
         if (action == null) return;
-        _actions.Add(action);
-        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Add(actionWithEvents);
+        _actions[action.Priority].Add(action);
+        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents[action.Priority].Add(actionWithEvents);
         action.OnActionAdded();
     }
 
     public void RemoveAction(ITelemetryAction action)
     {
         if (action == null) return;
-        _actions.Remove(action);
-        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents.Remove(actionWithEvents);
+        _actions[action.Priority].Remove(action);
+        if (action is ITelemetryActionWithEvents actionWithEvents) _actionsWithEvents[action.Priority].Remove(actionWithEvents);
         action.OnActionRemoved();
     }
 
@@ -72,7 +69,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnRefuelPayed();
             }
@@ -93,7 +90,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnRefuelEnd();
             }
@@ -114,7 +111,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnRefuelStart();
             }
@@ -135,7 +132,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnTrain();
             }
@@ -156,7 +153,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnFerry();
             }
@@ -177,7 +174,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnTollgate();
             }
@@ -198,7 +195,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnFined();
             }
@@ -219,7 +216,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnJobCancelled();
             }
@@ -240,7 +237,7 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (var act in _actionsWithEvents)
+            foreach (var act in _actionsWithEvents.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 act?.OnJobStarted();
             }
@@ -263,7 +260,8 @@ public class TelemetryActionsManager : IDisposable
         try
         {
             _running = true;
-            foreach (ITelemetryAction act in _actions)
+
+            foreach (var act in _actions.OrderByDescending(kvp => kvp.Key).SelectMany(kvp => kvp.Value))
             {
                 if (act.OnTelemetryUpdated(data)) break;
             }
@@ -300,9 +298,8 @@ public class TelemetryActionsManager : IDisposable
     public void Dispose()
     {
         Stop();
-        foreach (var act in _actions)
-            (act as IDisposable)?.Dispose();
-        _actions.Clear();
-        _actionsWithEvents.Clear();
+        foreach (var act in _actions.SelectMany(kvp => kvp.Value)) (act as IDisposable)?.Dispose();
+        foreach (var acts in _actions.Values) acts.Clear();
+        foreach (var acts in _actionsWithEvents.Values) acts.Clear();
     }
 }

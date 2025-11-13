@@ -58,4 +58,7 @@ public class FollowSpeedLimitCruiseControlAction : TelemetryActionBase
 
         return changed;
     }
+
+    // 優先度：低（WoT で制限速度がある場合に更新し続けるため）
+    public override TelemetryActionPriority Priority => TelemetryActionPriority.Low;
 }
