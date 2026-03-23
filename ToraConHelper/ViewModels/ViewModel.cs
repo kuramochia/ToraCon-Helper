@@ -47,6 +47,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         GameName = null;
         NavigationDistance = null;
         NavigationTime = null;
+        TruckName = null;
         lastRenderTimestamp = 0;
     }
 
@@ -62,6 +63,7 @@ public partial class ViewModel : ObservableObject, IDisposable
         nameof(GameName),
         nameof(NavigationDistance),
         nameof(NavigationTime),
+        nameof(TruckName),
     }, StringComparer.InvariantCultureIgnoreCase);
 
     private bool IsSaveTargetName(string propertyName) => !IgnoreSaveTargetNames.Contains(propertyName);
@@ -126,6 +128,8 @@ public partial class ViewModel : ObservableObject, IDisposable
 
         var currentNavigationTime = TimeSpan.FromSeconds(e.Telemetry.NavigationValues.NavigationTime);
         if (NavigationTime != currentNavigationTime) NavigationTime = currentNavigationTime;
+
+        TruckName = $"{e.Telemetry.TruckValues.ConstantsValues.Brand} {e.Telemetry.TruckValues.ConstantsValues.Name}";
     }
 
     // ゲーム内時間
@@ -135,6 +139,9 @@ public partial class ViewModel : ObservableObject, IDisposable
     // ゲーム名
     [ObservableProperty]
     private string? gameName;
+
+    [ObservableProperty]
+    private string? truckName;
 
     [ObservableProperty]
     private float? navigationDistance;

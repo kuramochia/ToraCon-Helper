@@ -281,7 +281,14 @@
                     </DockPanel>
                 </ui:Card>
                 <ui:Card>
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ナビ情報" />
+                    <DockPanel LastChildFill="True">
+                        <TextBlock 
+                            Style="{StaticResource TitleTextBlockStyle}" 
+                            Margin="20,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding Path=TruckName}"/>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="トラック" />
+                    </DockPanel>
                     <ui:Card.Footer>
                         <StackPanel>
                             <ui:Card>
