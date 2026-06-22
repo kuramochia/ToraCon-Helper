@@ -40,6 +40,8 @@ public partial class ViewModel
             FollowSpeedLimitCruiseControlEnabled = FollowSpeedLimitCruiseControlEnabled,
             CruiseControlMPHinATS = CruiseControlMPHinATS,
             CruiseControlStep = CruiseControlStep,
+            AutoFlasherAtReverseActionEnabled = AutoFlasherAtReverseActionEnabled,
+            IgnoreFlasherOffWhenReverseOff = IgnoreFlasherOffWhenReverseOff,
         };
         s.PowerToysSettings ??= [];
         s.PowerToysSettings.Add(GameType.ETS2, Ets2!.ToSettings());
@@ -82,6 +84,8 @@ public partial class ViewModel
         FollowSpeedLimitCruiseControlEnabled = s.FollowSpeedLimitCruiseControlEnabled;
         CruiseControlMPHinATS = s.CruiseControlMPHinATS;
         CruiseControlStep = s.CruiseControlStep;
+        AutoFlasherAtReverseActionEnabled = s.AutoFlasherAtReverseActionEnabled;
+        IgnoreFlasherOffWhenReverseOff = s.IgnoreFlasherOffWhenReverseOff;
 
         Ets2 = PowerToysViewModel.FromSettings(this, GameType.ETS2, s.PowerToysSettings?[GameType.ETS2]);
         Ats = PowerToysViewModel.FromSettings(this, GameType.ATS, s.PowerToysSettings?[GameType.ATS]);

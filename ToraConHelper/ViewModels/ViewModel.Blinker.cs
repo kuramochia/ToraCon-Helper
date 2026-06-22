@@ -113,4 +113,19 @@ public partial class ViewModel
         action!.OffTime = TimeSpan.FromSeconds(value);
     }
 
+    // リバース時に自動的にフラッシャーを点灯させるアクション
+    [ObservableProperty]
+    public bool autoFlasherAtReverseActionEnabled;
+
+    partial void OnAutoFlasherAtReverseActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<AutoFlasherAtReverseAction>(oldValue, newValue);
+
+    // リバース解除した時にフラッシャーが点灯していても無視するかどうか
+    [ObservableProperty]
+    public bool ignoreFlasherOffWhenReverseOff;
+
+    partial void OnIgnoreFlasherOffWhenReverseOffChanged(bool value)
+    {
+        var action = App.Current.Services.GetService<AutoFlasherAtReverseAction>();
+        action!.IgnoreFlasherOffWhenReverseOff = value;
+    }
 }

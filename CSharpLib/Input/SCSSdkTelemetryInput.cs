@@ -323,7 +323,7 @@ public class SCSSdkTelemetryInput: IDisposable {
     }
 
     /// <summary>
-    /// 右ウィンカーレバー入力Offを実施
+    /// エンジンブレーキトグルを実施
     /// </summary>
     /// <param name="waitMilliseconds">入力している時間</param>
     /// <returns></returns>
@@ -393,6 +393,31 @@ public class SCSSdkTelemetryInput: IDisposable {
 
         // false に戻す
         _inputData.CruiseControlDecrement = false;
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+    }
+
+    /// <summary>
+    /// ハザードを実施
+    /// </summary>
+    /// <param name="waitMilliseconds">入力している時間</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void SetFlasher4way(int waitMilliseconds = 100)
+    {
+        if (!Hooked)
+            throw new InvalidOperationException("not Connected");
+
+        _inputData.Flasher4way = true;
+
+        _memoryMappedView.Write(0, ref _inputData);
+        _memoryMappedView.Flush();
+
+        // 待つ
+        Thread.Sleep(waitMilliseconds);
+
+        // false に戻す
+        _inputData.Flasher4way = false;
         _memoryMappedView.Write(0, ref _inputData);
         _memoryMappedView.Flush();
     }

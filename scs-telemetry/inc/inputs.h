@@ -42,7 +42,7 @@ const scs_input_device_input_t inputs[] = {
 	//{"mapzoom_out", "TCH Zoom Map Out", SCS_VALUE_TYPE_bool},
 	//{"accmode", "TCH ACC Mode", SCS_VALUE_TYPE_bool},
 	//{"showmirrors", "TCH Show Mirrors", SCS_VALUE_TYPE_bool},
-	//{"flasher4way", "TCH Hazard Lights", SCS_VALUE_TYPE_bool},
+	{"flasher4way", "TCH Hazard Lights", SCS_VALUE_TYPE_bool},
 	{"activate", "TCH Activate", SCS_VALUE_TYPE_bool},
 	//{"assistact1", "TCH Assist Act 1", SCS_VALUE_TYPE_bool},
 	//{"assistact2", "TCH Assist Act 2", SCS_VALUE_TYPE_bool},
