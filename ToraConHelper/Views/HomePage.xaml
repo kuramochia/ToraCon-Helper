@@ -276,6 +276,31 @@
                         </StackPanel>
                     </ui:Card.Footer>
                 </ui:Card>
+                
+                <ui:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="リバースギアとフラッシャー(ハザードランプ)を連動する" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=AutoFlasherAtReverseActionEnabled}" />
+                    </Grid>
+                    <ui:Card.Footer>
+                        <StackPanel>
+                            <TextBlock>
+                                <Run Text="リバースギアに入れた時に自動的にフラッシャー(ハザードランプ)を点灯させ、リバース解除時に消灯します。" />
+                                <LineBreak />
+                                <Run Text="リバースギアに入れる前にフラッシャー(ハザードランプ)が点灯している場合はこの設定を無視します。" />
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal" Margin="0,10">
+                                <TextBlock Text="リバース解除時はフラッシャー(ハザードランプ)を消灯しない" />
+                                <ui:ToggleSwitch Margin="20,0,0,0" IsChecked="{Binding Path=IgnoreFlasherOffWhenReverseOff}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ui:Card.Footer>
+                </ui:Card>
+
             </StackPanel>
         </ui:CardExpander>
 

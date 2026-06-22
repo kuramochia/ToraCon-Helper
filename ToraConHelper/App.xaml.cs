@@ -167,6 +167,7 @@ public partial class App : Application
         services.AddSingleton<ReterderAllReduceOnThrottleAction>();
         services.AddSingleton<GameInfoAction>();
         services.AddSingleton<FollowSpeedLimitCruiseControlAction>();
+        services.AddSingleton<AutoFlasherAtReverseAction>();
 
         return services.BuildServiceProvider();
     }

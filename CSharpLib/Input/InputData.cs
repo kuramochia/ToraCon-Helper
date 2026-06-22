@@ -70,7 +70,11 @@ public struct InputData {
     //public bool Mapzoom_out;
     //public bool Accmode;
     //public bool Showmirrors;
-    //public bool Flasher4way;
+
+    /// <summary>
+    /// ハザード
+    /// </summary>
+    public bool Flasher4way;
 
     /// <summary>
     /// 決定

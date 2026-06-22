@@ -49,8 +49,12 @@ public class Settings
 
     public int CruiseControlStep { get; set; } = 5;
 
-
     public bool AutoFullFuelEnabled { get; set; } = true;
+
+    public bool AutoFlasherAtReverseActionEnabled { get; set; } = false;
+    public bool IgnoreFlasherOffWhenReverseOff { get; set; } = false;
+
+
     public BlinkerJoyStickType BlinkerDInputJoyStickType { get; set; } = BlinkerJoyStickType.LeftStick;
 
     public Dictionary<GameType, PowerToysSettings>? PowerToysSettings { get; set; }
