@@ -16,8 +16,8 @@ public partial class ViewModel
             LastShownPage = LastShownPage,
 
             BlinkerLikeRealCarActionEnabled = BlinkerLikeRealCarActionEnabled,
-            RetarderAllReduceActionEnabled = ReterderAllReduceActionEnabled,
-            RetarderAllReduceActionLimitSpeedKph = ReterderAllReduceActionLimitSpeedKph,
+            RetarderAllReduceActionEnabled = RetarderAllReduceActionEnabled,
+            RetarderAllReduceActionLimitSpeedKph = RetarderAllReduceActionLimitSpeedKph,
             BlinkerHideOnSteeringActionEnabled = BlinkerHideOnSteeringActionEnabled,
             SteeringRotationAngle = SteeringRotationAngle,
             BlinkerHideBySteeringAngle = BlinkerHideBySteeringAngle,
@@ -25,8 +25,8 @@ public partial class ViewModel
             RetarderFullOffActionEnabled = RetarderFullOffActionEnabled,
             EngineBrakeAutoOffActionEnabled = EngineBrakeAutoOffActionEnabled,
             EngineBrakeAutoOffActionLimitSpeedKph = EngineBrakeAutoOffActionLimitSpeedKph,
-            ReterderAutoOffActionEnabled = ReterderAutoOffActionEnabled,
-            ReterderAutoOffActionLimitSpeedKph = ReterderAutoOffActionLimitSpeedKph,
+            RetarderAutoOffActionEnabled = RetarderAutoOffActionEnabled,
+            RetarderAutoOffActionLimitSpeedKph = RetarderAutoOffActionLimitSpeedKph,
             AutoFullFuelEnabled = AutoFullFuelEnabled,
             BlinkerForLaneChangeEnabled = BlinkerForLaneChangeEnabled,
             BlinkerForLaneChangeLimitSpeedKph = BlinkerForLaneChangeLimitSpeedKph,
@@ -34,9 +34,9 @@ public partial class ViewModel
             BlinkerForLaneChangeSteeringAngle = BlinkerForLaneChangeSteeringAngle,
             BlinkerLikeRealCarDInputActionEnabled = BlinkerLikeRealCarDInputActionEnabled,
             BlinkerDInputJoyStickType = BlinkerDInputJoyStickType,
-            ReterderSkipInputActionEnabled = ReterderSkipInputActionEnabled,
-            ReterderSkipInputLevel = ReterderSkipInputLevel,
-            ReterderAllReduceOnThrottleEnabled = ReterderAllReduceOnThrottleEnabled,
+            RetarderSkipInputActionEnabled = RetarderSkipInputActionEnabled,
+            RetarderSkipInputLevel = RetarderSkipInputLevel,
+            RetarderAllReduceOnThrottleEnabled = RetarderAllReduceOnThrottleEnabled,
             FollowSpeedLimitCruiseControlEnabled = FollowSpeedLimitCruiseControlEnabled,
             CruiseControlMPHinATS = CruiseControlMPHinATS,
             CruiseControlStep = CruiseControlStep,
@@ -50,7 +50,7 @@ public partial class ViewModel
         return s;
     }
 
-    private void LoadFromSettings(ISettingFileMamager sm)
+    private void LoadFromSettings(ISettingFileManager sm)
     {
         var s = sm.Load();
         IsActive = s.IsActive;
@@ -60,8 +60,8 @@ public partial class ViewModel
         LastShownPage = s.LastShownPage;
 
         BlinkerLikeRealCarActionEnabled = s.BlinkerLikeRealCarActionEnabled;
-        ReterderAllReduceActionEnabled = s.RetarderAllReduceActionEnabled;
-        ReterderAllReduceActionLimitSpeedKph = s.RetarderAllReduceActionLimitSpeedKph;
+        RetarderAllReduceActionEnabled = s.RetarderAllReduceActionEnabled;
+        RetarderAllReduceActionLimitSpeedKph = s.RetarderAllReduceActionLimitSpeedKph;
         BlinkerHideOnSteeringActionEnabled = s.BlinkerHideOnSteeringActionEnabled;
         SteeringRotationAngle = s.SteeringRotationAngle;
         BlinkerHideBySteeringAngle = s.BlinkerHideBySteeringAngle;
@@ -69,8 +69,8 @@ public partial class ViewModel
         RetarderFullOffActionEnabled = s.RetarderFullOffActionEnabled;
         EngineBrakeAutoOffActionEnabled = s.EngineBrakeAutoOffActionEnabled;
         EngineBrakeAutoOffActionLimitSpeedKph = s.EngineBrakeAutoOffActionLimitSpeedKph;
-        ReterderAutoOffActionEnabled = s.ReterderAutoOffActionEnabled;
-        ReterderAutoOffActionLimitSpeedKph = s.ReterderAutoOffActionLimitSpeedKph;
+        RetarderAutoOffActionEnabled = s.RetarderAutoOffActionEnabled;
+        RetarderAutoOffActionLimitSpeedKph = s.RetarderAutoOffActionLimitSpeedKph;
         AutoFullFuelEnabled = s.AutoFullFuelEnabled;
         BlinkerForLaneChangeEnabled = s.BlinkerForLaneChangeEnabled;
         BlinkerForLaneChangeLimitSpeedKph = s.BlinkerForLaneChangeLimitSpeedKph;
@@ -78,9 +78,9 @@ public partial class ViewModel
         BlinkerForLaneChangeSteeringAngle = s.BlinkerForLaneChangeSteeringAngle;
         BlinkerLikeRealCarDInputActionEnabled = s.BlinkerLikeRealCarDInputActionEnabled;
         BlinkerDInputJoyStickType = s.BlinkerDInputJoyStickType;
-        ReterderSkipInputActionEnabled = s.ReterderSkipInputActionEnabled;
-        ReterderSkipInputLevel = s.ReterderSkipInputLevel;
-        ReterderAllReduceOnThrottleEnabled = s.ReterderAllReduceOnThrottleEnabled;
+        RetarderSkipInputActionEnabled = s.RetarderSkipInputActionEnabled;
+        RetarderSkipInputLevel = s.RetarderSkipInputLevel;
+        RetarderAllReduceOnThrottleEnabled = s.RetarderAllReduceOnThrottleEnabled;
         FollowSpeedLimitCruiseControlEnabled = s.FollowSpeedLimitCruiseControlEnabled;
         CruiseControlMPHinATS = s.CruiseControlMPHinATS;
         CruiseControlStep = s.CruiseControlStep;

@@ -8,16 +8,16 @@ namespace ToraConHelper.ViewModels;
 public partial class ViewModel
 {
     [ObservableProperty]
-    private bool reterderAllReduceActionEnabled;
+    private bool retarderAllReduceActionEnabled;
 
-    partial void OnReterderAllReduceActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderAllReduceAction>(oldValue, newValue);
+    partial void OnRetarderAllReduceActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderAllReduceAction>(oldValue, newValue);
 
     [ObservableProperty]
-    private int reterderAllReduceActionLimitSpeedKph;
+    private int retarderAllReduceActionLimitSpeedKph;
 
-    partial void OnReterderAllReduceActionLimitSpeedKphChanged(int newValue)
+    partial void OnRetarderAllReduceActionLimitSpeedKphChanged(int newValue)
     {
-        var action = App.Current.Services.GetService<ReterderAllReduceAction>();
+        var action = App.Current.Services.GetService<RetarderAllReduceAction>();
         action!.LimitSpeedKph = newValue;
     }
 
@@ -37,39 +37,39 @@ public partial class ViewModel
 
     // リターダーを自動的に戻す
     [ObservableProperty]
-    private bool reterderAutoOffActionEnabled;
+    private bool retarderAutoOffActionEnabled;
 
-    partial void OnReterderAutoOffActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderAutoOffAction>(oldValue, newValue);
+    partial void OnRetarderAutoOffActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderAutoOffAction>(oldValue, newValue);
 
     // リターダーを自動的に戻す速度
     [ObservableProperty]
-    private int reterderAutoOffActionLimitSpeedKph;
+    private int retarderAutoOffActionLimitSpeedKph;
 
-    partial void OnReterderAutoOffActionLimitSpeedKphChanged(int newValue)
+    partial void OnRetarderAutoOffActionLimitSpeedKphChanged(int newValue)
     {
-        var action = App.Current.Services.GetService<ReterderAutoOffAction>();
+        var action = App.Current.Services.GetService<RetarderAutoOffAction>();
         action!.LimitSpeedKph = newValue;
     }
 
     // リターダーをスキップ入力する
     [ObservableProperty]
-    private bool reterderSkipInputActionEnabled;
+    private bool retarderSkipInputActionEnabled;
 
-    partial void OnReterderSkipInputActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderSkipInputAction>(oldValue, newValue);
+    partial void OnRetarderSkipInputActionEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderSkipInputAction>(oldValue, newValue);
 
     // リターダーをスキップ入力するレベル
     [ObservableProperty]
-    private int reterderSkipInputLevel;
+    private int retarderSkipInputLevel;
 
-    partial void OnReterderSkipInputLevelChanged(int value)
+    partial void OnRetarderSkipInputLevelChanged(int value)
     {
-        var action = App.Current.Services.GetService<ReterderSkipInputAction>();
+        var action = App.Current.Services.GetService<RetarderSkipInputAction>();
         action!.SkipLevel = value;
     }
 
     // リターダーをアクセル踏んでるときに全段落とす
     [ObservableProperty]
-    private bool reterderAllReduceOnThrottleEnabled;
+    private bool retarderAllReduceOnThrottleEnabled;
 
-    partial void OnReterderAllReduceOnThrottleEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<ReterderAllReduceOnThrottleAction>(oldValue, newValue);
+    partial void OnRetarderAllReduceOnThrottleEnabledChanged(bool oldValue, bool newValue) => OnActionEnabledChanged<RetarderAllReduceOnThrottleAction>(oldValue, newValue);
 }

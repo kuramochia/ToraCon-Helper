@@ -14,7 +14,7 @@ public partial class ViewModel : ObservableObject, IDisposable
 {
     private const string SettingAppStartupUrl = "ms-settings:startupapps";
     private readonly bool isInitialization;
-    private readonly ISettingFileMamager settingFile;
+    private readonly ISettingFileManager settingFile;
 
     internal GameInfoAction GameInfoAction { get; private set; }
 
@@ -22,7 +22,7 @@ public partial class ViewModel : ObservableObject, IDisposable
 
     internal TelemetryActionsManager TelemetryActionsManager { get; private set; }
 
-    public ViewModel(ISettingFileMamager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector, GameInfoAction gameInfoAction) : base()
+    public ViewModel(ISettingFileManager settingFile, TelemetryActionsManager telemetryActionsManager, GameProcessDetector gameProcessDetector, GameInfoAction gameInfoAction) : base()
     {
         this.settingFile = settingFile;
         TelemetryActionsManager = telemetryActionsManager;

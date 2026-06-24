@@ -316,7 +316,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを全部戻す" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAllReduceActionEnabled}" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderAllReduceActionEnabled}" />
                     </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
@@ -330,12 +330,12 @@
                                     Maximum="100"
                                     Minimum="0"
                                     SmallChange="1"
-                                    Value="{Binding Path=ReterderAllReduceActionLimitSpeedKph}" />
+                                    Value="{Binding Path=RetarderAllReduceActionLimitSpeedKph}" />
                                 <TextBlock Padding="20,0" VerticalAlignment="Top">
-                                    <Run Text="{Binding Path=ReterderAllReduceActionLimitSpeedKph}" />
+                                    <Run Text="{Binding Path=RetarderAllReduceActionLimitSpeedKph}" />
                                     <Run Text="km/h" />
                                     <Run Text=" = " />
-                                    <Run Text="{Binding Path=ReterderAllReduceActionLimitSpeedKph, Converter={StaticResource mphConv}}" />
+                                    <Run Text="{Binding Path=RetarderAllReduceActionLimitSpeedKph, Converter={StaticResource mphConv}}" />
                                     <Run Text=" Mph" />
                                 </TextBlock>
                             </StackPanel>
@@ -375,7 +375,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="指定速度以下でリターダーを自動的にオフ" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAutoOffActionEnabled}" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderAutoOffActionEnabled}" />
                     </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
@@ -389,12 +389,12 @@
                                     Maximum="100"
                                     Minimum="0"
                                     SmallChange="1"
-                                    Value="{Binding Path=ReterderAutoOffActionLimitSpeedKph}" />
+                                    Value="{Binding Path=RetarderAutoOffActionLimitSpeedKph}" />
                                 <TextBlock Padding="20,0" VerticalAlignment="Top">
-                                    <Run Text="{Binding Path=ReterderAutoOffActionLimitSpeedKph}" />
+                                    <Run Text="{Binding Path=RetarderAutoOffActionLimitSpeedKph}" />
                                     <Run Text="km/h" />
                                     <Run Text=" = " />
-                                    <Run Text="{Binding Path=ReterderAutoOffActionLimitSpeedKph, Converter={StaticResource mphConv}}" />
+                                    <Run Text="{Binding Path=RetarderAutoOffActionLimitSpeedKph, Converter={StaticResource mphConv}}" />
                                     <Run Text=" Mph" />
                                 </TextBlock>
                             </StackPanel>
@@ -409,7 +409,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="リターダーの入力を N 段スキップ" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderSkipInputActionEnabled}" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderSkipInputActionEnabled}" />
                     </Grid>
                     <ui:Card.Footer>
                         <StackPanel>
@@ -423,9 +423,9 @@
                                     Maximum="3"
                                     Minimum="1"
                                     SmallChange="1"
-                                    Value="{Binding Path=ReterderSkipInputLevel}" />
+                                    Value="{Binding Path=RetarderSkipInputLevel}" />
                                 <TextBlock Padding="20,0" VerticalAlignment="Top">
-                                    <Run Text="{Binding Path=ReterderSkipInputLevel}" />
+                                    <Run Text="{Binding Path=RetarderSkipInputLevel}" />
                                     <Run Text=" 段、入力をスキップ" />
                                 </TextBlock>
                             </StackPanel>
@@ -440,7 +440,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource switchTitleTextBlockStyle}" Text="アクセルを踏んでいる状態でリターダーを全部戻す" />
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=ReterderAllReduceOnThrottleEnabled}" />
+                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderAllReduceOnThrottleEnabled}" />
                     </Grid>
                     <ui:Card.Footer>
                         <TextBlock Text="アクセルを踏んでいる状態でリターダーを戻す入力を行うと、リターダーを一気に全段戻します。" />

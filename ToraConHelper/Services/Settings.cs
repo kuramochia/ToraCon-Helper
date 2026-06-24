@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
-using ToraConHelper.Helpers;
 using ToraConHelper.ViewModels;
 
 namespace ToraConHelper.Services;
 
 public class Settings
 {
+    public const int CurrentSchemeVersion = 2;
+
+    public int SchemeVersion { get; set; } = 0;
     public bool IsActive { get; set; } = true;
     public bool GoToTasktrayOnAppClose { get; set; } = false;
     public bool TaskTrayOnStart { get; set; } = false;
@@ -29,15 +31,15 @@ public class Settings
     public bool RetarderFullOnActionEnabled { get; set; } = false;
     public bool RetarderFullOffActionEnabled { get; set; } = false;
 
-    public bool ReterderAutoOffActionEnabled { get; set; } = false;
+    public bool RetarderAutoOffActionEnabled { get; set; } = false;
 
-    public int ReterderAutoOffActionLimitSpeedKph { get; set; } = 10;
+    public int RetarderAutoOffActionLimitSpeedKph { get; set; } = 10;
 
-    public bool ReterderSkipInputActionEnabled { get; set; } = false;
+    public bool RetarderSkipInputActionEnabled { get; set; } = false;
 
-    public int ReterderSkipInputLevel { get; set; } = 1;
+    public int RetarderSkipInputLevel { get; set; } = 1;
 
-    public bool ReterderAllReduceOnThrottleEnabled { get; set; } = false;
+    public bool RetarderAllReduceOnThrottleEnabled { get; set; } = false;
 
     public bool EngineBrakeAutoOffActionEnabled { get; set; } = false;
 

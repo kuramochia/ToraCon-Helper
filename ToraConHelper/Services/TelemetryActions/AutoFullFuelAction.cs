@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace ToraConHelper.Services.TelemetryActions;
 
-internal class AutoFullfuelAction : TelemetryActionWithEventsBase
+internal class AutoFullFuelAction : TelemetryActionWithEventsBase
 {
     public override bool OnTelemetryUpdated(SCSTelemetry telemetry) => false;
 
