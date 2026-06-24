@@ -148,23 +148,23 @@ public partial class App : Application
         services.AddSingleton<MainWindowViewModel>();
 
         // Services
-        services.AddSingleton<ISettingFileMamager, SettingFileManager>();
+        services.AddSingleton<ISettingFileManager, SettingFileManager>();
         services.AddSingleton<TelemetryActionsManager>();
         services.AddSingleton<GameProcessDetector>();
 
         // Services.TelemetryActions
         services.AddSingleton<BlinkerLikeRealCarAction>();
-        services.AddSingleton<ReterderAllReduceAction>();
+        services.AddSingleton<RetarderAllReduceAction>();
         services.AddSingleton<BlinkerHideOnSteeringAction>();
         services.AddSingleton<RetarderFullOnAction>();
         services.AddSingleton<RetarderFullOffAction>();
         services.AddSingleton<EngineBrakeAutoOffAction>();
-        services.AddSingleton<ReterderAutoOffAction>();
-        services.AddSingleton<AutoFullfuelAction>();
+        services.AddSingleton<RetarderAutoOffAction>();
+        services.AddSingleton<AutoFullFuelAction>();
         services.AddSingleton<BlinkerForLaneChangeAction>();
         services.AddSingleton<BlinkerLikeRealCarDInputAction>();
-        services.AddSingleton<ReterderSkipInputAction>();
-        services.AddSingleton<ReterderAllReduceOnThrottleAction>();
+        services.AddSingleton<RetarderSkipInputAction>();
+        services.AddSingleton<RetarderAllReduceOnThrottleAction>();
         services.AddSingleton<GameInfoAction>();
         services.AddSingleton<FollowSpeedLimitCruiseControlAction>();
         services.AddSingleton<AutoFlasherAtReverseAction>();

@@ -9,7 +9,7 @@ public partial class ViewModel
     [ObservableProperty]
     private bool autoFullFuelEnabled;
 
-    partial void OnAutoFullFuelEnabledChanged(bool oldValue, bool newValue)  => OnActionEnabledChanged<AutoFullfuelAction>(oldValue, newValue);
+    partial void OnAutoFullFuelEnabledChanged(bool oldValue, bool newValue)  => OnActionEnabledChanged<AutoFullFuelAction>(oldValue, newValue);
 
     [ObservableProperty]
     private bool followSpeedLimitCruiseControlEnabled;
