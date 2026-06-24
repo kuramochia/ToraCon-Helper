@@ -17,20 +17,6 @@ public class SettingFileManager : ISettingFileManager
     private const string SettingFileName = "ToraCon-Helper_Settings.json";
     private const int CurrentSettingsVersion = Settings.CurrentSchemeVersion;
 
-    // v1 -> v2 で変更されたプロパティのマップ。
-    private static readonly Dictionary<string, string> V1LegacyPropertyNameMap = new Dictionary<string, string>
-    {
-        ["ReterderAllReduceActionEnabled"] = "RetarderAllReduceActionEnabled",
-        ["ReterderAllReduceActionLimitSpeedKph"] = "RetarderAllReduceActionLimitSpeedKph",
-        ["ReterderFullOnActionEnabled"] = "RetarderFullOnActionEnabled",
-        ["ReterderFullOffActionEnabled"] = "RetarderFullOffActionEnabled",
-        ["ReterderAutoOffActionEnabled"] = "RetarderAutoOffActionEnabled",
-        ["ReterderAutoOffActionLimitSpeedKph"] = "RetarderAutoOffActionLimitSpeedKph",
-        ["ReterderSkipInputActionEnabled"] = "RetarderSkipInputActionEnabled",
-        ["ReterderSkipInputLevel"] = "RetarderSkipInputLevel",
-        ["ReterderAllReduceOnThrottleEnabled"] = "RetarderAllReduceOnThrottleEnabled",
-    };
-
     private static readonly JsonSerializerOptions jsonSerializeOptions = new()
     {
         WriteIndented = true,
@@ -50,6 +36,8 @@ public class SettingFileManager : ISettingFileManager
         }
         var json = File.ReadAllText(FilePath);
         var settings = JsonSerializer.Deserialize<Settings>(json, jsonSerializeOptions)!;
+
+        // Migration v1 -> v2
         if (settings.SchemeVersion < CurrentSettingsVersion)
         {
             var migratedv2Json = Migratejson_v1_to_v2(json);
@@ -66,6 +54,23 @@ public class SettingFileManager : ISettingFileManager
         var json = JsonSerializer.Serialize(settings, jsonSerializeOptions);
         File.WriteAllText(FilePath, json);
     }
+
+    #region Migration v1 -> v2
+
+    // v1 -> v2 で変更されたプロパティのマップ。
+    private static readonly Dictionary<string, string> V1LegacyPropertyNameMap = new Dictionary<string, string>
+    {
+        ["ReterderAllReduceActionEnabled"] = "RetarderAllReduceActionEnabled",
+        ["ReterderAllReduceActionLimitSpeedKph"] = "RetarderAllReduceActionLimitSpeedKph",
+        ["ReterderFullOnActionEnabled"] = "RetarderFullOnActionEnabled",
+        ["ReterderFullOffActionEnabled"] = "RetarderFullOffActionEnabled",
+        ["ReterderAutoOffActionEnabled"] = "RetarderAutoOffActionEnabled",
+        ["ReterderAutoOffActionLimitSpeedKph"] = "RetarderAutoOffActionLimitSpeedKph",
+        ["ReterderSkipInputActionEnabled"] = "RetarderSkipInputActionEnabled",
+        ["ReterderSkipInputLevel"] = "RetarderSkipInputLevel",
+        ["ReterderAllReduceOnThrottleEnabled"] = "RetarderAllReduceOnThrottleEnabled",
+    };
+
 
     private static string Migratejson_v1_to_v2(string json)
     {
@@ -125,4 +130,6 @@ public class SettingFileManager : ISettingFileManager
         version = parsedVersion;
         return true;
     }
+
+    #endregion
 }
