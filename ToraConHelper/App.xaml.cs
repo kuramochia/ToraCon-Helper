@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
-using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,21 +19,23 @@ namespace ToraConHelper;
 /// </summary>
 public partial class App : Application
 {
-    internal const string NamedPipeName = "ToraConHelper-NamedPipe-4-MultiInstance";
-
     public App() : base()
     {
         Services = ConfigureServices();
         InitializeComponent();
     }
 
+    internal EventWaitHandle SingleInstanceEvent { private get; set; } = null!;
+
+    private RegisteredWaitHandle? registeredWaitHandle;
+
+    private bool isExiting;
+
     private System.Windows.Forms.NotifyIcon? notifyIcon;
 
     private EventHandler? showAction;
 
     private EventHandler? showPowerToysAction;
-
-    private readonly CancellationTokenSource cancellationTokenSource = new();
 
     public new static App Current => (App)Application.Current;
 
@@ -82,7 +83,12 @@ public partial class App : Application
         notifyIcon.DoubleClick += showAction;
 
         // 多重起動時の表示依頼を拾う
-        _ = RunPerProcessCommunicationAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+        registeredWaitHandle = ThreadPool.RegisterWaitForSingleObject(
+            SingleInstanceEvent,
+            OnSingleInstanceEventSignaled,
+            null,
+            Timeout.Infinite,
+            false);
 
         // Telemetry DLL 更新チェック
         await CheckTelemetryDLLAsync();
@@ -122,8 +128,9 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
+        isExiting = true;
+        registeredWaitHandle?.Unregister(null);
+        registeredWaitHandle = null;
         // Singleton Cleanup
         (Services as IDisposable)?.Dispose();
         notifyIcon!.DoubleClick -= showAction;
@@ -172,21 +179,19 @@ public partial class App : Application
         return services.BuildServiceProvider();
     }
 
-    private async Task RunPerProcessCommunicationAsync(CancellationToken cancellationToken)
+    private void OnSingleInstanceEventSignaled(object? state, bool timedOut)
     {
-        while (!cancellationToken.IsCancellationRequested)
+        if (timedOut || isExiting)
         {
-            try
-            {
-                using var server = new NamedPipeServerStream(NamedPipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
-                await server.WaitForConnectionAsync(cancellationToken);
-                // 特別な通信内容はいらないので、接続されたら Show() の依頼、ということにする
-                await Dispatcher.InvokeAsync(() => showAction?.Invoke(this, EventArgs.Empty));
-            }
-            catch
-            {
-                continue;
-            }
+            return;
         }
+
+        Dispatcher.BeginInvoke(new Action(() =>
+        {
+            if (!isExiting)
+            {
+                showAction?.Invoke(this, EventArgs.Empty);
+            }
+        }));
     }
 }
