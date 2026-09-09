@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.IO.Pipes;
 using System.Runtime;
 using System.Threading;
-using System.Threading.Tasks;
 using ToraConHelper.Installer;
 
 namespace ToraConHelper;
@@ -24,36 +22,27 @@ public class Program
             ProfileOptimization.SetProfileRoot(Path.GetTempPath());
             ProfileOptimization.StartProfile("ToraConHelper.JIT.profile");
 
-            // 多重起動防止用 Mutex
-            using Mutex mutex = new(true, "ToraConHelper", out var createdNew);
-            try
+            // 多重起動防止用の名前付きイベント
+            using EventWaitHandle singleInstanceEvent = new(
+                false,
+                EventResetMode.AutoReset,
+                "ToraConHelper",
+                out var createdNew);
+
+            if (createdNew)
             {
-                if (createdNew)
+                // 新規起動
+                var app = new App
                 {
-                    // 新規起動
-                    var app = new App();
-                    app.Run();
-                }
-                else
-                {
-                    // 5秒であきらめる
-                    CancellationTokenSource cancellationTokenSource = new();
-                    cancellationTokenSource.CancelAfter(5000);
-                    // 既存のウィンドウを表示
-                    ShowAlreadyWindowAsync(cancellationTokenSource.Token).Wait();
-                }
+                    SingleInstanceEvent = singleInstanceEvent,
+                };
+                app.Run();
             }
-            finally
+            else
             {
-                if (createdNew) mutex.ReleaseMutex();
+                // 既存のウィンドウを表示
+                singleInstanceEvent.Set();
             }
         }
-    }
-
-    private static async Task ShowAlreadyWindowAsync(CancellationToken cancellationToken)
-    {
-        // 接続するだけで Show 依頼ということにする
-        using var client = new NamedPipeClientStream(".", App.NamedPipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-        await client.ConnectAsync(cancellationToken);
     }
 }
