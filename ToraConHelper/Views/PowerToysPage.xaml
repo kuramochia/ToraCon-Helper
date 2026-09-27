@@ -287,7 +287,7 @@
                             Margin="20,0"
                             DockPanel.Dock="Right"
                             Text="{Binding Path=TruckName}"/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="トラック" />
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="車両" />
                     </DockPanel>
                     <ui:Card.Footer>
                         <StackPanel>
