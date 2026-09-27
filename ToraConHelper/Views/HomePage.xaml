@@ -352,7 +352,7 @@
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding Path=RetarderFullOnActionEnabled}" />
                     </Grid>
                     <ui:Card.Footer>
-                        <TextBlock Text="リターダーを 0 段から一段上げると、一気にトラックの持つ最大段数まで上げます。" />
+                        <TextBlock Text="リターダーを 0 段から一段上げると、一気にミッションの持つ最大段数まで上げます。" />
                     </ui:Card.Footer>
                 </ui:Card>
                 <ui:Card>
