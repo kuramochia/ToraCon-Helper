@@ -15,6 +15,8 @@ namespace SCSSdkClient.Object {
             public Fined FinedEvent;
             public Cancelled JobCancelled;
             public Delivered JobDelivered;
+            public Cancelled CarJobCancelled;
+            public CarDelivered CarJobDelivered;
             public Tollgate TollgateEvent;
             public Transport TrainEvent;
             public Refuel RefuelEvent;
@@ -23,6 +25,8 @@ namespace SCSSdkClient.Object {
             public GamePlayEvents() {
                 JobCancelled = new Cancelled();
                 JobDelivered = new Delivered();
+                CarJobCancelled = new Cancelled { Started = new Time(), Finished = new Time() };
+                CarJobDelivered = new CarDelivered { Started = new Time(), Finished = new Time(), DeliveryTime = new Time() };
                 FinedEvent = new Fined();
                 TollgateEvent = new Tollgate();
                 TrainEvent = new Transport();
@@ -49,6 +53,10 @@ namespace SCSSdkClient.Object {
                 public Time Finished{ get; internal set; }
                 public Time Started{ get; internal set; }
                 public Time StartedBackup => Finished - DeliveryTime;
+            }
+
+            public class CarDelivered : Delivered {
+                public float VehicleDamage { get; internal set; }
             }
 
             public class Fined {

@@ -48,6 +48,9 @@ namespace SCSSdkClient {
         private SharedMemory SharedMemory;
 
         private bool wasOnJob;
+        private bool wasOnCarJob;
+        private bool carCancelled;
+        private bool carDelivered;
         private bool cancelled;
         private bool delivered;
         private bool fined;
@@ -79,6 +82,12 @@ namespace SCSSdkClient {
         public event EventHandler JobCancelled;
 
         public event EventHandler JobDelivered;
+
+        public event EventHandler CarJobStarted;
+
+        public event EventHandler CarJobCancelled;
+
+        public event EventHandler CarJobDelivered;
 
         public event EventHandler Fined;
 
@@ -169,6 +178,29 @@ namespace SCSSdkClient {
             }
 
             //TODO: make it nicer thats a lot of code for such less work
+            if (wasOnCarJob != scsTelemetry.SpecialEventsValues.OnCarJob ||
+                carCancelled != scsTelemetry.SpecialEventsValues.CarJobCancelled ||
+                carDelivered != scsTelemetry.SpecialEventsValues.CarJobDelivered) {
+                if (!updated) {
+                    Data?.Invoke(scsTelemetry, true);
+                    updated = true;
+                }
+                if (wasOnCarJob != scsTelemetry.SpecialEventsValues.OnCarJob) {
+                    wasOnCarJob = scsTelemetry.SpecialEventsValues.OnCarJob;
+                    if (wasOnCarJob) {
+                        CarJobStarted?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+                if (carCancelled != scsTelemetry.SpecialEventsValues.CarJobCancelled) {
+                    carCancelled = scsTelemetry.SpecialEventsValues.CarJobCancelled;
+                    CarJobCancelled?.Invoke(this, EventArgs.Empty);
+                }
+                if (carDelivered != scsTelemetry.SpecialEventsValues.CarJobDelivered) {
+                    carDelivered = scsTelemetry.SpecialEventsValues.CarJobDelivered;
+                    CarJobDelivered?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
             // Job start event
             if (wasOnJob != scsTelemetry.SpecialEventsValues.OnJob) {
                 wasOnJob = scsTelemetry.SpecialEventsValues.OnJob;

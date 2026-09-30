@@ -15,6 +15,7 @@ namespace SCSSdkClient.Object {
             public Common() {
                 GameTime = new Time();
                 NextRestStop = new Frequency();
+                NextMandatoryBreak = new Frequency();
             }
 
             /// About: Scale
@@ -42,6 +43,10 @@ namespace SCSSdkClient.Object {
             ///     Time until next rest stop.
             /// </summary>
             public Frequency NextRestStop { get; internal set; }
+
+            public Frequency NextMandatoryBreak { get; internal set; }
+
+            public Time NextMandatoryBreakTime => new Time { Value = (uint)((int)GameTime.Value + NextMandatoryBreak.Value) };
 
             /// <summary>
             ///     In game time of next rest stop

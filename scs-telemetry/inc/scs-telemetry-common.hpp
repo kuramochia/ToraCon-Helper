@@ -1,13 +1,15 @@
 #ifndef SCS_TELEMETRY_COMMON_HPP
 #define SCS_TELEMETRY_COMMON_HPP
 
+#include <cstddef>
+
 // This file contains "Common definitions" for this ETS2 telemetry plug-in.
 // This includes:
 // - Debug logging detail options
 // - Shared memory map struct layout
 // - [..]
 
-#define PLUGIN_REVID					12
+#define PLUGIN_REVID					13
 
 #define ETS2                            1
 #define ATS                             2
@@ -40,8 +42,8 @@
 
 bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats);
 bool check_max_version(unsigned const int min_ets2, unsigned const int min_ats);
-enum configType { substances, controls, hshifter, truck, trailer, job };
-enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train };
+enum configType { substances, controls, hshifter, truck, trailer, job, car_job };
+enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train, car_cancelled, car_delivered };
 void log_line(scs_log_type_t type, const char* text, ...);
 void log_line(const char* text, ...);
 
@@ -239,7 +241,8 @@ typedef struct scsTelemetryMap_s
 		int jobDeliveredEarnedXp;
 	}gameplay_i;
 
-	char buffer_i[56];
+	int nextMandatoryBreak;
+	char buffer_i[52];
 	//----- END OF third ZONE AT OFFSET 699 -----//
 
 	//----- START OF FOURTH ZONE AT OFFSET 700 -----//
@@ -528,9 +531,13 @@ typedef struct scsTelemetryMap_s
 		bool train;
 		bool refuel;
 		bool refuelPayed;
+		bool onCarJob;
+		bool carJobCancelled;
+		bool carJobDelivered;
+		bool onBusJob;
 	}special_b;
 
-	char buffer_special[90];
+	char buffer_special[86];
 	//----- END OF 12TH ZONE AT OFFSET 4399 -----//
 
 	//----- START OF 13TH ZONE AT OFFSET 4400 -----//
@@ -547,7 +554,49 @@ typedef struct scsTelemetryMap_s
 		scsTrailer_t trailer[10];
 	}trailer;
 
-	//----- END OF 14TH ZONE AT OFFSET 21619 -----//
+	//----- END OF 14TH ZONE AT OFFSET 21599 -----//
+	struct {
+		unsigned long long income;
+		unsigned int unitCount;
+		unsigned int deliveryTime;
+		unsigned int plannedDistanceKm;
+		bool customerPrioCargoHandling;
+		bool customerPrioTime;
+		bool customerPrioVehicleAppearance;
+		char padding[1];
+		char cargoId[stringsize];
+		char cargo[stringsize];
+		char cityDstId[stringsize];
+		char cityDst[stringsize];
+		char compDstId[stringsize];
+		char compDst[stringsize];
+		char citySrcId[stringsize];
+		char citySrc[stringsize];
+		char compSrcId[stringsize];
+		char compSrc[stringsize];
+		char market[32];
+	}car_job;
+	struct {
+		long long cancelledPenalty;
+		long long deliveredRevenue;
+		int earnedXp;
+		unsigned int deliveryTime;
+		unsigned int startingTime;
+		unsigned int finishedTime;
+		float cargoDamage;
+		float vehicleDamage;
+		float distanceKm;
+	}car_gameplay;
 } scsTelemetryMap_t;
+
+static_assert(sizeof(scsTrailer_t) == 1560, "Trailer layout changed");
+static_assert(offsetof(scsTelemetryMap_t, nextMandatoryBreak) == 644, "Mandatory break offset changed");
+static_assert(offsetof(scsTelemetryMap_t, common_f) == 700, "Float zone moved");
+static_assert(offsetof(scsTelemetryMap_t, special_b) == 4300, "Event zone moved");
+static_assert(offsetof(scsTelemetryMap_t, trailer) == 6000, "Trailer zone moved");
+static_assert(offsetof(scsTelemetryMap_t, car_job) == 21600, "Car job offset changed");
+static_assert(offsetof(scsTelemetryMap_t, car_gameplay) == 22296, "Car gameplay offset changed");
+static_assert(sizeof(scsTelemetryMap_t) == 22344, "Telemetry layout changed");
+static_assert(sizeof(scsTelemetryMap_t) <= SCS_PLUGIN_MMF_SIZE, "Telemetry exceeds shared memory");
 
 #endif

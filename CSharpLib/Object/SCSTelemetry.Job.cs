@@ -2,6 +2,12 @@
 
 namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
+        public class CarJob : Job {
+            public bool CustomerPrioCargoHandling { get; internal set; }
+            public bool CustomerPrioTime { get; internal set; }
+            public bool CustomerPrioVehicleAppearance { get; internal set; }
+        }
+
         /// <summary>
         ///     Job values. Income, destination, source, etc.
         /// </summary>

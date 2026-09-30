@@ -110,6 +110,10 @@ namespace SCSSdkClient {
 
             retData.GamePlay.JobDelivered.EarnedXp = GetInt();
 
+            if (retData.DllVersion >= 13) {
+                retData.CommonValues.NextMandatoryBreak = GetInt();
+            }
+
             NextOffsetArea();
 
             #endregion THIRD ZONE
@@ -368,6 +372,13 @@ namespace SCSSdkClient {
             retData.SpecialEventsValues.Refuel = GetBool();
             retData.SpecialEventsValues.RefuelPayed = GetBool();
 
+            if (retData.DllVersion >= 13) {
+                retData.SpecialEventsValues.OnCarJob = GetBool();
+                retData.SpecialEventsValues.CarJobCancelled = GetBool();
+                retData.SpecialEventsValues.CarJobDelivered = GetBool();
+                retData.SpecialEventsValues.OnBusJob = GetBool();
+            }
+
             NextOffsetArea();
 
             #endregion 12TH ZONE
@@ -390,6 +401,50 @@ namespace SCSSdkClient {
             retData.TrailerValues = GetTrailers();
 
             #endregion 14TH ZONE
+
+            if (retData.DllVersion >= 13) {
+                _offset = 21600;
+                var carJob = retData.CarJobValues;
+                carJob.Income = GetULong();
+                carJob.CargoValues.UnitCount = GetUint();
+                carJob.DeliveryTime = GetUint();
+                if (retData.CommonValues.GameTime.Value > 0 && retData.CommonValues.GameTime.Value < 4000000000 && carJob.DeliveryTime.Value > 0) {
+                    carJob.RemainingDeliveryTime = (int)(carJob.DeliveryTime.Value - retData.CommonValues.GameTime.Value);
+                }
+                carJob.PlannedDistanceKm = GetUint();
+                carJob.CustomerPrioCargoHandling = GetBool();
+                carJob.CustomerPrioTime = GetBool();
+                carJob.CustomerPrioVehicleAppearance = GetBool();
+                GetBool();
+                carJob.CargoValues.Id = GetString();
+                carJob.CargoValues.Name = GetString();
+                carJob.CityDestinationId = GetString();
+                carJob.CityDestination = GetString();
+                carJob.CompanyDestinationId = GetString();
+                carJob.CompanyDestination = GetString();
+                carJob.CitySourceId = GetString();
+                carJob.CitySource = GetString();
+                carJob.CompanySourceId = GetString();
+                carJob.CompanySource = GetString();
+                var carJobMarket = GetString(32);
+                if (carJobMarket.Length > 0) {
+                    carJob.Market = carJobMarket.ToEnum<JobMarket>();
+                }
+
+                retData.GamePlay.CarJobCancelled.Penalty = GetLong();
+                retData.GamePlay.CarJobDelivered.Revenue = GetLong();
+                retData.GamePlay.CarJobDelivered.EarnedXp = GetInt();
+                retData.GamePlay.CarJobDelivered.DeliveryTime = GetUint();
+                var carJobStartingTime = new SCSTelemetry.Time(GetUint());
+                retData.GamePlay.CarJobCancelled.Started = carJobStartingTime;
+                retData.GamePlay.CarJobDelivered.Started = carJobStartingTime;
+                var carJobFinishingTime = new SCSTelemetry.Time(GetUint());
+                retData.GamePlay.CarJobCancelled.Finished = carJobFinishingTime;
+                retData.GamePlay.CarJobDelivered.Finished = carJobFinishingTime;
+                retData.GamePlay.CarJobDelivered.CargoDamage = GetFloat();
+                retData.GamePlay.CarJobDelivered.VehicleDamage = GetFloat();
+                retData.GamePlay.CarJobDelivered.DistanceKm = GetFloat();
+            }
 
             currentlyActive = false;
 

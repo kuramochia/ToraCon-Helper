@@ -11,6 +11,38 @@ extern SharedMemory* telem_mem;
 extern scsTelemetryMap_t* telem_ptr;
 extern void set_job_values_zero();
 
+static bool handleCarJobGameplay(const scs_named_value_t* info, const gameplayType type) {
+    auto& values = telem_ptr->car_gameplay;
+    if (type == car_cancelled) {
+        if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cancel_penalty) != 0 ||
+            info->value.type != SCS_VALUE_TYPE_s64) return false;
+        values.cancelledPenalty = info->value.value_s64.value;
+        return true;
+    }
+    if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_revenue) == 0 &&
+        info->value.type == SCS_VALUE_TYPE_s64) {
+        values.deliveredRevenue = info->value.value_s64.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_earned_xp) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_s32) {
+        values.earnedXp = info->value.value_s32.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_delivery_time) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_u32) {
+        values.deliveryTime = info->value.value_u32.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cargo_damage) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_float) {
+        values.cargoDamage = info->value.value_float.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_vehicle_damage) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_float) {
+        values.vehicleDamage = info->value.value_float.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_distance_km) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_float) {
+        values.distanceKm = info->value.value_float.value;
+    } else {
+        return false;
+    }
+    return true;
+}
+
 #pragma region scsGameplayEventHandler_t[]
 
 // const: cancelled_gameplay
@@ -79,6 +111,9 @@ const int length_gameplays[] = {
 // Function: handleGpe
 // brings the config attributes to the correct function
 bool handleGpe(const scs_named_value_t* info, const gameplayType type) {
+    if (type == car_cancelled || type == car_delivered) {
+        return telem_ptr && handleCarJobGameplay(info, type);
+    }
     const scsGameplayEventHandler_t* gameplay = nullptr;
     switch (type) {
     case cancelled:

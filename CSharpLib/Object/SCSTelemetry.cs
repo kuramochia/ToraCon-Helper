@@ -19,6 +19,7 @@ namespace SCSSdkClient.Object {
             TelemetryVersion = new Version();
             TruckValues = new Truck();
             JobValues = new Job();
+            CarJobValues = new CarJob();
             CommonValues = new Common();
             //TrailerValues = new Trailer();
             ControlValues = new Control();
@@ -87,6 +88,8 @@ namespace SCSSdkClient.Object {
         ///     Contains values of the actual job
         /// </summary>
         public Job JobValues { get; internal set; }
+
+        public CarJob CarJobValues { get; internal set; }
 
         public uint MaxTrailerCount { get; internal set; }
 

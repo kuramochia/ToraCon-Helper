@@ -5,6 +5,7 @@
         quick_job,
         freight_market,
         external_contracts,
-        external_market
+        external_market,
+        dispatch_job
     }
 }

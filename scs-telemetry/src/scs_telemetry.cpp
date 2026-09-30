@@ -523,7 +523,22 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
   // log_events(info);
   // check which type the event has
   gameplayType type = {};
-  if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
+  if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_cancelled) == 0 ||
+      strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_delivered) == 0) {
+    const auto was_cancelled = strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_cancelled) == 0;
+    type = was_cancelled ? car_cancelled : car_delivered;
+    const auto starting_time = telem_ptr->car_gameplay.startingTime;
+    telem_ptr->car_gameplay = {};
+    telem_ptr->car_gameplay.startingTime = starting_time;
+    telem_ptr->car_gameplay.finishedTime = telem_ptr->common_ui.time_abs;
+    if (was_cancelled) {
+      telem_ptr->special_b.carJobCancelled ^= true;
+    } else {
+      telem_ptr->special_b.carJobDelivered ^= true;
+    }
+    telem_ptr->special_b.onCarJob = false;
+    telem_ptr->car_job = {};
+  } else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
     type = cancelled;
     telem_ptr->special_b.jobCancelled ^= true;
     telem_ptr->gameplay_ui.jobFinishedTime = telem_ptr->common_ui.time_abs;
@@ -554,6 +569,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
   } else {
     log_line(SCS_LOG_TYPE_warning,
              "Something went wrong with this gameplay event %s", info->id);
+    return;
   }
 
   // attribute is a pointer array that is never null so ... i have no clue how
@@ -583,6 +599,10 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
       // TODO: DELETE ENTRIES WHEN CALLED SO NO VALUE IS THERE to avoid wrong
       // values when changes occur but not in arrays up to that slot or so
       event_info);
+  if (strcmp(info->id, SCS_TELEMETRY_CONFIG_bus_job) == 0) {
+    telem_ptr->special_b.onBusJob = info->attributes->name != nullptr;
+    return;
+  }
   unsigned int trailer_id = NULL;
   // check which type the event has
   configType type = {};
@@ -596,6 +616,9 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
     type = truck;
   } else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_job) == 0) {
     type = job;
+  } else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_car_job) == 0) {
+    type = car_job;
+    telem_ptr->car_job = {};
   } else {
     // check if it is trailer with backwards compatibility
     if (check_max_version(13, 0)) {
@@ -647,6 +670,13 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
   }
   // if id of config is "job" but without element and we are on a job -> we
   // finished it now
+  if (type == car_job) {
+    if (!telem_ptr->special_b.onCarJob && !is_empty) {
+      telem_ptr->car_gameplay.startingTime = telem_ptr->common_ui.time_abs;
+    }
+    telem_ptr->special_b.onCarJob = !is_empty;
+    return;
+  }
   if (type == job && is_empty && telem_ptr->special_b.onJob) {
     telem_ptr->special_b.onJob = false;
     telem_ptr->special_b.jobFinished ^= true;
@@ -677,6 +707,16 @@ SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index,
   assert(value->type == SCS_VALUE_TYPE_s32);
   assert(context);
   *static_cast<int*>(context) = value->value_s32.value;
+}
+
+SCSAPI_VOID telemetry_store_mandatory_break(const scs_string_t name, const scs_u32_t index,
+                                           const scs_value_t* const value,
+                                           scs_context_t context) {
+  if (!value) {
+    *static_cast<int*>(context) = 0;
+    return;
+  }
+  telemetry_store_s32(name, index, value, context);
 }
 
 SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index,
@@ -819,6 +859,12 @@ SCSAPI_RESULT scs_telemetry_init(
   /*** INITIALIZE TELEMETRY MAP TO DEFAULT ***/
   telem_ptr->paused = true;
   telem_ptr->time = 0;
+  telem_ptr->car_job = {};
+  telem_ptr->car_gameplay = {};
+  telem_ptr->special_b.onCarJob = false;
+  telem_ptr->special_b.carJobCancelled = false;
+  telem_ptr->special_b.carJobDelivered = false;
+  telem_ptr->special_b.onBusJob = false;
   // Get SCS Game Version and Set Plugin Version
   telem_ptr->scs_values.telemetry_plugin_revision = PLUGIN_REVID;
   telem_ptr->scs_values.version_major =
@@ -882,6 +928,13 @@ SCSAPI_RESULT scs_telemetry_init(
   // patch 1.34) or simple SDK version 1.0
   /*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
   REGISTER_CHANNEL(CHANNEL_game_time, u32, telem_ptr->common_ui.time_abs);
+
+  telem_ptr->nextMandatoryBreak = 0;
+  if (check_min_version(19, 6)) {
+    REGISTER_SPECIFIC_CHANNEL(CHANNEL_next_mandatory_break, s32,
+                              telemetry_store_mandatory_break,
+                              telem_ptr->nextMandatoryBreak);
+  }
 
   REGISTER_CHANNEL(TRUCK_CHANNEL_speed, float, telem_ptr->truck_f.speed);
   REGISTER_CHANNEL(TRUCK_CHANNEL_local_linear_acceleration, fvector,
