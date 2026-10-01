@@ -60,10 +60,6 @@
           .c_str(),                                                           \
       index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value,      \
       telemetry_store_##type, &(to))
-#define REGISTER_SPECIFIC_CHANNEL(name, type, handler, to)      \
-  version_params->register_for_channel(                         \
-      SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, \
-      SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &(to))
 
 SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;
@@ -929,13 +925,6 @@ SCSAPI_RESULT scs_telemetry_init(
   /*** REGISTER ALL TELEMETRY CHANNELS TO OUR SHARED MEMORY MAP ***/
   REGISTER_CHANNEL(CHANNEL_game_time, u32, telem_ptr->common_ui.time_abs);
 
-  telem_ptr->nextMandatoryBreak = 0;
-  if (check_min_version(19, 6)) {
-    REGISTER_SPECIFIC_CHANNEL(CHANNEL_next_mandatory_break, s32,
-                              telemetry_store_mandatory_break,
-                              telem_ptr->nextMandatoryBreak);
-  }
-
   REGISTER_CHANNEL(TRUCK_CHANNEL_speed, float, telem_ptr->truck_f.speed);
   REGISTER_CHANNEL(TRUCK_CHANNEL_local_linear_acceleration, fvector,
                    telem_ptr->truck_fv.accelerationX);
@@ -1236,6 +1225,13 @@ SCSAPI_RESULT scs_telemetry_init(
       REGISTER_CHANNEL_TRAILER(i, wear.body, float,
                                telem_ptr->trailer.trailer[i].com_f.wearBody);
     }
+  }
+
+  // new in 1.60, ets2 1.19 and ats 1.06
+  telem_ptr->nextMandatoryBreak = 0;
+  if (check_min_version(19, 6)) {
+      REGISTER_CHANNEL(CHANNEL_next_mandatory_break, s32,
+          telem_ptr->nextMandatoryBreak);
   }
 
   // Set the structure with defaults.
