@@ -577,8 +577,8 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
     if (!handleGpe(current, type)) {
       // actually only for testing/debug purpose, so should there be a message
       // in game with that line there is missed something
-      log_line("attribute not handled id: %i attribute: %s", type,
-               current->name);
+      log_line("attribute not handled config: %s (type %i), attribute: %s",
+               info->id, type, current->name);
     }
     is_empty = false;
   }
@@ -667,6 +667,9 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
   // if id of config is "job" but without element and we are on a job -> we
   // finished it now
   if (type == car_job) {
+    log_line("car_job cargo: id='%s', name='%s', unit_count=%u",
+             telem_ptr->car_job.cargoId, telem_ptr->car_job.cargo,
+             telem_ptr->car_job.unitCount);
     if (!telem_ptr->special_b.onCarJob && !is_empty) {
       telem_ptr->car_gameplay.startingTime = telem_ptr->common_ui.time_abs;
     }
