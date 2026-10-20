@@ -35,6 +35,7 @@ SCSSDK_HEADER
  * 1.05 - added multiplayer time offset and trailer body wear channel, fixed trailer chassis wear channel
  * 1.06 - added mandatory break channel
  * 1.07 - added car job related configs and events
+ * 1.08 - fixed mandatory break channel, which was not provided in 1.06
  */
 //@{
 #define SCS_TELEMETRY_ATS_GAME_VERSION_1_00             SCS_MAKE_VERSION(1, 0)
@@ -45,7 +46,8 @@ SCSSDK_HEADER
 #define SCS_TELEMETRY_ATS_GAME_VERSION_1_05             SCS_MAKE_VERSION(1, 5) // Patch 1.45
 #define SCS_TELEMETRY_ATS_GAME_VERSION_1_06             SCS_MAKE_VERSION(1, 6) // Patch 1.60
 #define SCS_TELEMETRY_ATS_GAME_VERSION_1_07             SCS_MAKE_VERSION(1, 7) // Patch 1.61
-#define SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT          SCS_TELEMETRY_ATS_GAME_VERSION_1_07
+#define SCS_TELEMETRY_ATS_GAME_VERSION_1_08             SCS_MAKE_VERSION(1, 8) // Patch 1.61
+#define SCS_TELEMETRY_ATS_GAME_VERSION_CURRENT          SCS_TELEMETRY_ATS_GAME_VERSION_1_08
 //@}
 
 // Game specific units.

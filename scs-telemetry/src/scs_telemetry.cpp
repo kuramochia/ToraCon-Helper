@@ -1230,11 +1230,17 @@ SCSAPI_RESULT scs_telemetry_init(
     }
   }
 
-  // new in 1.60, ets2 1.19 and ats 1.06
+  // Available since SDK 1.16, ETS2 1.21 and ATS 1.08 (patch 1.61).
   telem_ptr->nextMandatoryBreak = 0;
-  if (check_min_version(19, 6)) {
-      REGISTER_CHANNEL(CHANNEL_next_mandatory_break, s32,
-          telem_ptr->nextMandatoryBreak);
+  if (check_min_version(21, 8)) {
+    const auto result = version_params->register_for_channel(
+        SCS_TELEMETRY_CHANNEL_next_mandatory_break, SCS_U32_NIL,
+        SCS_VALUE_TYPE_s32, SCS_TELEMETRY_CHANNEL_FLAG_no_value,
+        telemetry_store_mandatory_break, &telem_ptr->nextMandatoryBreak);
+    if (result != SCS_RESULT_ok) {
+      log_line(SCS_LOG_TYPE_warning,
+               "Failed to register mandatory break channel: %d", result);
+    }
   }
 
   // Set the structure with defaults.
