@@ -44,6 +44,7 @@ bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats);
 bool check_max_version(unsigned const int min_ets2, unsigned const int min_ats);
 enum configType { substances, controls, hshifter, truck, trailer, job, car_job };
 enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train, car_cancelled, car_delivered };
+enum activeJobType { active_job_none, active_job_freight, active_job_car };
 void log_line(scs_log_type_t type, const char* text, ...);
 void log_line(const char* text, ...);
 
@@ -587,6 +588,12 @@ typedef struct scsTelemetryMap_s
 		float vehicleDamage;
 		float distanceKm;
 	}car_gameplay;
+	struct {
+		unsigned int activeJobType;
+		float cargoMass;
+		float unitMass;
+		bool cargoLoaded;
+	}car_extension;
 } scsTelemetryMap_t;
 
 static_assert(sizeof(scsTrailer_t) == 1560, "Trailer layout changed");
@@ -596,7 +603,8 @@ static_assert(offsetof(scsTelemetryMap_t, special_b) == 4300, "Event zone moved"
 static_assert(offsetof(scsTelemetryMap_t, trailer) == 6000, "Trailer zone moved");
 static_assert(offsetof(scsTelemetryMap_t, car_job) == 21600, "Car job offset changed");
 static_assert(offsetof(scsTelemetryMap_t, car_gameplay) == 22296, "Car gameplay offset changed");
-static_assert(sizeof(scsTelemetryMap_t) == 22344, "Telemetry layout changed");
+static_assert(offsetof(scsTelemetryMap_t, car_extension) == 22344, "Car extension offset changed");
+static_assert(sizeof(scsTelemetryMap_t) == 22360, "Telemetry layout changed");
 static_assert(sizeof(scsTelemetryMap_t) <= SCS_PLUGIN_MMF_SIZE, "Telemetry exceeds shared memory");
 
 #endif

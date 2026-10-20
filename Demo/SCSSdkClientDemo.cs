@@ -26,9 +26,6 @@ namespace SCSSdkClient.Demo {
 
             Telemetry.JobCancelled += TelemetryJobCancelled;
             Telemetry.JobDelivered += TelemetryJobDelivered;
-            Telemetry.CarJobStarted += TelemetryOnCarJobStarted;
-            Telemetry.CarJobCancelled += TelemetryCarJobCancelled;
-            Telemetry.CarJobDelivered += TelemetryCarJobDelivered;
             Telemetry.Fined += TelemetryFined;
             Telemetry.Tollgate += TelemetryTollgate;
             Telemetry.Ferry += TelemetryFerry;
@@ -102,12 +99,8 @@ namespace SCSSdkClient.Demo {
                                  $"\t\t\t{data.SpecialEventsValues.JobDelivered}\n" +
                                  "\tJob Cancelled:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.JobCancelled}\n" +
-                                 "\tOn Car Job:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.OnCarJob}\n" +
-                                 "\tCar Job Delivered:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.CarJobDelivered}\n" +
-                                 "\tCar Job Cancelled:\n" +
-                                 $"\t\t\t{data.SpecialEventsValues.CarJobCancelled}\n" +
+                                 "\tActive Job Type:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.ActiveJobType}\n" +
                                  "\tOn Bus Job:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.OnBusJob}\n" +
                                  "\tFined:\n" +
@@ -127,10 +120,7 @@ namespace SCSSdkClient.Demo {
                     JsonConvert.SerializeObject(data.TrailerValues[0],
                                                 Formatting
                                                     .Indented); //TODO: UNTIL I WORK ON A BETTER DEMO SHOW ONLY TRAILER 0
-                job.Text = "Job:\n" +
-                           JsonConvert.SerializeObject(data.JobValues, Formatting.Indented) +
-                           "\n\nCar job:\n" +
-                           JsonConvert.SerializeObject(data.CarJobValues, Formatting.Indented);
+                job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
                 substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
@@ -154,15 +144,6 @@ namespace SCSSdkClient.Demo {
 
         private void TelemetryJobDelivered(object sender, EventArgs e) =>
             MessageBox.Show("Job Delivered");
-
-        private void TelemetryCarJobCancelled(object sender, EventArgs e) =>
-            MessageBox.Show("Car Job Cancelled");
-
-        private void TelemetryCarJobDelivered(object sender, EventArgs e) =>
-            MessageBox.Show("Car Job Delivered");
-
-        private void TelemetryOnCarJobStarted(object sender, EventArgs e) =>
-            MessageBox.Show("Just started car job OR loaded game with active.");
 
         private void TelemetryOnJobStarted(object sender, EventArgs e) =>
                                                             MessageBox.Show("Just started job OR loaded game with active.");

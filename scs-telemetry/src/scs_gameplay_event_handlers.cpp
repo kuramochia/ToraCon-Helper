@@ -17,26 +17,32 @@ static bool handleCarJobGameplay(const scs_named_value_t* info, const gameplayTy
         if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cancel_penalty) != 0 ||
             info->value.type != SCS_VALUE_TYPE_s64) return false;
         values.cancelledPenalty = info->value.value_s64.value;
+        telem_ptr->gameplay_ll.jobCancelledPenalty = values.cancelledPenalty;
         return true;
     }
     if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_revenue) == 0 &&
         info->value.type == SCS_VALUE_TYPE_s64) {
         values.deliveredRevenue = info->value.value_s64.value;
+        telem_ptr->gameplay_ll.jobDeliveredRevenue = values.deliveredRevenue;
     } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_earned_xp) == 0 &&
                info->value.type == SCS_VALUE_TYPE_s32) {
         values.earnedXp = info->value.value_s32.value;
+        telem_ptr->gameplay_i.jobDeliveredEarnedXp = values.earnedXp;
     } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_delivery_time) == 0 &&
                info->value.type == SCS_VALUE_TYPE_u32) {
         values.deliveryTime = info->value.value_u32.value;
+        telem_ptr->gameplay_ui.jobDeliveredDeliveryTime = values.deliveryTime;
     } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cargo_damage) == 0 &&
                info->value.type == SCS_VALUE_TYPE_float) {
         values.cargoDamage = info->value.value_float.value;
+        telem_ptr->gameplay_f.jobDeliveredCargoDamage = values.cargoDamage;
     } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_vehicle_damage) == 0 &&
                info->value.type == SCS_VALUE_TYPE_float) {
         values.vehicleDamage = info->value.value_float.value;
     } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_distance_km) == 0 &&
                info->value.type == SCS_VALUE_TYPE_float) {
         values.distanceKm = info->value.value_float.value;
+        telem_ptr->gameplay_f.jobDeliveredDistanceKm = values.distanceKm;
     } else {
         return false;
     }

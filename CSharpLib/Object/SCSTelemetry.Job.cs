@@ -2,11 +2,7 @@
 
 namespace SCSSdkClient.Object {
     public partial class SCSTelemetry {
-        public class CarJob : Job {
-            public bool CustomerPrioCargoHandling { get; internal set; }
-            public bool CustomerPrioTime { get; internal set; }
-            public bool CustomerPrioVehicleAppearance { get; internal set; }
-        }
+        internal class CarJob : Job { }
 
         /// <summary>
         ///     Job values. Income, destination, source, etc.
@@ -40,6 +36,10 @@ namespace SCSSdkClient.Object {
             public bool CargoLoaded { get; internal set; }
             public bool SpecialJob { get; internal set; }
             public JobMarket Market { get; internal set; }
+            public string MarketName { get; internal set; }
+            public bool CustomerPrioCargoHandling { get; internal set; }
+            public bool CustomerPrioTime { get; internal set; }
+            public bool CustomerPrioVehicleAppearance { get; internal set; }
 
             /// <summary>
             ///     Planned job distance in simulated kilometers.

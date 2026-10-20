@@ -15,8 +15,6 @@ namespace SCSSdkClient.Object {
             public Fined FinedEvent;
             public Cancelled JobCancelled;
             public Delivered JobDelivered;
-            public Cancelled CarJobCancelled;
-            public CarDelivered CarJobDelivered;
             public Tollgate TollgateEvent;
             public Transport TrainEvent;
             public Refuel RefuelEvent;
@@ -25,8 +23,6 @@ namespace SCSSdkClient.Object {
             public GamePlayEvents() {
                 JobCancelled = new Cancelled();
                 JobDelivered = new Delivered();
-                CarJobCancelled = new Cancelled { Started = new Time(), Finished = new Time() };
-                CarJobDelivered = new CarDelivered { Started = new Time(), Finished = new Time(), DeliveryTime = new Time() };
                 FinedEvent = new Fined();
                 TollgateEvent = new Tollgate();
                 TrainEvent = new Transport();
@@ -46,6 +42,7 @@ namespace SCSSdkClient.Object {
                 public bool AutoLoaded{ get; internal set; }
                 public bool AutoParked{ get; internal set; }
                 public float CargoDamage{ get; internal set; }  // Typo fixed thanks to Patrick-van-Halm https://github.com/RenCloud/scs-sdk-plugin/pull/32
+                public float VehicleDamage { get; internal set; }
                 public Time DeliveryTime{ get; internal set; }  // Theoretically more a `Frequency`, because it is a timespan and not a moment, but atm i won't change it to frequency also because it is a UINT from SDK and only positive.
                 public float DistanceKm{ get; internal set; }
                 public int EarnedXp{ get; internal set; }
@@ -53,10 +50,6 @@ namespace SCSSdkClient.Object {
                 public Time Finished{ get; internal set; }
                 public Time Started{ get; internal set; }
                 public Time StartedBackup => Finished - DeliveryTime;
-            }
-
-            public class CarDelivered : Delivered {
-                public float VehicleDamage { get; internal set; }
             }
 
             public class Fined {
