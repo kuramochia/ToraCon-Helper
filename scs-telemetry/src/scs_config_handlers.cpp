@@ -9,6 +9,85 @@
 
 extern SharedMemory* telem_mem;
 extern scsTelemetryMap_t* telem_ptr;
+
+static bool handleCarJobConfig(const scs_named_value_t* info) {
+  auto& values = telem_ptr->car_job;
+  const struct {
+    const char* name;
+    char* destination;
+    char* legacyDestination;
+    size_t size;
+  } strings[] = {
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, values.cargoId, telem_ptr->config_s.cargoId, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, values.cargo, telem_ptr->config_s.cargo, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city_id, values.cityDstId, telem_ptr->config_s.cityDstId, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city, values.cityDst, telem_ptr->config_s.cityDst, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company_id, values.compDstId, telem_ptr->config_s.compDstId, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company, values.compDst, telem_ptr->config_s.compDst, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city_id, values.citySrcId, telem_ptr->config_s.citySrcId, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city, values.citySrc, telem_ptr->config_s.citySrc, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company_id, values.compSrcId, telem_ptr->config_s.compSrcId, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, values.compSrc, telem_ptr->config_s.compSrc, stringsize},
+      {SCS_TELEMETRY_CONFIG_ATTRIBUTE_car_job_market, values.market, telem_ptr->config_s.jobMarket, sizeof values.market}};
+  for (const auto& field : strings) {
+    if (strcmp(info->name, field.name) == 0) {
+      if (info->value.type != SCS_VALUE_TYPE_string) return false;
+      strncpy_s(field.destination, field.size, info->value.value_string.value, _TRUNCATE);
+      strncpy_s(field.legacyDestination, field.size, info->value.value_string.value, _TRUNCATE);
+      return true;
+    }
+  }
+  if (info->value.type == SCS_VALUE_TYPE_u32) {
+    if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_count) == 0) {
+      values.unitCount = info->value.value_u32.value;
+      telem_ptr->config_ui.unitCount = values.unitCount;
+    } else if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time) == 0) {
+      values.deliveryTime = info->value.value_u32.value;
+      telem_ptr->config_ui.time_abs_delivery = values.deliveryTime;
+    } else if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_planned_distance_km) == 0) {
+      values.plannedDistanceKm = info->value.value_u32.value;
+      telem_ptr->config_ui.plannedDistanceKm = values.plannedDistanceKm;
+    } else {
+      return false;
+    }
+    return true;
+  }
+  if (info->value.type == SCS_VALUE_TYPE_u64 &&
+      strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_income) == 0) {
+    values.income = info->value.value_u64.value;
+    telem_ptr->config_ull.jobIncome = values.income;
+    return true;
+  }
+  if (info->value.type == SCS_VALUE_TYPE_float) {
+    if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_mass) == 0) {
+      telem_ptr->car_extension.cargoMass = info->value.value_float.value;
+      telem_ptr->config_f.cargoMass = info->value.value_float.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_mass) == 0) {
+      telem_ptr->car_extension.unitMass = info->value.value_float.value;
+      telem_ptr->config_f.unitMass = info->value.value_float.value;
+    } else {
+      return false;
+    }
+    return true;
+  }
+  if (info->value.type == SCS_VALUE_TYPE_bool) {
+    if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_is_cargo_loaded) == 0) {
+      telem_ptr->car_extension.cargoLoaded = info->value.value_bool.value != 0;
+      telem_ptr->config_b.isCargoLoaded = telem_ptr->car_extension.cargoLoaded;
+    } else if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_customer_prio_cargo_handling) == 0) {
+      values.customerPrioCargoHandling = info->value.value_bool.value != 0;
+    } else if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_customer_prio_time) == 0) {
+      values.customerPrioTime = info->value.value_bool.value != 0;
+    } else if (strcmp(info->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_customer_prio_vehicle_appearance) == 0) {
+      values.customerPrioVehicleAppearance = info->value.value_bool.value != 0;
+    } else {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
 #pragma region scsConfigHandler_t[]
 
 // const: substances_config
@@ -158,6 +237,9 @@ const int length_configs[] = {
 */
 bool handleCfg(const scs_named_value_t* info, const configType type,
                const unsigned int trailer_id) {
+  if (type == car_job) {
+    return telem_ptr && handleCarJobConfig(info);
+  }
   const scsConfigHandler_t* configs = nullptr;
   switch (type) {
     case substances:

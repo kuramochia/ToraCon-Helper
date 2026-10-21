@@ -11,6 +11,9 @@ namespace SCSSdkClient {
         private const int StringSize = 64;
         private const int WheelSize = 16;
         private const int Substances = 25;
+        private const int CarJobZoneOffset = 21600;
+        private const int CarVehicleDamageOffset = 22332;
+        private const int CarExtensionOffset = 22344;
 
         private readonly int[] _offsetAreas =
             {0, 40, 500, 700, 1500, 1640, 2000, 2200, 2300, 4000, 4200, 4300, 4400, 6000};
@@ -21,6 +24,11 @@ namespace SCSSdkClient {
         private int _offsetArea;
 
         private bool currentlyActive = false;
+        private bool hasJobEventState;
+        private bool lastJobDelivered;
+        private bool lastCarJobDelivered;
+        private bool lastDeliveredWasCarJob;
+        private float lastCarJobVehicleDamage;
 
         /// <summary>
         ///     Convert the Shared Memory Byte data structure in a C# object
@@ -109,6 +117,10 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.MotorValues.SlotGear = GetIntArray(32);
 
             retData.GamePlay.JobDelivered.EarnedXp = GetInt();
+
+            if (retData.DllVersion >= 13) {
+                retData.CommonValues.NextMandatoryBreak = GetInt();
+            }
 
             NextOffsetArea();
 
@@ -310,6 +322,7 @@ namespace SCSSdkClient {
             retData.TruckValues.ConstantsValues.LicensePlateCountry = GetString();
 
             var tempJobMarket = GetString(32);
+            retData.JobValues.MarketName = tempJobMarket;
             if (tempJobMarket?.Length > 0) {
                 retData.JobValues.Market = tempJobMarket.ToEnum<JobMarket>();
             }
@@ -368,6 +381,14 @@ namespace SCSSdkClient {
             retData.SpecialEventsValues.Refuel = GetBool();
             retData.SpecialEventsValues.RefuelPayed = GetBool();
 
+            var carJobDelivered = false;
+            if (retData.DllVersion >= 13) {
+                GetBool();
+                GetBool();
+                carJobDelivered = GetBool();
+                retData.SpecialEventsValues.OnBusJob = GetBool();
+            }
+
             NextOffsetArea();
 
             #endregion 12TH ZONE
@@ -391,9 +412,104 @@ namespace SCSSdkClient {
 
             #endregion 14TH ZONE
 
+            if (retData.DllVersion >= 13) {
+                _offset = CarJobZoneOffset;
+                var carJob = new SCSTelemetry.CarJob();
+                carJob.Income = GetULong();
+                carJob.CargoValues.UnitCount = GetUint();
+                carJob.DeliveryTime = GetUint();
+                if (retData.CommonValues.GameTime.Value > 0 && retData.CommonValues.GameTime.Value < 4000000000 && carJob.DeliveryTime.Value > 0) {
+                    carJob.RemainingDeliveryTime = (int)(carJob.DeliveryTime.Value - retData.CommonValues.GameTime.Value);
+                }
+                carJob.PlannedDistanceKm = GetUint();
+                carJob.CustomerPrioCargoHandling = GetBool();
+                carJob.CustomerPrioTime = GetBool();
+                carJob.CustomerPrioVehicleAppearance = GetBool();
+                GetBool();
+                carJob.CargoValues.Id = GetString();
+                carJob.CargoValues.Name = GetString();
+                carJob.CityDestinationId = GetString();
+                carJob.CityDestination = GetString();
+                carJob.CompanyDestinationId = GetString();
+                carJob.CompanyDestination = GetString();
+                carJob.CitySourceId = GetString();
+                carJob.CitySource = GetString();
+                carJob.CompanySourceId = GetString();
+                carJob.CompanySource = GetString();
+                carJob.MarketName = GetString(32);
+                carJob.Market = carJob.MarketName.ToEnum<JobMarket>();
+
+                _offset = CarVehicleDamageOffset;
+                var vehicleDamage = GetFloat();
+                _offset = CarExtensionOffset;
+                var activeJobType = GetUint().ToEnum<JobType>();
+                retData.SpecialEventsValues.ActiveJobType = !retData.SpecialEventsValues.OnJob
+                    ? JobType.None
+                    : activeJobType == JobType.Car ? JobType.Car : JobType.Freight;
+                carJob.CargoValues.Mass = GetFloat();
+                carJob.CargoValues.UnitMass = GetFloat();
+                carJob.CargoLoaded = GetBool();
+                carJob.CargoValues.CargoDamage = retData.JobValues.CargoValues.CargoDamage;
+
+                if (retData.SpecialEventsValues.OnJob &&
+                    retData.SpecialEventsValues.ActiveJobType == JobType.Car) {
+                    ApplyCarJobValuesToJob(retData.JobValues, carJob);
+                }
+                ApplyCarJobVehicleDamage(retData, carJobDelivered, vehicleDamage);
+            } else {
+                retData.SpecialEventsValues.ActiveJobType = retData.SpecialEventsValues.OnJob
+                    ? JobType.Freight : JobType.None;
+            }
+
             currentlyActive = false;
 
             return retData;
+        }
+
+        private static void ApplyCarJobValuesToJob(SCSTelemetry.Job target, SCSTelemetry.CarJob source) {
+            target.DeliveryTime = source.DeliveryTime;
+            target.RemainingDeliveryTime = source.RemainingDeliveryTime;
+            target.CargoLoaded = source.CargoLoaded;
+            target.CustomerPrioCargoHandling = source.CustomerPrioCargoHandling;
+            target.CustomerPrioTime = source.CustomerPrioTime;
+            target.CustomerPrioVehicleAppearance = source.CustomerPrioVehicleAppearance;
+            target.Market = source.Market;
+            target.MarketName = source.MarketName;
+            target.PlannedDistanceKm = source.PlannedDistanceKm;
+            target.Income = source.Income;
+            target.CityDestinationId = source.CityDestinationId;
+            target.CityDestination = source.CityDestination;
+            target.CompanyDestinationId = source.CompanyDestinationId;
+            target.CompanyDestination = source.CompanyDestination;
+            target.CitySourceId = source.CitySourceId;
+            target.CitySource = source.CitySource;
+            target.CompanySourceId = source.CompanySourceId;
+            target.CompanySource = source.CompanySource;
+            target.CargoValues.Mass = source.CargoValues.Mass;
+            target.CargoValues.Id = source.CargoValues.Id;
+            target.CargoValues.Name = source.CargoValues.Name;
+            target.CargoValues.UnitCount = source.CargoValues.UnitCount;
+            target.CargoValues.UnitMass = source.CargoValues.UnitMass;
+            target.CargoValues.CargoDamage = source.CargoValues.CargoDamage;
+        }
+
+        private void ApplyCarJobVehicleDamage(SCSTelemetry data, bool carJobDelivered, float vehicleDamage) {
+            if (!hasJobEventState) {
+                lastDeliveredWasCarJob = carJobDelivered;
+                lastCarJobVehicleDamage = vehicleDamage;
+            } else if (carJobDelivered != lastCarJobDelivered) {
+                lastDeliveredWasCarJob = true;
+                lastCarJobVehicleDamage = vehicleDamage;
+            } else if (data.SpecialEventsValues.JobDelivered != lastJobDelivered) {
+                lastDeliveredWasCarJob = false;
+            }
+
+            if (lastDeliveredWasCarJob) {
+                data.GamePlay.JobDelivered.VehicleDamage = lastCarJobVehicleDamage;
+            }
+            hasJobEventState = true;
+            lastJobDelivered = data.SpecialEventsValues.JobDelivered;
+            lastCarJobDelivered = carJobDelivered;
         }
 
         private bool GetBool() {

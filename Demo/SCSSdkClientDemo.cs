@@ -99,6 +99,10 @@ namespace SCSSdkClient.Demo {
                                  $"\t\t\t{data.SpecialEventsValues.JobDelivered}\n" +
                                  "\tJob Cancelled:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.JobCancelled}\n" +
+                                 "\tActive Job Type:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.ActiveJobType}\n" +
+                                 "\tOn Bus Job:\n" +
+                                 $"\t\t\t{data.SpecialEventsValues.OnBusJob}\n" +
                                  "\tFined:\n" +
                                  $"\t\t\t{data.SpecialEventsValues.Fined}\n" +
                                  "\ttollgate:\n" +

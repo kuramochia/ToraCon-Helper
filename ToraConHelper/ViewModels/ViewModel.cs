@@ -39,38 +39,10 @@ public partial class ViewModel : ObservableObject, IDisposable
         gameInfoAction.GameInfoUpdated += GameInfoAction_GameInfoUpdated;
         TelemetryActionsManager.AddAction(gameInfoAction);
     }
-
-    private void GameProcessDetector_GameProcessEnded(object sender, EventArgs e)
-    {
-        // Game process has ended, reset some properties
-        GameTime = null;
-        GameName = null;
-        NavigationDistance = null;
-        NavigationTime = null;
-        TruckName = null;
-        lastRenderTimestamp = 0;
-    }
-
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
         if (IsSaveTargetName(e.PropertyName)) Save();
-    }
-
-    private static readonly HashSet<string> IgnoreSaveTargetNames = new(new[]
-    {
-        nameof(GameTime),
-        nameof(GameName),
-        nameof(NavigationDistance),
-        nameof(NavigationTime),
-        nameof(TruckName),
-    }, StringComparer.InvariantCultureIgnoreCase);
-
-    private bool IsSaveTargetName(string propertyName) => !IgnoreSaveTargetNames.Contains(propertyName);
-
-    internal void Save()
-    {
-        if (!isInitialization) settingFile.Save(ToSettings());
     }
 
     #region General Settings
@@ -104,52 +76,6 @@ public partial class ViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private string? lastShownPage;
 
-
-    #region Powertoys Page の情報表示用
-
-    private ulong lastRenderTimestamp = 0;
-
-    // Powertoys Page の情報表示用
-    private void GameInfoAction_GameInfoUpdated(object sender, GameInfoUpdatedEventArgs e)
-    {
-        // 500ms に 1 回だけ更新
-        if (lastRenderTimestamp + (500 * 1000) <= e.Telemetry.RenderTimestamp)
-            lastRenderTimestamp = e.Telemetry.RenderTimestamp;
-        else return;
-        Debug.WriteLine($"GameInfoAction_GameInfoUpdated: RenderTimestamp={e.Telemetry.RenderTimestamp}");
-        var currentGameTime = e.Telemetry.CommonValues.GameTime.Date;
-        if (GameTime != currentGameTime) GameTime = currentGameTime;
-
-        var currentGameName = e.Telemetry.Game.ToString().ToUpper();
-        if (GameName != currentGameName) GameName = currentGameName;
-
-        var currentNavigationDistance = e.Telemetry.NavigationValues.NavigationDistance / 1000; // m to km
-        if (NavigationDistance != currentNavigationDistance) NavigationDistance = currentNavigationDistance;
-
-        var currentNavigationTime = TimeSpan.FromSeconds(e.Telemetry.NavigationValues.NavigationTime);
-        if (NavigationTime != currentNavigationTime) NavigationTime = currentNavigationTime;
-
-        TruckName = $"{e.Telemetry.TruckValues.ConstantsValues.Brand} {e.Telemetry.TruckValues.ConstantsValues.Name}";
-    }
-
-    // ゲーム内時間
-    [ObservableProperty]
-    private DateTime? gameTime;
-
-    // ゲーム名
-    [ObservableProperty]
-    private string? gameName;
-
-    [ObservableProperty]
-    private string? truckName;
-
-    [ObservableProperty]
-    private float? navigationDistance;
-
-    [ObservableProperty]
-    private TimeSpan? navigationTime;
-
-    #endregion
 
     #endregion
 

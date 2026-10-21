@@ -60,10 +60,6 @@
           .c_str(),                                                           \
       index, SCS_VALUE_TYPE_##type, SCS_TELEMETRY_CHANNEL_FLAG_no_value,      \
       telemetry_store_##type, &(to))
-#define REGISTER_SPECIFIC_CHANNEL(name, type, handler, to)      \
-  version_params->register_for_channel(                         \
-      SCS_TELEMETRY_##name, SCS_U32_NIL, SCS_VALUE_TYPE_##type, \
-      SCS_TELEMETRY_CHANNEL_FLAG_no_value, handler, &(to))
 
 SharedMemory* telem_mem;
 scsTelemetryMap_t* telem_ptr;
@@ -364,6 +360,7 @@ void set_job_values_zero() {
   telem_ptr->config_f.unitMass = 0;
   telem_ptr->job_f.cargoDamage = 0;
   telem_ptr->config_b.isCargoLoaded = false;
+  telem_ptr->config_b.specialJob = false;
   telem_ptr->config_ui.plannedDistanceKm = 0;
   memset(telem_ptr->config_s.compDstId, 0, stringsize);
   memset(telem_ptr->config_s.compSrcId, 0, stringsize);
@@ -523,12 +520,36 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
   // log_events(info);
   // check which type the event has
   gameplayType type = {};
-  if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
+  if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_cancelled) == 0 ||
+      strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_delivered) == 0) {
+    const auto was_cancelled = strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_cancelled) == 0;
+    type = was_cancelled ? car_cancelled : car_delivered;
+    telem_ptr->car_gameplay.finishedTime = telem_ptr->common_ui.time_abs;
+    if (was_cancelled) {
+      telem_ptr->special_b.carJobCancelled ^= true;
+      telem_ptr->special_b.jobCancelled ^= true;
+    } else {
+      telem_ptr->special_b.carJobDelivered ^= true;
+      telem_ptr->special_b.jobDelivered ^= true;
+      telem_ptr->gameplay_b.jobDeliveredAutoparkUsed = false;
+      telem_ptr->gameplay_b.jobDeliveredAutoloadUsed = false;
+    }
+    if (telem_ptr->special_b.onJob) {
+      telem_ptr->special_b.jobFinished ^= true;
+    }
+    telem_ptr->special_b.onJob = false;
+    telem_ptr->special_b.onCarJob = false;
+    telem_ptr->gameplay_ui.jobFinishedTime = telem_ptr->common_ui.time_abs;
+    telem_ptr->car_extension.activeJobType = active_job_none;
+    telem_ptr->car_job = {};
+    set_job_values_zero();
+  } else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0) {
     type = cancelled;
     telem_ptr->special_b.jobCancelled ^= true;
     telem_ptr->gameplay_ui.jobFinishedTime = telem_ptr->common_ui.time_abs;
     telem_ptr->special_b.onJob = false;
     telem_ptr->special_b.jobFinished ^= true;
+    telem_ptr->car_extension.activeJobType = active_job_none;
   } else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_delivered) ==
              0) {
     type = delivered;
@@ -536,6 +557,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
     telem_ptr->gameplay_ui.jobFinishedTime = telem_ptr->common_ui.time_abs;
     telem_ptr->special_b.onJob = false;
     telem_ptr->special_b.jobFinished ^= true;
+    telem_ptr->car_extension.activeJobType = active_job_none;
   } else if (strcmp(info->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_fined) == 0) {
     type = fined;
     telem_ptr->special_b.fined ^= true;
@@ -554,6 +576,7 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
   } else {
     log_line(SCS_LOG_TYPE_warning,
              "Something went wrong with this gameplay event %s", info->id);
+    return;
   }
 
   // attribute is a pointer array that is never null so ... i have no clue how
@@ -565,8 +588,8 @@ SCSAPI_VOID telemetry_gameplay(const scs_event_t event,
     if (!handleGpe(current, type)) {
       // actually only for testing/debug purpose, so should there be a message
       // in game with that line there is missed something
-      log_line("attribute not handled id: %i attribute: %s", type,
-               current->name);
+      log_line("attribute not handled config: %s (type %i), attribute: %s",
+               info->id, type, current->name);
     }
     is_empty = false;
   }
@@ -583,6 +606,10 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
       // TODO: DELETE ENTRIES WHEN CALLED SO NO VALUE IS THERE to avoid wrong
       // values when changes occur but not in arrays up to that slot or so
       event_info);
+  if (strcmp(info->id, SCS_TELEMETRY_CONFIG_bus_job) == 0) {
+    telem_ptr->special_b.onBusJob = info->attributes->name != nullptr;
+    return;
+  }
   unsigned int trailer_id = NULL;
   // check which type the event has
   configType type = {};
@@ -596,6 +623,12 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
     type = truck;
   } else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_job) == 0) {
     type = job;
+  } else if (strcmp(info->id, SCS_TELEMETRY_CONFIG_car_job) == 0) {
+    type = car_job;
+    telem_ptr->car_job = {};
+    telem_ptr->car_extension.cargoMass = 0;
+    telem_ptr->car_extension.unitMass = 0;
+    telem_ptr->car_extension.cargoLoaded = false;
   } else {
     // check if it is trailer with backwards compatibility
     if (check_max_version(13, 0)) {
@@ -634,7 +667,15 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
   // attribute is a pointer array that is never null so ... i have no clue how
   // to check it on another way than this if for loop can't loop it is empty so
   // simple
-  auto is_empty = true;
+  auto is_empty = info->attributes->name == nullptr;
+  if (type == job || type == car_job) {
+    const auto job_type = type == car_job ? active_job_car : active_job_freight;
+    // An empty notification for the other job type must not end the active job.
+    if (is_empty && telem_ptr->car_extension.activeJobType != job_type) {
+      return;
+    }
+    set_job_values_zero();
+  }
 
   for (auto current = info->attributes; current->name; ++current) {
     if (!handleCfg(current, type, trailer_id)) {
@@ -647,13 +688,35 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
   }
   // if id of config is "job" but without element and we are on a job -> we
   // finished it now
+  if (type == car_job) {
+    log_line("car_job cargo: id='%s', name='%s', unit_count=%u",
+             telem_ptr->car_job.cargoId, telem_ptr->car_job.cargo,
+             telem_ptr->car_job.unitCount);
+    if (!telem_ptr->special_b.onCarJob && !is_empty) {
+      telem_ptr->car_gameplay.startingTime = telem_ptr->common_ui.time_abs;
+      telem_ptr->gameplay_ui.jobStartingTime = telem_ptr->common_ui.time_abs;
+    }
+    if (is_empty && telem_ptr->special_b.onJob) {
+      telem_ptr->special_b.jobFinished ^= true;
+    }
+    telem_ptr->special_b.onCarJob = !is_empty;
+    telem_ptr->special_b.onJob = !is_empty;
+    telem_ptr->car_extension.activeJobType = is_empty ? active_job_none : active_job_car;
+    return;
+  }
   if (type == job && is_empty && telem_ptr->special_b.onJob) {
     telem_ptr->special_b.onJob = false;
     telem_ptr->special_b.jobFinished ^= true;
-  } else if (!telem_ptr->special_b.onJob && type == job && !is_empty) {
+    telem_ptr->car_extension.activeJobType = active_job_none;
+  } else if (type == job && !is_empty) {
     // oh hey no job but now we have fields in this array so we start a new job
+    if (!telem_ptr->special_b.onJob ||
+        telem_ptr->car_extension.activeJobType != active_job_freight) {
+      telem_ptr->gameplay_ui.jobStartingTime = telem_ptr->common_ui.time_abs;
+    }
     telem_ptr->special_b.onJob = true;
-    telem_ptr->gameplay_ui.jobStartingTime = telem_ptr->common_ui.time_abs;
+    telem_ptr->special_b.onCarJob = false;
+    telem_ptr->car_extension.activeJobType = active_job_freight;
   }
 }
 
@@ -677,6 +740,16 @@ SCSAPI_VOID telemetry_store_s32(const scs_string_t name, const scs_u32_t index,
   assert(value->type == SCS_VALUE_TYPE_s32);
   assert(context);
   *static_cast<int*>(context) = value->value_s32.value;
+}
+
+SCSAPI_VOID telemetry_store_mandatory_break(const scs_string_t name, const scs_u32_t index,
+                                           const scs_value_t* const value,
+                                           scs_context_t context) {
+  if (!value) {
+    *static_cast<int*>(context) = 0;
+    return;
+  }
+  telemetry_store_s32(name, index, value, context);
 }
 
 SCSAPI_VOID telemetry_store_u32(const scs_string_t name, const scs_u32_t index,
@@ -819,6 +892,14 @@ SCSAPI_RESULT scs_telemetry_init(
   /*** INITIALIZE TELEMETRY MAP TO DEFAULT ***/
   telem_ptr->paused = true;
   telem_ptr->time = 0;
+  telem_ptr->car_job = {};
+  telem_ptr->car_gameplay = {};
+  telem_ptr->car_extension = {};
+  telem_ptr->special_b.onJob = false;
+  telem_ptr->special_b.onCarJob = false;
+  telem_ptr->special_b.carJobCancelled = false;
+  telem_ptr->special_b.carJobDelivered = false;
+  telem_ptr->special_b.onBusJob = false;
   // Get SCS Game Version and Set Plugin Version
   telem_ptr->scs_values.telemetry_plugin_revision = PLUGIN_REVID;
   telem_ptr->scs_values.version_major =
@@ -1185,6 +1266,19 @@ SCSAPI_RESULT scs_telemetry_init(
     }
   }
 
+  // Available since SDK 1.16, ETS2 1.21 and ATS 1.08 (patch 1.61).
+  telem_ptr->nextMandatoryBreak = 0;
+  if (check_min_version(21, 8)) {
+    const auto result = version_params->register_for_channel(
+        SCS_TELEMETRY_CHANNEL_next_mandatory_break, SCS_U32_NIL,
+        SCS_VALUE_TYPE_s32, SCS_TELEMETRY_CHANNEL_FLAG_no_value,
+        telemetry_store_mandatory_break, &telem_ptr->nextMandatoryBreak);
+    if (result != SCS_RESULT_ok) {
+      log_line(SCS_LOG_TYPE_warning,
+               "Failed to register mandatory break channel: %d", result);
+    }
+  }
+
   // Set the structure with defaults.
 
   timestamp = static_cast<scs_timestamp_t>(0);
@@ -1213,6 +1307,9 @@ SCSAPI_VOID scs_telemetry_shutdown() {
             telem_ptr->scs_values.telemetry_version_game_minor = 0;
             telem_ptr->scs_values.version_major = 0;
             telem_ptr->scs_values.version_minor = 0;
+            telem_ptr->special_b.onJob = false;
+            telem_ptr->special_b.onCarJob = false;
+            telem_ptr->car_extension.activeJobType = active_job_none;
 
             telem_ptr->time = 0;
             telem_ptr->simulatedTime = 0;

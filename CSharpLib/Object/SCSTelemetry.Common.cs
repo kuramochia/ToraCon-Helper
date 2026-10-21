@@ -15,6 +15,7 @@ namespace SCSSdkClient.Object {
             public Common() {
                 GameTime = new Time();
                 NextRestStop = new Frequency();
+                NextMandatoryBreak = new Frequency();
             }
 
             /// About: Scale
@@ -42,6 +43,18 @@ namespace SCSSdkClient.Object {
             ///     Time until next rest stop.
             /// </summary>
             public Frequency NextRestStop { get; internal set; }
+
+            /// <summary>
+            ///     In-game minutes until the next mandatory break. Can be negative when overdue.
+            ///     Available since SDK 1.16 (ETS2 telemetry 1.21 / ATS telemetry 1.08).
+            ///     Zero when unavailable; if simulation is disabled, the game may still provide a value.
+            /// </summary>
+            public Frequency NextMandatoryBreak { get; internal set; }
+
+            /// <summary>
+            ///     In-game time of the next mandatory break, calculated from GameTime and NextMandatoryBreak.
+            /// </summary>
+            public Time NextMandatoryBreakTime => new Time { Value = (uint)((int)GameTime.Value + NextMandatoryBreak.Value) };
 
             /// <summary>
             ///     In game time of next rest stop

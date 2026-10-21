@@ -10,6 +10,7 @@ namespace SCSSdkClient.Object {
             ///     Event flag that displays if a driver is doing a job
             /// </summary>
             public bool OnJob { get; internal set; }
+            public JobType ActiveJobType { get; internal set; }
 
             /// <summary>
             ///     Event flag that displays (for some ticks) that a job was finished, doesn't matter how (cancelled, delivered, ...)
@@ -20,6 +21,7 @@ namespace SCSSdkClient.Object {
 
             public bool JobCancelled { get; internal set; }
             public bool JobDelivered { get; internal set; }
+            public bool OnBusJob { get; internal set; }
             public bool Fined { get; internal set; }
             public bool Tollgate { get; internal set; }
             public bool Ferry { get; internal set; }
