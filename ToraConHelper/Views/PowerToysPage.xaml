@@ -256,17 +256,14 @@
 
         <ui:CardExpander
             Margin="10"
-            IsExpanded="True"
-            x:Name="gameInfoExpander"
-            Expanded="gameInfoExpander_ExpandedChanged" Collapsed="gameInfoExpander_ExpandedChanged">
+            IsExpanded="True">
             <ui:CardExpander.Header>
-                <!--<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内情報" />-->
                 <DockPanel LastChildFill="True">
                     <TextBlock 
                             Style="{StaticResource TitleTextBlockStyle}" 
                             Margin="20,0"
                             DockPanel.Dock="Right" x:Name="realTimeTitleText"/>
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内情報" />
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Info" />
                 </DockPanel>
             </ui:CardExpander.Header>
             <StackPanel>
@@ -352,15 +349,6 @@
                             DockPanel.Dock="Right"
                             Text="{Binding Path=GameTime, StringFormat={}{0:HH:mm}}"/>
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内時間" />
-                    </DockPanel>
-                </ui:Card>
-                <ui:Card>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock 
-                            Style="{StaticResource TitleTextBlockStyle}" 
-                            Margin="20,0"
-                            DockPanel.Dock="Right" x:Name="realTimeText"/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="リアル時間" />
                     </DockPanel>
                 </ui:Card>
             </StackPanel>
