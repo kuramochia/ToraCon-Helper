@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SCSSdkClient;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -74,10 +73,8 @@ public partial class ViewModel
         TruckName = $"{e.Telemetry.TruckValues.ConstantsValues.Brand} {e.Telemetry.TruckValues.ConstantsValues.Name}";
         CargoName = e.Telemetry.JobValues.CargoValues.Name;
 
-        NextRestStopTime = e.Telemetry.CommonValues.NextRestStopTime.Date;
-
-        // car の場合は 法定休憩は無い
-        NextMandatoryBreakTime = e.Telemetry.SpecialEventsValues.ActiveJobType != JobType.Car ? e.Telemetry.CommonValues.NextMandatoryBreakTime.Date : null;
+        NextRestStopTime = TimeSpan.FromMinutes(e.Telemetry.CommonValues.NextRestStopTime.Value - e.Telemetry.CommonValues.GameTime.Value);
+        NextMandatoryBreakTime = TimeSpan.FromMinutes(e.Telemetry.CommonValues.NextMandatoryBreakTime.Value - e.Telemetry.CommonValues.GameTime.Value);
     }
 
     // ゲーム内時間
@@ -101,10 +98,10 @@ public partial class ViewModel
     private string? cargoName;
 
     [ObservableProperty]
-    private DateTime? nextRestStopTime;
+    private TimeSpan? nextRestStopTime;
 
     [ObservableProperty]
-    private DateTime? nextMandatoryBreakTime;
+    private TimeSpan? nextMandatoryBreakTime;
 
     #endregion
 

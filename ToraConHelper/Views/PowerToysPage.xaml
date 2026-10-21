@@ -49,6 +49,7 @@
             </ui:CardAction>
         </DataTemplate>
         <local:PowerToysNavigationDistanceConverter x:Key="distanceConv" />
+        <local:TotalHoursTimeSpanConverter x:Key="tsConv"/>
     </Page.Resources>
 
     <StackPanel>
@@ -296,9 +297,6 @@
                             </ui:Card>
                             <ui:Card>
                                 <DockPanel LastChildFill="True">
-                                    <DockPanel.Resources>
-                                        <local:TotalHoursTimeSpanConverter x:Key="tsConv"/>
-                                    </DockPanel.Resources>
                                     <TextBlock 
                                         Style="{StaticResource TitleTextBlockStyle}" 
                                         Margin="20,0"
@@ -318,29 +316,30 @@
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="荷物" />
                                 </DockPanel>
                             </ui:Card>
+                            <ui:Card>
+                                <DockPanel LastChildFill="True">
+                                    <TextBlock 
+                            Style="{StaticResource TitleTextBlockStyle}" 
+                            Margin="20,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding Path=NextRestStopTime, Converter={StaticResource tsConv}}"/>
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="休息まで" />
+                                </DockPanel>
+                            </ui:Card>
+                            <ui:Card>
+                                <DockPanel LastChildFill="True">
+                                    <TextBlock 
+                            Style="{StaticResource TitleTextBlockStyle}" 
+                            Margin="20,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding Path=NextMandatoryBreakTime, Converter={StaticResource tsConv}}"/>
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="法定休憩まで" />
+                                </DockPanel>
+                            </ui:Card>
                         </StackPanel>
                     </ui:Card.Footer>
                 </ui:Card>
-                <ui:Card>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock 
-                            Style="{StaticResource TitleTextBlockStyle}" 
-                            Margin="20,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Path=NextRestStopTime, StringFormat={}{0:HH:mm}}"/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="休息まで" />
-                    </DockPanel>
-                </ui:Card>
-                <ui:Card>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock 
-                            Style="{StaticResource TitleTextBlockStyle}" 
-                            Margin="20,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Path=NextMandatoryBreakTime, StringFormat={}{0:HH:mm}}"/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="法定休憩まで" />
-                    </DockPanel>
-                </ui:Card>
+
                 <ui:Card>
                     <DockPanel LastChildFill="True">
                         <TextBlock 
