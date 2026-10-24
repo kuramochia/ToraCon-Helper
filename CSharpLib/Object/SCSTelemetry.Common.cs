@@ -54,7 +54,7 @@ namespace SCSSdkClient.Object {
             /// <summary>
             ///     In-game time of the next mandatory break, calculated from GameTime and NextMandatoryBreak.
             /// </summary>
-            public Time NextMandatoryBreakTime => new Time { Value = (uint)((int)GameTime.Value + NextMandatoryBreak.Value) };
+            public Time NextMandatoryBreakTime => new Time { Value = (uint)((int)GameTime.Value - NextMandatoryBreak.Value) };
 
             /// <summary>
             ///     In game time of next rest stop
