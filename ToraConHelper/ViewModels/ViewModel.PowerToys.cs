@@ -73,8 +73,8 @@ public partial class ViewModel
         TruckName = $"{e.Telemetry.TruckValues.ConstantsValues.Brand} {e.Telemetry.TruckValues.ConstantsValues.Name}";
         CargoName = e.Telemetry.JobValues.CargoValues.Name;
 
-        NextRestStopTime = e.Telemetry.CommonValues.NextRestStop.Value >= 0 ? e.Telemetry.CommonValues.NextRestStop.Date.TimeOfDay : TimeSpan.Zero;
-        NextMandatoryBreakTime = e.Telemetry.CommonValues.NextMandatoryBreak.Value >= 0 ? e.Telemetry.CommonValues.NextMandatoryBreak.Date.TimeOfDay : TimeSpan.Zero;
+        NextRestStopTime = TimeSpan.FromMinutes(Math.Max(0, e.Telemetry.CommonValues.NextRestStop.Value));
+        NextMandatoryBreakTime = TimeSpan.FromMinutes(Math.Max(0, e.Telemetry.CommonValues.NextMandatoryBreak.Value));
     }
 
     // ゲーム内時間
