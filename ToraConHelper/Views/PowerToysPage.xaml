@@ -50,6 +50,19 @@
         </DataTemplate>
         <local:PowerToysNavigationDistanceConverter x:Key="distanceConv" />
         <local:TotalHoursTimeSpanConverter x:Key="tsConv"/>
+        <local:RemainingTimeWarningConverter x:Key="remainingTimeWarningConv" />
+        <Style x:Key="remainingTimeTextBlockStyle" BasedOn="{StaticResource TitleTextBlockStyle}" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource remainingTimeWarningConv}}"
+                             Value="{x:Static local:RemainingTimeWarning.Yellow}">
+                    <Setter Property="Foreground" Value="Yellow" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource remainingTimeWarningConv}}"
+                             Value="{x:Static local:RemainingTimeWarning.Red}">
+                    <Setter Property="Foreground" Value="Red" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
 
     <StackPanel>
@@ -319,20 +332,22 @@
                             <ui:Card>
                                 <DockPanel LastChildFill="True">
                                     <TextBlock 
-                            Style="{StaticResource TitleTextBlockStyle}" 
-                            Margin="20,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Path=NextRestStopTime, Converter={StaticResource tsConv}}"/>
+                                        Style="{StaticResource remainingTimeTextBlockStyle}" 
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Tag="{Binding Path=NextRestStopTime}"
+                                        Text="{Binding Path=NextRestStopTime, Converter={StaticResource tsConv}}"/>
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="休息まで" />
                                 </DockPanel>
                             </ui:Card>
                             <ui:Card>
                                 <DockPanel LastChildFill="True">
                                     <TextBlock 
-                            Style="{StaticResource TitleTextBlockStyle}" 
-                            Margin="20,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Path=NextMandatoryBreakTime, Converter={StaticResource tsConv}}"/>
+                                        Style="{StaticResource remainingTimeTextBlockStyle}" 
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Tag="{Binding Path=NextMandatoryBreakTime}"
+                                        Text="{Binding Path=NextMandatoryBreakTime, Converter={StaticResource tsConv}}"/>
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="法定休憩まで" />
                                 </DockPanel>
                             </ui:Card>
