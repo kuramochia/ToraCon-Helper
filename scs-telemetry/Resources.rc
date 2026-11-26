@@ -51,8 +51,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,3,17,0
- PRODUCTVERSION 2,3,17,0
+ FILEVERSION 2,3,18,0
+ PRODUCTVERSION 2,3,18,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -69,9 +69,9 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "kuramochia"
             VALUE "FileDescription", "SCS Telemetry library for ToraCon-Helper"
-            VALUE "FileVersion", "2.3.17.0"
+            VALUE "FileVersion", "2.3.18.0"
             VALUE "ProductName", "ToraCon-Helper"
-            VALUE "ProductVersion", "2.3.17.0"
+            VALUE "ProductVersion", "2.3.18.0"
         END
     END
     BLOCK "VarFileInfo"

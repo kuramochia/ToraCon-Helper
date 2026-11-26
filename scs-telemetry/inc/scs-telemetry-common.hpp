@@ -9,7 +9,7 @@
 // - Shared memory map struct layout
 // - [..]
 
-#define PLUGIN_REVID					13
+#define PLUGIN_REVID					14
 
 #define ETS2                            1
 #define ATS                             2
@@ -43,8 +43,8 @@
 bool check_min_version(unsigned const int min_ets2, unsigned const int min_ats);
 bool check_max_version(unsigned const int min_ets2, unsigned const int min_ats);
 enum configType { substances, controls, hshifter, truck, trailer, job, car_job };
-enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train, car_cancelled, car_delivered };
-enum activeJobType { active_job_none, active_job_freight, active_job_car };
+enum gameplayType { cancelled, delivered, fined, tollgate, ferry, train, car_cancelled, car_delivered, bus_cancelled, bus_completed };
+enum activeJobType { active_job_none, active_job_freight, active_job_car, active_job_bus };
 void log_line(scs_log_type_t type, const char* text, ...);
 void log_line(const char* text, ...);
 
@@ -594,6 +594,19 @@ typedef struct scsTelemetryMap_s
 		float unitMass;
 		bool cargoLoaded;
 	}car_extension;
+	struct {
+		unsigned long long snapshotId;
+		unsigned int snapshotSize;
+		unsigned int processId;
+		unsigned int error;
+		float averageSatisfaction;
+		float completedSatisfaction;
+		bool averageSatisfactionValid;
+		bool completedSatisfactionValid;
+		bool cancelled;
+		bool completed;
+		unsigned int lastDeliveredType;
+	}bus_extension;
 } scsTelemetryMap_t;
 
 static_assert(sizeof(scsTrailer_t) == 1560, "Trailer layout changed");
@@ -604,7 +617,8 @@ static_assert(offsetof(scsTelemetryMap_t, trailer) == 6000, "Trailer zone moved"
 static_assert(offsetof(scsTelemetryMap_t, car_job) == 21600, "Car job offset changed");
 static_assert(offsetof(scsTelemetryMap_t, car_gameplay) == 22296, "Car gameplay offset changed");
 static_assert(offsetof(scsTelemetryMap_t, car_extension) == 22344, "Car extension offset changed");
-static_assert(sizeof(scsTelemetryMap_t) == 22360, "Telemetry layout changed");
+static_assert(offsetof(scsTelemetryMap_t, bus_extension) == 22360, "Bus extension offset changed");
+static_assert(sizeof(scsTelemetryMap_t) == 22400, "Telemetry layout changed");
 static_assert(sizeof(scsTelemetryMap_t) <= SCS_PLUGIN_MMF_SIZE, "Telemetry exceeds shared memory");
 
 #endif

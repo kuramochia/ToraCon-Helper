@@ -6,6 +6,8 @@
         freight_market,
         external_contracts,
         external_market,
-        dispatch_job
+        dispatch_job,
+        company_job,
+        tourist_job
     }
 }

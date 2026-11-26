@@ -48,6 +48,7 @@ namespace SCSSdkClient {
         private SharedMemory SharedMemory;
 
         private bool wasOnJob;
+        private JobType previousJobType;
         private bool cancelled;
         private bool delivered;
         private bool fined;
@@ -170,7 +171,10 @@ namespace SCSSdkClient {
 
             //TODO: make it nicer thats a lot of code for such less work
             // Job start event
-            if (wasOnJob != scsTelemetry.SpecialEventsValues.OnJob) {
+            if (wasOnJob != scsTelemetry.SpecialEventsValues.OnJob ||
+                (wasOnJob && scsTelemetry.SpecialEventsValues.OnJob &&
+                 (previousJobType == JobType.Bus || scsTelemetry.SpecialEventsValues.ActiveJobType == JobType.Bus) &&
+                 previousJobType != scsTelemetry.SpecialEventsValues.ActiveJobType)) {
                 wasOnJob = scsTelemetry.SpecialEventsValues.OnJob;
                 if (wasOnJob) {
                     if (!updated) {
@@ -181,6 +185,7 @@ namespace SCSSdkClient {
                     JobStarted?.Invoke(this, new EventArgs());
                 }
             }
+            previousJobType = scsTelemetry.SpecialEventsValues.ActiveJobType;
 
             if (cancelled != scsTelemetry.SpecialEventsValues.JobCancelled) {
                 cancelled = scsTelemetry.SpecialEventsValues.JobCancelled;

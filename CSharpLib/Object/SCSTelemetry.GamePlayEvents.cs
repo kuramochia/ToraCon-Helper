@@ -43,6 +43,8 @@ namespace SCSSdkClient.Object {
                 public bool AutoParked{ get; internal set; }
                 public float CargoDamage{ get; internal set; }  // Typo fixed thanks to Patrick-van-Halm https://github.com/RenCloud/scs-sdk-plugin/pull/32
                 public float VehicleDamage { get; internal set; }
+                /// <summary>Passenger satisfaction for the last bus completion, if available.</summary>
+                public float? PassengerSatisfaction { get; internal set; }
                 public Time DeliveryTime{ get; internal set; }  // Theoretically more a `Frequency`, because it is a timespan and not a moment, but atm i won't change it to frequency also because it is a UINT from SDK and only positive.
                 public float DistanceKm{ get; internal set; }
                 public int EarnedXp{ get; internal set; }

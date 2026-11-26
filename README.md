@@ -196,3 +196,10 @@ Key2Key のスクリプト作成含め、X でこのお三方にはいろいろ�
 
 ## Telemetry 情報の一覧
 [RenCloud](https://github.com/RenCloud/) さんの [README](https://github.com/RenCloud/scs-sdk-plugin/blob/master/README.md#telemetry-fields-and-the-c-object) を確認してください。
+
+### （参考）バスジョブのテレメトリー
+SDK 1.17 のバスジョブ情報は C# API の `SCSTelemetry.BusJobValues` で取得できます。`Stages` に全ステージの停留所、予定・実績時刻、予定乗降人数が入り、`CurrentStageIndex` は 0 始まりです。時刻はゲーム内の分で、未提供の値は `null` です。実行中の平均満足度は `AverageSatisfaction`、完了時の満足度は `GamePlay.JobDelivered.PassengerSatisfaction` で参照できます。
+
+バスジョブも既存の `JobStarted`・`JobDelivered`・`JobCancelled` イベントの対象です。`SpecialEventsValues.ActiveJobType` は `Bus` になります。画面表示は変更していません。旧プラグインではバスの詳細情報は取得できません。
+
+全ステージは既存の 32 KiB マップとは別の共有メモリで渡されます。読み取りに失敗した場合は `BusJobValues.Error` に理由が入り、ステージを一部だけ正常データとして返すことはありません。ステージ数の固定上限はありませんが、データサイズは 4 GiB 未満で、利用可能なメモリ等の OS 制限を受けます。`SCSSdkConvert.Convert` にメインマップだけを直接渡した場合、別マップにあるステージは取得できないため、`SharedMemory.Update` または `SCSSdkTelemetry` を使用してください。

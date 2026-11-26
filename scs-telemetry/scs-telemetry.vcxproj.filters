@@ -18,6 +18,9 @@
     <ClCompile Include=".\src\log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include=".\src\scs_bus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include=".\src\scs_gameplay_event_handlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\log.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\scs_bus.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\scs_config_handlers.hpp">

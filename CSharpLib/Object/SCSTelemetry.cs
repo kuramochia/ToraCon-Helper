@@ -19,6 +19,7 @@ namespace SCSSdkClient.Object {
             TelemetryVersion = new Version();
             TruckValues = new Truck();
             JobValues = new Job();
+            BusJobValues = new BusJob();
             CommonValues = new Common();
             //TrailerValues = new Trailer();
             ControlValues = new Control();
@@ -87,6 +88,9 @@ namespace SCSSdkClient.Object {
         ///     Contains values of the actual job
         /// </summary>
         public Job JobValues { get; internal set; }
+
+        /// <summary>Bus job data. The stage list is populated by the shared-memory reader.</summary>
+        public BusJob BusJobValues { get; internal set; }
 
         public uint MaxTrailerCount { get; internal set; }
 

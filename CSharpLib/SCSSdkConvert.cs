@@ -14,6 +14,7 @@ namespace SCSSdkClient {
         private const int CarJobZoneOffset = 21600;
         private const int CarVehicleDamageOffset = 22332;
         private const int CarExtensionOffset = 22344;
+        private const int BusExtensionOffset = 22360;
 
         private readonly int[] _offsetAreas =
             {0, 40, 500, 700, 1500, 1640, 2000, 2200, 2300, 4000, 4200, 4300, 4400, 6000};
@@ -445,7 +446,8 @@ namespace SCSSdkClient {
                 var activeJobType = GetUint().ToEnum<JobType>();
                 retData.SpecialEventsValues.ActiveJobType = !retData.SpecialEventsValues.OnJob
                     ? JobType.None
-                    : activeJobType == JobType.Car ? JobType.Car : JobType.Freight;
+                    : activeJobType == JobType.Car ? JobType.Car
+                    : retData.DllVersion >= 14 && activeJobType == JobType.Bus ? JobType.Bus : JobType.Freight;
                 carJob.CargoValues.Mass = GetFloat();
                 carJob.CargoValues.UnitMass = GetFloat();
                 carJob.CargoLoaded = GetBool();
@@ -461,6 +463,26 @@ namespace SCSSdkClient {
                     ? JobType.Freight : JobType.None;
             }
 
+            if (retData.DllVersion >= 14) {
+                _offset = BusExtensionOffset;
+                var bus = retData.BusJobValues;
+                bus.SnapshotId = GetULong();
+                bus.SnapshotSize = GetUint();
+                bus.ProcessId = GetUint();
+                var error = GetUint();
+                var average = GetFloat();
+                var completed = GetFloat();
+                var averageValid = GetBool();
+                var completedValid = GetBool();
+                GetBool();
+                GetBool();
+                var lastDeliveredType = GetUint().ToEnum<JobType>();
+                if (error != 0) bus.Error = new System.ComponentModel.Win32Exception((int)error).Message;
+                if (averageValid && retData.SpecialEventsValues.OnBusJob) bus.AverageSatisfaction = average;
+                if (lastDeliveredType == JobType.Bus && completedValid) {
+                    retData.GamePlay.JobDelivered.PassengerSatisfaction = completed;
+                }
+            }
             currentlyActive = false;
 
             return retData;
