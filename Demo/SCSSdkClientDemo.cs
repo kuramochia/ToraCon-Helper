@@ -121,6 +121,13 @@ namespace SCSSdkClient.Demo {
                                                 Formatting
                                                     .Indented); //TODO: UNTIL I WORK ON A BETTER DEMO SHOW ONLY TRAILER 0
                 job.Text = JsonConvert.SerializeObject(data.JobValues, Formatting.Indented);
+                var busText = JsonConvert.SerializeObject(new {
+                    data.SpecialEventsValues.OnBusJob,
+                    data.BusJobValues,
+                    data.GamePlay.JobDelivered.PassengerSatisfaction
+                }, Formatting.Indented);
+                if (bus.Text != busText)
+                    bus.Text = busText;
                 control.Text = JsonConvert.SerializeObject(data.ControlValues, Formatting.Indented);
                 navigation.Text = JsonConvert.SerializeObject(data.NavigationValues, Formatting.Indented);
                 substances.Text = JsonConvert.SerializeObject(data.Substances, Formatting.Indented);
