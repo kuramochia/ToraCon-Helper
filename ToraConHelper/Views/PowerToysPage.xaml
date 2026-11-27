@@ -454,18 +454,29 @@
                                                         <StackPanel Grid.Column="1" HorizontalAlignment="Right">
                                                             <TextBlock
                                                             HorizontalAlignment="Right"
-                                                            FontSize="20"
-                                                            Text="{Binding DepartureScheduleDeviation, Mode=OneWay}">
+                                                            FontSize="20">
                                                                 <TextBlock.Style>
                                                                     <Style BasedOn="{StaticResource BodyTextBlockStyle}" TargetType="TextBlock">
-                                                                        <Setter Property="Foreground" Value="Green" />
                                                                         <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding IsDepartureDelayed}" Value="True">
-                                                                                <Setter Property="Foreground" Value="Red" />
+                                                                            <DataTrigger Binding="{Binding TimeUntilPlannedArrival}" Value="{x:Null}">
+                                                                                <Setter Property="Visibility" Value="Collapsed" />
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
                                                                     </Style>
                                                                 </TextBlock.Style>
+                                                                <Run Foreground="White" Text="到着予定まで : " />
+                                                                <Run Text="{Binding TimeUntilPlannedArrival, Mode=OneWay}">
+                                                                    <Run.Style>
+                                                                        <Style TargetType="Run">
+                                                                            <Setter Property="Foreground" Value="Green" />
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsPastPlannedArrival}" Value="True">
+                                                                                    <Setter Property="Foreground" Value="Red" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Run.Style>
+                                                                </Run>
                                                             </TextBlock>
                                                             <TextBlock
                                                             HorizontalAlignment="Right"

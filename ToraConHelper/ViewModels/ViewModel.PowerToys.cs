@@ -95,13 +95,7 @@ public partial class ViewModel
             .Where(item => !busJob.CurrentStageIndex.HasValue || (uint)item.Index >= busJob.CurrentStageIndex.Value)
             .Select(item => new BusJobStageInfo(
                 item.Stage,
-                FormatScheduleDeviation(
-                    item.Stage.PlannedDepartureTime,
-                    item.Stage.ActualDepartureTime,
-                    e.Telemetry.CommonValues.GameTime.Value),
-                item.Stage.PlannedDepartureTime.HasValue
-                    && item.Stage.ActualDepartureTime.HasValue
-                    && e.Telemetry.CommonValues.GameTime.Value > item.Stage.PlannedDepartureTime.Value,
+                e.Telemetry.CommonValues.GameTime.Value,
                 FormatGameTime(item.Stage.PlannedArrivalTime)))
             .ToArray();
 
@@ -156,14 +150,6 @@ public partial class ViewModel
     [ObservableProperty]
     private IReadOnlyList<BusJobStageInfo> busJobStages = Array.Empty<BusJobStageInfo>();
 
-    private static string? FormatScheduleDeviation(uint? plannedTime, uint? actualTime, uint currentTime)
-    {
-        if (!plannedTime.HasValue || !actualTime.HasValue) return null;
-
-        var deviationMinutes = (long)currentTime - plannedTime.Value;
-        return deviationMinutes == 0 ? "定刻通り" : $"{deviationMinutes:+#;-#}分";
-    }
-
     private static string? FormatGameTime(uint? gameTime) =>
         gameTime.HasValue ? new SCSTelemetry.Time(gameTime.Value).Date.ToString("HH:mm") : null;
 
@@ -176,23 +162,29 @@ public sealed class BusJobStageInfo
     public string DestinationName { get; }
     public uint? PlannedEnteringPassengers { get; }
     public uint? PlannedLeavingPassengers { get; }
-    public string? DepartureScheduleDeviation { get; }
-    public bool HasDepartureScheduleDeviation => DepartureScheduleDeviation is not null;
-    public bool IsDepartureDelayed { get; }
+    public string? TimeUntilPlannedArrival { get; }
+    public bool IsPastPlannedArrival { get; }
     public string? PlannedArrivalTime { get; }
 
     public BusJobStageInfo(
         SCSTelemetry.BusJob.Stage stage,
-        string? departureScheduleDeviation,
-        bool isDepartureDelayed,
+        uint currentTime,
         string? plannedArrivalTime)
     {
         SourceName = stage.SourceName;
         DestinationName = stage.DestinationName;
         PlannedEnteringPassengers = stage.PlannedEnteringPassengers;
         PlannedLeavingPassengers = stage.PlannedLeavingPassengers;
-        DepartureScheduleDeviation = departureScheduleDeviation;
-        IsDepartureDelayed = isDepartureDelayed;
         PlannedArrivalTime = plannedArrivalTime;
+        if (stage.PlannedArrivalTime.HasValue)
+        {
+            var difference = (long)currentTime - stage.PlannedArrivalTime.Value;
+            IsPastPlannedArrival = difference > 0;
+            var minutes = Math.Abs(difference);
+            var sign = difference < 0 ? "-" : difference > 0 ? "+" : "";
+            TimeUntilPlannedArrival = minutes >= 60
+                ? $"{sign}{minutes / 60}時間{minutes % 60}分"
+                : $"{sign}{minutes}分";
+        }
     }
 }

@@ -202,4 +202,6 @@ SDK 1.17 のバスジョブ情報は C# API の `SCSTelemetry.BusJobValues` で�
 
 バスジョブも既存の `JobStarted`・`JobDelivered`・`JobCancelled` イベントの対象です。`SpecialEventsValues.ActiveJobType` は `Bus` になります。通常の `JobValues` の出発・到着都市の ID と名前には、それぞれ最初のステージの出発停留所と最後のステージの到着停留所が入ります。停留所の種類は `BusJobValues.Stages` で確認できます。
 
+PowerToys のステージ表示では、現在時刻と予定到着時刻の差を「到着予定まで」として表示します。予定時刻前はマイナスで緑、予定時刻を過ぎるとプラスで赤く表示されます。これは予定時刻までの時間であり、予想到着時刻やゲーム内の遅延表示ではありません。
+
 全ステージは既存の 32 KiB マップとは別の共有メモリで渡されます。読み取りに失敗した場合は `BusJobValues.Error` に理由が入り、ステージを一部だけ正常データとして返すことはありません。ステージ数の固定上限はありませんが、データサイズは 4 GiB 未満で、利用可能なメモリ等の OS 制限を受けます。`SCSSdkConvert.Convert` にメインマップだけを直接渡した場合、別マップにあるステージは取得できないため、`SharedMemory.Update` または `SCSSdkTelemetry` を使用してください。
