@@ -17,6 +17,8 @@ HANDLE mutex_handle = nullptr;
 HANDLE snapshot_handle = nullptr;
 unsigned long long next_snapshot = 0;
 const wchar_t* mutex_name = L"Local\\ToraCon-SCSTelemetry.Bus.Mutex";
+// スナップショットごとに PID と連番を付け、MMF 名が衝突しないようにする。
+constexpr wchar_t snapshot_name_prefix[] = L"Local\\ToraCon-SCSTelemetry.Bus.";
 
 void append_bytes(std::vector<unsigned char>& output, const void* data, size_t size) {
   const auto* bytes = static_cast<const unsigned char*>(data);
@@ -112,8 +114,8 @@ bool publish_bus_configuration(const scs_telemetry_configuration_t* info) {
     }
     const auto id = ++next_snapshot;
     const auto pid = GetCurrentProcessId();
-    const auto name = std::wstring(L"Local\\ToraCon-SCSTelemetry.Bus.") +
-        std::to_wstring(pid) + L"." + std::to_wstring(id);
+    const auto name = std::wstring(snapshot_name_prefix) + std::to_wstring(pid) +
+        L"." + std::to_wstring(id);
     const auto handle = CreateFileMappingW(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE,
                                            0, static_cast<DWORD>(data.size()), name.c_str());
     if (!handle) {

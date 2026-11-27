@@ -666,8 +666,14 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
       telem_ptr->special_b.onCarJob = false;
       telem_ptr->special_b.onBusJob = true;
       telem_ptr->car_extension.activeJobType = active_job_bus;
+      scs_u32_t stage_count = 0;
+      bool valid_stage_count = false;
       for (auto current = info->attributes; current->name; ++current) {
-        if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_income) == 0 &&
+        if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_bus_stages_count) == 0 &&
+            current->index == SCS_U32_NIL && current->value.type == SCS_VALUE_TYPE_u32) {
+          stage_count = current->value.value_u32.value;
+          valid_stage_count = true;
+        } else if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_income) == 0 &&
             current->value.type == SCS_VALUE_TYPE_u64) {
           telem_ptr->config_ull.jobIncome = current->value.value_u64.value;
         } else if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_planned_distance_km) == 0 &&
@@ -675,8 +681,35 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event,
           telem_ptr->config_ui.plannedDistanceKm = current->value.value_u32.value;
         } else if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_bus_job_market) == 0 &&
                    current->value.type == SCS_VALUE_TYPE_string) {
-          strncpy_s(telem_ptr->config_s.jobMarket, sizeof telem_ptr->config_s.jobMarket,
-                    current->value.value_string.value, _TRUNCATE);
+          strncpy(telem_ptr->config_s.jobMarket, current->value.value_string.value,
+                  sizeof telem_ptr->config_s.jobMarket - 1);
+          telem_ptr->config_s.jobMarket[sizeof telem_ptr->config_s.jobMarket - 1] = '\0';
+        }
+      }
+      if (!valid_stage_count) {
+        log_line(SCS_LOG_TYPE_error, "Missing or invalid bus stage count");
+      } else if (stage_count > 0) {
+        for (auto current = info->attributes; current->name; ++current) {
+          if (current->value.type != SCS_VALUE_TYPE_string) continue;
+          char* destination = nullptr;
+          if (current->index == 0) {
+            if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_id) == 0) {
+              destination = telem_ptr->config_s.citySrcId;
+            } else if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_name) == 0) {
+              destination = telem_ptr->config_s.citySrc;
+            }
+          }
+          if (current->index == stage_count - 1) {
+            if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_id) == 0) {
+              destination = telem_ptr->config_s.cityDstId;
+            } else if (strcmp(current->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_name) == 0) {
+              destination = telem_ptr->config_s.cityDst;
+            }
+          }
+          if (destination) {
+            strncpy(destination, current->value.value_string.value, stringsize - 1);
+            destination[stringsize - 1] = '\0';
+          }
         }
       }
       publish_bus_configuration(info);
