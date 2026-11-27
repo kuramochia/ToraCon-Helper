@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+using System.Windows;
 using System.Windows.Data;
 
 namespace ToraConHelper.Views;
@@ -22,7 +23,8 @@ public class PowerToysNavigationDistanceConverter : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values.Length != 2 || values[0] == null || values[1] == null) return string.Empty;
+        if (values.Length != 2 || values[0] == DependencyProperty.UnsetValue || values[0] == null 
+            || values[1] == DependencyProperty.UnsetValue || values[1] == null) return string.Empty;
 
         float kph = (float)values[0];
         string gameName = (string)values[1];
