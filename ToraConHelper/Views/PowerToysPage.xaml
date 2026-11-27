@@ -464,7 +464,7 @@
                                                                         </Style.Triggers>
                                                                     </Style>
                                                                 </TextBlock.Style>
-                                                                <Run Foreground="White" Text="到着予定まで : " />
+                                                                <Run Foreground="White" Text="残り時間 : " />
                                                                 <Run Text="{Binding TimeUntilPlannedArrival, Mode=OneWay}">
                                                                     <Run.Style>
                                                                         <Style TargetType="Run">
