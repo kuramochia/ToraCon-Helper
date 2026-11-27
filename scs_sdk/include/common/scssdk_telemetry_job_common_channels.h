@@ -17,6 +17,15 @@ SCSSDK_HEADER
  */
 #define SCS_TELEMETRY_JOB_CHANNEL_cargo_damage                   "job.cargo.damage"
 
+/**
+ * @brief Current average satisfaction of passengers during bus job.
+ *
+ * Defined during bus job. Not provided if no bus job is active.
+ *
+ * Type: float
+ */
+#define SCS_TELEMETRY_BUS_JOB_CHANNEL_average_satisfaction       "bus_job.average_satisfaction"
+
 SCSSDK_FOOTER
 
 #endif // SCSSDK_TELEMETRY_JOB_COMMON_CHANNELS_H

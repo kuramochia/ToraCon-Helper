@@ -46,6 +46,8 @@
             this.trailer = new System.Windows.Forms.RichTextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.job = new System.Windows.Forms.RichTextBox();
+            this.tabBus = new System.Windows.Forms.TabPage();
+            this.bus = new System.Windows.Forms.RichTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.control = new System.Windows.Forms.RichTextBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -64,6 +66,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tabBus.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
@@ -78,6 +81,7 @@
             this.hgf.Controls.Add(this.tabPage2);
             this.hgf.Controls.Add(this.tabPage3);
             this.hgf.Controls.Add(this.tabPage4);
+            this.hgf.Controls.Add(this.tabBus);
             this.hgf.Controls.Add(this.tabPage5);
             this.hgf.Controls.Add(this.tabPage6);
             this.hgf.Controls.Add(this.tabPage7);
@@ -246,6 +250,27 @@
             this.job.TabIndex = 4;
             this.job.Text = "";
             // 
+            // tabBus
+            //
+            this.tabBus.Controls.Add(this.bus);
+            this.tabBus.Location = new System.Drawing.Point(4, 22);
+            this.tabBus.Name = "tabBus";
+            this.tabBus.Padding = new System.Windows.Forms.Padding(3);
+            this.tabBus.Size = new System.Drawing.Size(587, 547);
+            this.tabBus.TabIndex = 10;
+            this.tabBus.Text = "Bus";
+            this.tabBus.UseVisualStyleBackColor = true;
+            //
+            // bus
+            //
+            this.bus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bus.Location = new System.Drawing.Point(3, 3);
+            this.bus.Name = "bus";
+            this.bus.ReadOnly = true;
+            this.bus.Size = new System.Drawing.Size(581, 541);
+            this.bus.TabIndex = 4;
+            this.bus.Text = "";
+            //
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.control);
@@ -375,6 +400,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.tabBus.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
@@ -402,6 +428,8 @@
         private System.Windows.Forms.RichTextBox truck;
         private System.Windows.Forms.RichTextBox trailer;
         private System.Windows.Forms.RichTextBox job;
+        private System.Windows.Forms.TabPage tabBus;
+        private System.Windows.Forms.RichTextBox bus;
         private System.Windows.Forms.RichTextBox control;
         private System.Windows.Forms.RichTextBox navigation;
         private System.Windows.Forms.TabPage tabPage7;

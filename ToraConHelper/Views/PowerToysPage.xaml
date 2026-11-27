@@ -270,7 +270,7 @@
 
         <ui:CardExpander
             Margin="10"
-            IsExpanded="True">
+            IsExpanded="{Binding IsInfoExpanded, Mode=TwoWay}">
             <ui:CardExpander.Header>
                 <DockPanel LastChildFill="True">
                     <TextBlock 
@@ -291,79 +291,220 @@
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="車両" />
                     </DockPanel>
                     <ui:Card.Footer>
-                        <StackPanel>
-                            <ui:Card>
-                                <DockPanel LastChildFill="True">
-                                    <TextBlock 
+                        <Grid>
+                            <!-- Truck Job Info -->
+                            <StackPanel>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsBusJob}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock 
                                         Style="{StaticResource TitleTextBlockStyle}" 
                                         Margin="20,0"
                                         DockPanel.Dock="Right">
-                                        <TextBlock.Text>
-                                            <MultiBinding Converter="{StaticResource distanceConv}">
-                                                <Binding Path="NavigationDistance"/>
-                                                <Binding Path="GameName"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="移動距離" />
-                                </DockPanel>
-                            </ui:Card>
-                            <ui:Card>
-                                <DockPanel LastChildFill="True">
-                                    <TextBlock 
-                                        Style="{StaticResource TitleTextBlockStyle}" 
-                                        Margin="20,0"
-                                        DockPanel.Dock="Right"
-                                        Text="{Binding Path=NavigationTime, Converter={StaticResource tsConv}}"/>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="所要時間" />
-                                </DockPanel>
-                            </ui:Card>
-                            <ui:Card>
-                                <DockPanel LastChildFill="True">
-                                    <TextBlock 
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource distanceConv}">
+                                                    <Binding Path="NavigationDistance"/>
+                                                    <Binding Path="GameName"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="移動距離" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock 
+                                                Style="{StaticResource TitleTextBlockStyle}" 
+                                                Margin="20,0"
+                                                DockPanel.Dock="Right"
+                                                Text="{Binding Path=NavigationTime, Converter={StaticResource tsConv}}"/>
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="所要時間" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock 
                                         Style="{StaticResource TitleTextBlockStyle}" 
                                         Margin="20,0"
                                         DockPanel.Dock="Right"
                                         TextWrapping="WrapWithOverflow"
                                         Text="{Binding Path=CargoName}"/>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="荷物" />
-                                </DockPanel>
-                            </ui:Card>
-                            <ui:Card>
-                                <DockPanel LastChildFill="True">
-                                    <TextBlock 
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="荷物" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock 
                                         Style="{StaticResource remainingTimeTextBlockStyle}" 
                                         Margin="20,0"
                                         DockPanel.Dock="Right"
                                         Tag="{Binding Path=NextRestStopTime}"
                                         Text="{Binding Path=NextRestStopTime, Converter={StaticResource tsConv}}"/>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="休息まで" />
-                                </DockPanel>
-                            </ui:Card>
-                            <ui:Card>
-                                <DockPanel LastChildFill="True">
-                                    <TextBlock 
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="休息まで" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock 
                                         Style="{StaticResource remainingTimeTextBlockStyle}" 
                                         Margin="20,0"
                                         DockPanel.Dock="Right"
                                         Tag="{Binding Path=NextMandatoryBreakTime}"
                                         Text="{Binding Path=NextMandatoryBreakTime, Converter={StaticResource tsConv}}"/>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="法定休憩まで" />
-                                </DockPanel>
-                            </ui:Card>
-                        </StackPanel>
-                    </ui:Card.Footer>
-                </ui:Card>
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="法定休憩まで" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock
+                                        Style="{StaticResource TitleTextBlockStyle}"
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding GameTime, StringFormat={}{0:HH:mm}}" />
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内時間" />
+                                    </DockPanel>
+                                </ui:Card>
+                            </StackPanel>
 
-                <ui:Card>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock 
-                            Style="{StaticResource TitleTextBlockStyle}" 
-                            Margin="20,0"
-                            DockPanel.Dock="Right"
-                            Text="{Binding Path=GameTime, StringFormat={}{0:HH:mm}}"/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内時間" />
-                    </DockPanel>
+                            <!-- Bus Job Info -->
+                            <StackPanel>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsBusJob}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource TitleTextBlockStyle}"
+                                        Text="{Binding BusJobCurrentStage}" />
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="停留所" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource TitleTextBlockStyle}">
+                                        <Run Text="{Binding BusJobPlannedDistanceKm}" />
+                                        <Run Text=" km" />
+                                        </TextBlock>
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="移動距離" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock
+                                        Style="{StaticResource TitleTextBlockStyle}"
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding BusJobAverageSatisfaction, StringFormat={}{0:P0}}" />
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="満足度" />
+                                    </DockPanel>
+                                </ui:Card>
+                                <ui:Card>
+                                    <ui:Card.Style>
+                                        <Style TargetType="ui:Card">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding BusJobStages.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Card.Style>
+                                    <ItemsControl ItemsSource="{Binding BusJobStages}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border
+                                                Margin="2,4"
+                                                Padding="8"
+                                                BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                                BorderThickness="1"
+                                                CornerRadius="4">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        FontSize="20"
+                                                        Style="{StaticResource BodyStrongTextBlockStyle}">
+                                                        <Run Text="{Binding SourceName, Mode=OneWay}" />
+                                                        <LineBreak />
+                                                        <Run Text=" → " />
+                                                        <Run Text="{Binding DestinationName, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                                            <TextBlock
+                                                            HorizontalAlignment="Right"
+                                                            FontSize="20">
+                                                                <TextBlock.Style>
+                                                                    <Style BasedOn="{StaticResource BodyTextBlockStyle}" TargetType="TextBlock">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding TimeUntilPlannedArrival}" Value="{x:Null}">
+                                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                                <Run Foreground="White" Text="残り時間 : " />
+                                                                <Run Text="{Binding TimeUntilPlannedArrival, Mode=OneWay}">
+                                                                    <Run.Style>
+                                                                        <Style TargetType="Run">
+                                                                            <Setter Property="Foreground" Value="Green" />
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsPastPlannedArrival}" Value="True">
+                                                                                    <Setter Property="Foreground" Value="Red" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Run.Style>
+                                                                </Run>
+                                                            </TextBlock>
+                                                            <TextBlock
+                                                            HorizontalAlignment="Right"
+                                                            FontSize="20"
+                                                            Style="{StaticResource BodyTextBlockStyle}">
+                                                                <Run Text="到着予定 : " />
+                                                                <Run Text="{Binding PlannedArrivalTime, Mode=OneWay}" />
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ui:Card>
+                                <ui:Card>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock
+                                        Margin="20,0"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource TitleTextBlockStyle}"
+                                        Text="{Binding GameTime, StringFormat={}{0:HH:mm}}" />
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="ゲーム内時間" />
+                                    </DockPanel>
+                                </ui:Card>
+                            </StackPanel>
+                        </Grid>
+                    </ui:Card.Footer>
                 </ui:Card>
             </StackPanel>
         </ui:CardExpander>

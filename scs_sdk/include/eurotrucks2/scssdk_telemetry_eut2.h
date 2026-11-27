@@ -57,6 +57,7 @@ SCSSDK_HEADER
  * 1.19 - added mandatory break channel
  * 1.20 - added bus job related configs, events and channels
  * 1.21 - fixed mandatory break channel, which was not provided in 1.19
+ * 1.22 - added income, planned_distance_km and bus_job_market to bus job config
  */
 //@{
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_00            SCS_MAKE_VERSION(1, 0)
@@ -81,7 +82,8 @@ SCSSDK_HEADER
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_19            SCS_MAKE_VERSION(1, 19) // Patch 1.60
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_20            SCS_MAKE_VERSION(1, 20) // Patch 1.61
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_21            SCS_MAKE_VERSION(1, 21) // Patch 1.61
-#define SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT         SCS_TELEMETRY_EUT2_GAME_VERSION_1_21
+#define SCS_TELEMETRY_EUT2_GAME_VERSION_1_22            SCS_MAKE_VERSION(1, 22) // Patch 1.62
+#define SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT         SCS_TELEMETRY_EUT2_GAME_VERSION_1_22
 //@}
 
 // Game specific units.

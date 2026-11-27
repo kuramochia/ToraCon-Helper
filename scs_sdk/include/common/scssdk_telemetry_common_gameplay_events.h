@@ -27,6 +27,14 @@ SCSSDK_HEADER
 #define SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_cancelled           "car_job.cancelled"
 
 /**
+ * @brief Event called when bus job is cancelled.
+ *
+ * Attributes:
+ * @li cancel_penalty
+ */
+#define SCS_TELEMETRY_GAMEPLAY_EVENT_bus_job_cancelled           "bus_job.cancelled"
+
+/**
  * @brief Event called when job is delivered.
  *
  * Attributes:
@@ -52,6 +60,18 @@ SCSSDK_HEADER
  * @li delivery_time
  */
 #define SCS_TELEMETRY_GAMEPLAY_EVENT_car_job_delivered           "car_job.delivered"
+
+/**
+ * @brief Event called when bus job is completed.
+ *
+ * Attributes:
+ * @li revenue
+ * @li earned_xp
+ * @li passenger_satisfaction
+ * @li distance_km
+ * @li delivery_time
+ */
+#define SCS_TELEMETRY_GAMEPLAY_EVENT_bus_job_completed           "bus_job.completed"
 
 /**
  * @brief Event called when player gets fined.
@@ -158,6 +178,13 @@ SCSSDK_HEADER
  * Type: bool
  */
 #define SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_auto_load_used    "auto.load.used"
+
+/**
+ * @brief Average total passenger satisfaction. (Range <0.0, 1.0>)
+ *
+ * Type: float
+ */
+#define SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_passenger_satisfaction     "passenger.satisfaction"
 
 /**
  * @brief Fine offence type.

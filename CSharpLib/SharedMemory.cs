@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Threading;
 using SCSSdkClient.Object;
 
 namespace SCSSdkClient {
@@ -28,6 +30,7 @@ namespace SCSSdkClient {
         ///     memory mapped view accessor
         /// </summary>
         private MemoryMappedViewAccessor _memoryMappedView;
+        private string _mapName;
 
         /// <summary>
         ///     Could we create a memory view on the memory map
@@ -62,6 +65,7 @@ namespace SCSSdkClient {
 
             // Reset any errors
             HookException = null;
+            _mapName = map;
 
             try {
                 RawData = new byte[mapSize];
@@ -96,9 +100,46 @@ namespace SCSSdkClient {
         /// <returns></returns>
         public SCSTelemetry Update<T>() {
             Update();
+            if (RawData == null) return null;
+            if (RawData.Length < 44 || BitConverter.ToUInt32(RawData, 40) < 14 || RawData[0] == 0)
+                return ToObject<T>(RawData);
 
-            // Convert the data to our object.
-            return ToObject<T>(RawData);
+            SCSTelemetry result = null;
+            try {
+                using (var mutex = Mutex.OpenExisting(_mapName + ".Bus.Mutex")) {
+                    var acquired = false;
+                    try {
+                        try {
+                            acquired = mutex.WaitOne(TimeSpan.FromSeconds(1));
+                        } catch (AbandonedMutexException) {
+                            acquired = true;
+                        }
+                        if (!acquired) throw new TimeoutException("Timed out reading bus telemetry.");
+                        Update();
+                        result = ToObject<T>(RawData);
+                        if (result != null && result.SpecialEventsValues.OnBusJob &&
+                            result.BusJobValues.Error == null) {
+                            var bus = result.BusJobValues;
+                            if (bus.SnapshotId == 0 || bus.SnapshotSize == 0)
+                                throw new InvalidDataException("Bus telemetry snapshot is unavailable.");
+                            var name = _mapName + ".Bus." + bus.ProcessId + "." + bus.SnapshotId;
+                            using (var map = MemoryMappedFile.OpenExisting(name, MemoryMappedFileRights.Read))
+                            using (var stream = map.CreateViewStream(0, bus.SnapshotSize, MemoryMappedFileAccess.Read)) {
+                                BusSnapshotReader.Read(stream, bus);
+                            }
+                        }
+                        return result;
+                    } finally {
+                        if (acquired) mutex.ReleaseMutex();
+                    }
+                }
+            } catch (Exception e) when (e is IOException || e is InvalidDataException || e is UnauthorizedAccessException ||
+                                        e is WaitHandleCannotBeOpenedException || e is TimeoutException ||
+                                        e is ArgumentException) {
+                if (result == null) result = ToObject<T>(RawData);
+                if (result != null) result.BusJobValues.Error = e.Message;
+                return result;
+            }
         }
 
         /// <summary>

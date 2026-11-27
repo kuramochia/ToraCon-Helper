@@ -150,7 +150,24 @@ SCSSDK_HEADER
  *
  * If empty set of attributes is returned, there is no bus job.
  *
- * Supported attributes will be documented after release of bus dlc.
+ * Supported attributes:
+ * @li bus_stages_count
+ * @li bus_stages_current
+ * @li bus_job_market
+ * @li income - represents expected income for the bus job without any penalties
+ * @li planned_distance_km
+ * @li source_stop_type for each stage
+ * @li source_stop_id for each stage
+ * @li source_stop_name for each stage
+ * @li destination_stop_type for each stage
+ * @li destination_stop_id for each stage
+ * @li destination_stop_name for each stage
+ * @li source_stop_departure_time_planned for each stage
+ * @li source_stop_departure_time_actual for each started stage
+ * @li destination_stop_arrival_time_planned for each stage
+ * @li destination_stop_arrival_time_actual for each completed stage
+ * @li source_stop_entering_passengers_planned for each stage
+ * @li destination_stop_leaving_passengers_planned for each stage
  */
 #define SCS_TELEMETRY_CONFIG_bus_job                            "bus_job"
 
@@ -689,6 +706,19 @@ SCSSDK_HEADER
 #define SCS_TELEMETRY_CONFIG_ATTRIBUTE_car_job_market            "car_job.market"
 
 /**
+ * @brief The bus job market this bus job is from.
+ *
+ * The value is a string representing the type of the bus job market.
+ * Possible values:
+ * @li quick_job - the bus is provided by a company for this job
+ * @li company_job - the player drives their own bus
+ * @li tourist_job - a tourist job driven with an own bus, in multiplayer with an own or a company bus
+ *
+ * Type: string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_bus_job_market            "bus_job.market"
+
+/**
  * @brief Flag indicating that the job is special transport job.
  *
  * Type: bool
@@ -715,6 +745,128 @@ SCSSDK_HEADER
  * Type: bool
  */
 #define SCS_TELEMETRY_CONFIG_ATTRIBUTE_customer_prio_vehicle_appearance "customer.prio.vehicle"
+
+/**
+ * @brief Number of stages in the current bus job.
+ *
+ * Type: u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_bus_stages_count                            "bus.stages.count"
+
+/**
+ * @brief Zero-based index of the current stage in the bus job.
+ *
+ * Type: u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_bus_stages_current                          "bus.stages.current"
+
+/**
+ * @brief Type of the source bus stop for internal use by code.
+ *
+ * Limited to C-identifier characters and dots.
+ *
+ * Type: indexed string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_type				   "source_stop.type"
+
+/**
+ * @brief Id of the source bus stop for internal use by code.
+ *
+ * E.g. in case of "city" bus stop type, the id is the city id.
+ * Limited to C-identifier characters and dots.
+ *
+ * Type: indexed string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_id				   "source_stop.id"
+
+/**
+ * @brief Name of the source bus stop for display purposes.
+ *
+ * Localized using the current in-game language.
+ *
+ * Type: indexed string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_name                            "source_stop.name"
+
+/**
+ * @brief Type of the destination bus stop for internal use by code.
+ *
+ * Limited to C-identifier characters and dots.
+ *
+ * Type: indexed string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_type                       "destination_stop.type"
+
+/**
+ * @brief Id of the destination bus stop for internal use by code.
+ *
+ * E.g. in case of "city" bus stop type, the id is the city id.
+ * Limited to C-identifier characters and dots.
+ *
+ * Type: indexed string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_id                         "destination_stop.id"
+
+/**
+ * @brief Name of the destination bus stop for display purposes.
+ *
+ * Localized using the current in-game language.
+ *
+ * Type: indexed string
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_name                       "destination_stop.name"
+
+/**
+ * @brief Absolute in-game time of planned departure from stage's source stop.
+ *
+ * See SCS_TELEMETRY_CHANNEL_game_time for more info about absolute time.
+ * Time remaining until the departure can be obtained like (source_stop_departure_time_planned - game_time).
+ *
+ * Type: indexed u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_departure_time_planned          "source_stop.departure_time.planned"
+
+/**
+ * @brief Absolute in-game time of actual departure from stage's source stop.
+ *
+ * See SCS_TELEMETRY_CHANNEL_game_time for more info about absolute time.
+ *
+ * Type: indexed u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_departure_time_actual           "source_stop.departure_time.actual"
+
+/**
+ * @brief Absolute in-game time of planned arrival to stage's destination stop.
+ *
+ * See SCS_TELEMETRY_CHANNEL_game_time for more info about absolute time.
+ * Time remaining until the arrival can be obtained like (destination_stop_arrival_time_planned - game_time).
+ *
+ * Type: indexed u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_arrival_time_planned       "destination_stop.arrival_time.planned"
+
+/**
+ * @brief Absolute in-game time of actual arrival to stage's destination stop.
+ *
+ * See SCS_TELEMETRY_CHANNEL_game_time for more info about absolute time.
+ *
+ * Type: indexed u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_arrival_time_actual        "destination_stop.arrival_time.actual"
+
+/**
+ * @brief Number of passengers that plan to enter the bus on stage's source stop.
+ *
+ * Type: indexed u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_stop_entering_passengers_planned     "source_stop.entering_passengers.planned"
+
+/**
+ * @brief Number of passengers that plan to leave the bus on stage's destination stop.
+ *
+ * Type: indexed u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_stop_leaving_passengers_planned "destination_stop.leaving_passengers.planned"
 
 SCSSDK_FOOTER
 

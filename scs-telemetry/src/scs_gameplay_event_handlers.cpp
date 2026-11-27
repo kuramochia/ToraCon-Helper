@@ -49,6 +49,33 @@ static bool handleCarJobGameplay(const scs_named_value_t* info, const gameplayTy
     return true;
 }
 
+static bool handleBusJobGameplay(const scs_named_value_t* info, const gameplayType type) {
+    if (type == bus_cancelled) {
+        if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cancel_penalty) != 0 ||
+            info->value.type != SCS_VALUE_TYPE_s64) return false;
+        telem_ptr->gameplay_ll.jobCancelledPenalty = info->value.value_s64.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_revenue) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_s64) {
+        telem_ptr->gameplay_ll.jobDeliveredRevenue = info->value.value_s64.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_earned_xp) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_s32) {
+        telem_ptr->gameplay_i.jobDeliveredEarnedXp = info->value.value_s32.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_delivery_time) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_u32) {
+        telem_ptr->gameplay_ui.jobDeliveredDeliveryTime = info->value.value_u32.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_distance_km) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_float) {
+        telem_ptr->gameplay_f.jobDeliveredDistanceKm = info->value.value_float.value;
+    } else if (strcmp(info->name, SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_passenger_satisfaction) == 0 &&
+               info->value.type == SCS_VALUE_TYPE_float) {
+        telem_ptr->bus_extension.completedSatisfaction = info->value.value_float.value;
+        telem_ptr->bus_extension.completedSatisfactionValid = true;
+    } else {
+        return false;
+    }
+    return true;
+}
+
 #pragma region scsGameplayEventHandler_t[]
 
 // const: cancelled_gameplay
@@ -117,6 +144,9 @@ const int length_gameplays[] = {
 // Function: handleGpe
 // brings the config attributes to the correct function
 bool handleGpe(const scs_named_value_t* info, const gameplayType type) {
+    if (type == bus_cancelled || type == bus_completed) {
+        return telem_ptr && handleBusJobGameplay(info, type);
+    }
     if (type == car_cancelled || type == car_delivered) {
         return telem_ptr && handleCarJobGameplay(info, type);
     }
