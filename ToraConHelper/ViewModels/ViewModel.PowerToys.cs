@@ -33,7 +33,6 @@ public partial class ViewModel
         NextMandatoryBreakTime = null;
         IsBusJob = false;
         BusJobMarketName = null;
-        BusJobPlannedDistanceKm = null;
         BusJobAverageSatisfaction = null;
         BusJobCurrentStage = null;
         BusJobStages = Array.Empty<BusJobStageInfo>();
@@ -84,7 +83,6 @@ public partial class ViewModel
         var busJob = e.Telemetry.BusJobValues;
         IsBusJob = e.Telemetry.SpecialEventsValues.OnBusJob;
         BusJobMarketName = busJob.MarketName;
-        BusJobPlannedDistanceKm = busJob.PlannedDistanceKm;
         BusJobAverageSatisfaction = busJob.AverageSatisfaction;
         BusJobCurrentStage = busJob.CurrentStageIndex.HasValue
             ? $"{busJob.CurrentStageIndex.Value + 1} / {busJob.Stages.Count}"
@@ -137,9 +135,6 @@ public partial class ViewModel
 
     [ObservableProperty]
     private string? busJobMarketName;
-
-    [ObservableProperty]
-    private uint? busJobPlannedDistanceKm;
 
     [ObservableProperty]
     private float? busJobAverageSatisfaction;
