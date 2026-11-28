@@ -399,11 +399,15 @@
                                 <ui:Card>
                                     <DockPanel LastChildFill="True">
                                         <TextBlock
+                                        Style="{StaticResource TitleTextBlockStyle}"
                                         Margin="20,0"
-                                        DockPanel.Dock="Right"
-                                        Style="{StaticResource TitleTextBlockStyle}">
-                                        <Run Text="{Binding BusJobPlannedDistanceKm}" />
-                                        <Run Text=" km" />
+                                        DockPanel.Dock="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource distanceConv}">
+                                                    <Binding Path="NavigationDistance" />
+                                                    <Binding Path="GameName" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
                                         </TextBlock>
                                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="移動距離" />
                                     </DockPanel>
